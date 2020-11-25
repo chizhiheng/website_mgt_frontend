@@ -1,0 +1,310 @@
+{
+    "zh": {
+        "appTitle": {
+            "title": "汇德电子商务 ",
+            "subTitle": "网站后台管理应用平台"
+        },
+        "common": {
+            "ok": "确定",
+            "cancel": "取消",
+            "add": "新增",
+            "update": "更新",
+            "delete": "删除",
+            "imgTypeErrorJPG": "不是jpg格式文件",
+            "deleteConfirmTitel": "你真的想删除吗？",
+            "expireDate": "截止时间",
+            "yes": "是",
+            "no": "否",
+            "top": "置顶"
+        },
+        "login": {
+            "title": "使用你的账号登录",
+            "userName": "用户名",
+            "password": "密码",
+            "login": "登陆"
+        },
+        "settings": {
+            "tab": {
+                "siteInfo": {
+                    "name": "网站信息设置",
+                    "siteName": "网站名称",
+                    "siteNameDesc": "在搜索中显示的网站标题。如：某某公司网站",
+                    "siteKeywords": "网站关键字",
+                    "siteKeywordsDesc": "在搜索中显示网站的关键字，可多个词组关于网站的信息。如：产品名等",
+                    "siteDescription": "网站描述",
+                    "siteDescriptionDesc": "在搜索中显示网站的描述文字。如：公司简介精简版或简短的产品介绍等",
+                    "siteContact": {
+                        "email": "电子邮箱",
+                        "emailDesc": "电子邮箱地址，在联系我们页面显示",
+                        "phone1": "联系电话1",
+                        "phone2": "联系电话2",
+                        "phoneDesc": "联系电话号码，在联系我们页面显示",
+                        "QRcode": "二维码上传(只支持jpg)",
+                        "QRcodeDesc": "二维码图片，在联系我们页面显示，只支持jpg格式"
+                    }
+                },
+                "banner": {
+                    "name": "横幅图片设置"
+                }
+            }
+        },
+        "NavMgt": {
+            "currentNav": {
+                "title": "当前应用导航",
+                "apply": "应用当前设置",
+                "deleteConfirmDesc": "该项目及其子项目将被删除！操作后无法撤销！"
+            },
+            "addNav": {
+                "title": "添加新导航",
+                "addNew": "添加",
+                "cnName": "中文名称",
+                "cnNameTip": "在中文版本中显示的名字",
+                "cnNameTipErr": "中文版本导航名重复",
+                "enName": "英文名称",
+                "enNameTip": "在英文版本中显示的名字",
+                "enNameTipErr": "英文版本导航名重复",
+                "pathName": "路径",
+                "pathNameTip": "页面路径",
+                "pathNameTipErr": "页面路径重复",
+                "parentItem": {
+                    "label": "选择父栏目",
+                    "selector": "作为一级栏目"
+                },
+                "type": {
+                    "news": "新闻类",
+                    "article": "文章类",
+                    "product": "产品类"
+                }
+            }
+        },
+        "menu": {
+            "settings": {
+                "name": "网站设置"
+            },
+            "users": "用户管理",
+            "content": {
+                "nav": "添加导航",
+                "name": "内容管理",
+                "news": "新闻类",
+                "article": "文章类",
+                "product": "产品类"
+            },
+            "generate": {
+                "name": "生成页面",
+                "template": "选择模版",
+                "html": "HTML页面"
+            },
+            "advertising": "广告",
+            "logout": "退出"
+        },
+        "article": {
+            "addArticle": "添加文章",
+            "description": "请加入文章内容",
+            "articleList": "文章列表",
+            "articleTitle": "文章标题",
+            "articleKeyWords": "此文章页面关键字",
+            "articleDesc": "此文章页面描述",
+            "articleKeyWordsTips": "在搜索中显示此文章的关键字",
+            "articleDescTips": "在搜索中显示此文章的描述文字"
+        },
+        "news": {
+            "addNews": "添加新闻",
+            "description": "请加入新闻内容",
+            "newsList": "新闻列表",
+            "newsTitle": "新闻标题",
+            "newsKeyWords": "此新闻页面关键字",
+            "newsDesc": "此新闻页面描述",
+            "newsKeyWordsTips": "在搜索中显示此新闻的关键字",
+            "newsDescTips": "在搜索中显示此新闻的描述文字"
+        },
+        "product": {
+            "addProduct": "添加产品",
+            "description": "请加入产品内容",
+            "productList": "产品列表",
+            "productTitle": "产品标题",
+            "productKeyWords": "此产品页面关键字",
+            "productDesc": "此产品页面描述",
+            "productKeyWordsTips": "在搜索中显示此产品的关键字",
+            "productDescTips": "在搜索中显示此产品的描述文字"
+        },
+        "template": {
+            "apply": "应用此模版",
+            "current": "当前模版"
+        },
+        "generate": {
+            "html": {
+                "total": "页面总数量: ",
+                "articleNum": "文章类页面总数: ",
+                "newsNum": "新闻类页面总数: ",
+                "productNum": "产品类页面总数: "
+            },
+            "wx": {
+                "total": "页面总数量: ",
+                "articleNum": "文章类页面总数: ",
+                "newsNum": "新闻类页面总数: ",
+                "productNum": "产品类页面总数: "
+            },
+            "description": "篇文章还未生成为 HTML/WeiXin 自上次更新之后。上次更新时间为:",
+            "generateHTML": "生成 HTML 页面",
+            "generateWX": "生成 WX 页面"
+        },
+        "user": {
+            "userList": "用户列表",
+            "userInfo": "用户信息"
+        }
+    },
+    "en": {
+        "appTitle": {
+            "title": "Height E-commerce",
+            "subTitle": "Website management APP platform"
+        },
+        "common": {
+            "ok": "OK",
+            "cancel": "Cancel",
+            "add": "Add new",
+            "update": "Update",
+            "delete": "Delete",
+            "imgTypeErrorJPG": "is not a jpg file",
+            "deleteConfirmTitel": "Do you REALLY WANT to DELETE?",
+            "expireDate": "Expire date",
+            "yes": "Yes",
+            "no": "No",
+            "top": "Top"
+        },
+        "login": {
+            "title": "Sign in with your ID",
+            "userName": "User name",
+            "password": "Password",
+            "login": "Login"
+        },
+        "settings": {
+            "tab": {
+                "siteInfo": {
+                    "name": "Website information settings",
+                    "siteName": "Site name",
+                    "siteNameDesc": "The site title displayed in the search result. Such as: Your company website",
+                    "siteKeywords": "Site keywords",
+                    "siteKeywordsDesc": "Display the keywords of the site in the search result, which can be multiple phrases of information about the your site. Such as: product name and so on",
+                    "siteDescription": "Site description",
+                    "siteDescriptionDesc": "Display the description of the site in the search result. For example: a short version of the company or a short product introduction",
+                    "siteContact": {
+                        "email": "Email",
+                        "emailDesc": "Your email address, will display in contact page",
+                        "phone1": "Phone1",
+                        "phone2": "Phone2",
+                        "phoneDesc": "Your phone number, will display in contact page",
+                        "QRcode": "Upload QR code (jpg file only)",
+                        "QRcodeDesc": "Your QA code, will display in contact page and jpg file only"
+                    }
+                },
+                "banner": {
+                    "name": "Banner settings"
+                }
+            }
+        },
+        "NavMgt": {
+            "currentNav": {
+                "title": "Current navigation",
+                "apply": "Apply current setting for website",
+                "deleteConfirmDesc": "The item will be removed and also include the sub items! Can not be undo!"
+            },
+            "addNav": {
+                "title": "Add new navigation",
+                "addNew": "Add",
+                "cnName": "Chinese nav item name",
+                "cnNameTip": "The nav item name for Chinese version",
+                "cnNameTipErr": "The duplicated nav item name for Chinese version",
+                "enName": "English nav item name",
+                "enNameTip": "The nav item name for English version",
+                "enNameTipErr": "The duplicated nav item name for English version",
+                "pathName": "Path",
+                "pathNameTip": "The page URL",
+                "pathNameTipErr": "The duplicated page URL",
+                "parentItem": {
+                    "label": "Select parent nav",
+                    "selector": "As a parent nav"
+                },
+                "type": {
+                    "news": "News type",
+                    "article": "Article type",
+                    "product": "Product type"
+                }
+            }
+        },
+        "menu": {
+            "settings": {
+                "name": "Website settings"
+            },
+            "users": "User management",
+            "content": {
+                "nav": "Add Navigation",
+                "name": "Content management",
+                "news": "News",
+                "article": "Article",
+                "product": "Product"
+            },
+            "generate": {
+                "name": "Generate",
+                "template": "Select template",
+                "html": "Generate page"
+            },
+            "advertising": "AD.",
+            "logout": "Logout"
+        },
+        "article": {
+            "addArticle": "Add article",
+            "description": "Please fill the article content",
+            "articleList": "Article list",
+            "articleTitle": "Article title",
+            "articleKeyWords": "Article page keywords",
+            "articleDesc": "Article page descriptions",
+            "articleKeyWordsTips": "Display the keywords of this article in the search result",
+            "articleDescTips": "Display the description of this article in the search result."
+        },
+        "news": {
+            "addNews": "Add news",
+            "description": "Please fill the news content",
+            "newsList": "News list",
+            "newsTitle": "News title",
+            "newsKeyWords": "News page keywords",
+            "newsDesc": "News page descriptions",
+            "newsKeyWordsTips": "Display the keywords of this news in the search result",
+            "newsDescTips": "Display the description of this news in the search result."
+        },
+        "product": {
+            "addProduct": "Add product",
+            "description": "Please fill the product content",
+            "productList": "Product list",
+            "productTitle": "Product title",
+            "productKeyWords": "Product page keywords",
+            "productDesc": "Product page descriptions",
+            "productKeyWordsTips": "Display the keywords of this product in the search result",
+            "productDescTips": "Display the description of this product in the search result."
+        },
+        "template": {
+            "apply": "Apply this",
+            "current": "Current use"
+        },
+        "generate": {
+            "html": {
+                "total": "Total number: ",
+                "articleNum": "Total number of article pages: ",
+                "newsNum": "Total number of news pages: ",
+                "productNum": "Total number of product pages: "
+            },
+            "wx": {
+                "total": "Total number: ",
+                "articleNum": "Total number of article pages: ",
+                "newsNum": "Total number of news pages: ",
+                "productNum": "Total number of product pages: "
+            },
+            "description": "articles, news or products pages has not been generated as HTML/WeiXin since the last update. The last update time was: ",
+            "generateHTML": "Generate HTML",
+            "generateWX": "Generate WX"
+        },
+        "user": {
+            "userList": "User list",
+            "userInfo": "User information"
+        }
+    }
+}

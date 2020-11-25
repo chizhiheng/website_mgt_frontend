@@ -1,0 +1,52 @@
+@import '~antd/dist/antd.css';
+@import './Assets/CSS/common.css';
+
+@media only screen and (max-width: 1600px) {
+  .page-sider{
+    width: 100px !important;
+    flex: none !important;
+    max-width: 100px !important;
+    min-width: 100px !important;
+  }
+}
+@media only screen and (max-width: 1300px) {
+  .page-sider{
+    width: 20px !important;
+    flex: none !important;
+    max-width: 20px !important;
+    min-width: 20px !important;
+  }
+}
+@media only screen and (max-width: 1280px) {
+  .page-sider{
+    width: 1px !important;
+    flex: none !important;
+    max-width: 1px !important;
+    min-width: 1px !important;
+  }
+}
+
+.site-main {
+  // text-align: center;
+
+  .site-content-left-nav-container{
+    width: 200px;
+    overflow-y: scroll;
+  }
+  .site-content-container{
+    padding: 1.2rem;
+    
+    .content-main > div{
+      // overflow-y: hidden;
+      // padding: 2rem;
+      overflow-y: scroll;
+      height: 100%;
+      // height: calc(100% - 1.2rem);
+    }
+  }
+}
+
+.site-content-left-nav-container{
+  height: calc(100% - 48px);
+  background-color: white;
+}

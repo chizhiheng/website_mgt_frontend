@@ -1,0 +1,32 @@
+.site-template{
+    .template-container{
+        width: 100%;
+
+        .template-item{
+            width: 200px;
+            float: left;
+            margin: 0 2rem 1rem 0;
+            .template-img{
+                height: 240px;
+                margin-bottom: 10px;
+            }
+            .template-title{
+                height: 30px;
+                text-align: center;
+                line-height: 30px;
+                vertical-align: middle;
+
+                a{
+                    color: gray;
+                }
+                a:hover{
+                    color: rgb(78, 75, 75);
+                }
+                .current-use{
+                    font-weight: 500;
+                    color: black;
+                }
+            }
+        }
+    }
+}

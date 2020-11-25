@@ -1,0 +1,55 @@
+.site-header{
+    h1.site-name{
+        font-size: 1.5rem;
+        margin: 0;
+        text-align: left;
+        padding-left: 2rem;
+        float: left;
+        color: white;
+        margin-right: 5rem;
+
+        .subTitle{
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+        .site-logo{
+            display: inline-block;
+            margin-right: 40px;
+
+            svg{
+                fill: white;
+                width: 35px;
+                height: 35px;
+                position: absolute;
+                top: 15px;
+            }
+        }
+    }
+    .site-header-bar{
+        color: white;
+
+        main{
+            background-color: black;
+            text-align: right;
+            p{
+                height: 1.5rem;
+                margin: 0;
+                line-height: 1.5rem;
+                overflow: hidden;
+            }
+        }
+        
+    }
+    button{
+        border: 0;
+        background: none;
+        outline:0 none !important;
+        cursor: pointer;
+    }
+    button:focus{
+        outline:0 none !important;
+    }
+    ul.ant-menu{
+        border-bottom: 1px solid white;
+    }
+}

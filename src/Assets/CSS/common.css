@@ -1,0 +1,68 @@
+h1{
+    font-size: 1.6rem;
+}
+h2{
+    font-size: 1.4rem;
+}
+h3{
+    font-size: 1.2rem;
+}
+h4{
+    font-size: 1rem;
+}
+h5{
+    font-size: 0.8rem;
+}
+h2, h3, p, .line-height-40px{
+    line-height: 40px;
+}
+.float-right{
+    float: right;
+}
+/* ---- */
+.light-gray{
+    color: #e5e5e5;
+}
+.mid-light-gray{
+    color: #c9c9c9;
+}
+.font-weight-500{
+    font-weight: 500;
+}
+.gray-text{
+    color: gray;
+}
+/* ---- */
+.no-bg{
+    background: none;
+}
+.white-bg{
+    background-color: white;
+}
+.black-bg{
+    background-color: black;
+}
+/* ---- */
+.text-align-center{
+    text-align: center !important;
+}
+.text-align-right{
+    text-align: right !important;
+}
+.margin-bottom-2rem{
+    margin-bottom: 2rem;
+}
+.margin-right-2rem{
+    margin-right: 2rem;
+}
+.padding-05-rem{
+    padding: 0.5rem
+}
+/* ---- */
+.border-1px-light-gray{
+    border: 1px solid #e5e5e5;
+}
+/* ---- */
+.height-100-per{
+    height: 100%;
+}
