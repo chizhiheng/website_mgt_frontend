@@ -15,13 +15,19 @@
             "expireDate": "截止时间",
             "yes": "是",
             "no": "否",
-            "top": "置顶"
+            "top": "置顶",
+            "loading": "加载中..."
         },
         "login": {
             "title": "使用你的账号登录",
             "userName": "用户名",
             "password": "密码",
-            "login": "登陆"
+            "login": "登陆",
+            "invalid": {
+                "id": "请输入你的用户名!",
+                "pwd": "请输入你的密码!"
+            },
+            "noResult": "用户名或密码不正确!"
         },
         "settings": {
             "tab": {
@@ -169,13 +175,19 @@
             "expireDate": "Expire date",
             "yes": "Yes",
             "no": "No",
-            "top": "Top"
+            "top": "Top",
+            "loading": "Loading..."
         },
         "login": {
             "title": "Sign in with your ID",
-            "userName": "User name",
+            "userName": "Username",
             "password": "Password",
-            "login": "Login"
+            "login": "Login",
+            "invalid": {
+                "id": "Please input your username!",
+                "pwd": "Please input your password!"
+            },
+            "noResult": "Your username or password is incorrect!"
         },
         "settings": {
             "tab": {

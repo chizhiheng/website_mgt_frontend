@@ -1,12 +1,9 @@
 .login-page{
     text-align: center;
-    margin-top: 6%;
+    padding-top: 20%;
+    height: 100%;
 
-    span.ant-input-affix-wrapper{
-        width: 30%;
-    }
-
-    button{
-        width: 10%;
+    .ant-form-item{
+        margin-bottom: 24px !important;
     }
 }

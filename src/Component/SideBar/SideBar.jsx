@@ -56,15 +56,15 @@ class SideBar extends Component {
                 }]
             }, {
                 title: Dic[this.language].menu.generate.name,
-                key: '/generage/template',
+                key: '/generage/template/',
                 icon: ContainerOutlined,
                 children: [{
                     title: Dic[this.language].menu.generate.template,
-                    key: '/generage/template',
+                    key: '/generage/template/',
                     icon: ContainerOutlined
                 }, {
                     title: Dic[this.language].menu.generate.html,
-                    key: '/generage/pages',
+                    key: '/generage/pages/',
                     icon: Html5Outlined
                 }]
             }, {

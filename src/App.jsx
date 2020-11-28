@@ -31,7 +31,6 @@ function App() {
   const LoginContainer = () => {
     return (
       <Layout className="site-content-container">
-        <Content className="white-bg content-main">
         <Router>
           <Switch>
             <Route exact path="/">
@@ -40,12 +39,8 @@ function App() {
             <Route path="/login">
               <Login language={currentLang} />
             </Route>
-            <Route path="/*">
-              <Error language={currentLang} />
-            </Route>
           </Switch>
         </Router>
-      </Content>
       </Layout>
     );
   };
@@ -56,25 +51,25 @@ function App() {
         <SideBar language={currentLang} />
         <Layout className="site-content-container">
           <Content className="white-bg content-main">
-            <Route exact path="/settings">
+            <Route path="/settings/">
               <Settings language={currentLang} />
             </Route>
-            <Route path="/content/navmgt">
+            <Route path="/content/navmgt/">
               <NavMgt language={currentLang} />
             </Route>
-            <Route path="/content/article">
+            <Route path="/content/article/">
               <Article language={currentLang} />
             </Route>
-            <Route path="/content/news">
+            <Route path="/content/news/">
               <News language={currentLang} />
             </Route>
-            <Route path="/content/product">
+            <Route path="/content/product/">
               <Product language={currentLang} />
             </Route>
-            <Route path="/generage/pages">
+            <Route path="/generage/pages/">
               <Generate language={currentLang} />
             </Route>
-            <Route path="/generage/template">
+            <Route path="/generage/template/">
               <Template language={currentLang} />
             </Route>
             <Route path="/user/">
@@ -83,6 +78,7 @@ function App() {
             <Route path="/advertising/">
               <Advertising language={currentLang} />
             </Route>
+            <Error language={currentLang} />
         </Content>
         </Layout>
       </>
