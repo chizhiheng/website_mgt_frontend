@@ -9,14 +9,17 @@
             "cancel": "取消",
             "add": "新增",
             "update": "更新",
+            "upload": "上传",
             "delete": "删除",
             "imgTypeErrorJPG": "不是jpg格式文件",
+            "imgSizeError": "图片大小应小于 2M",
             "deleteConfirmTitel": "你真的想删除吗？",
             "expireDate": "截止时间",
             "yes": "是",
             "no": "否",
             "top": "置顶",
-            "loading": "加载中..."
+            "loading": "加载中...",
+            "isRequired": "必须填写!"
         },
         "login": {
             "title": "使用你的账号登录",
@@ -45,7 +48,7 @@
                         "phone1": "联系电话1",
                         "phone2": "联系电话2",
                         "phoneDesc": "联系电话号码，在联系我们页面显示",
-                        "QRcode": "二维码上传(只支持jpg)",
+                        "QRcode": "二维码上传(jpg/JPG)",
                         "QRcodeDesc": "二维码图片，在联系我们页面显示，只支持jpg格式"
                     }
                 },
@@ -169,14 +172,17 @@
             "cancel": "Cancel",
             "add": "Add new",
             "update": "Update",
+            "upload": "Upload",
             "delete": "Delete",
             "imgTypeErrorJPG": "is not a jpg file",
+            "imgSizeError": "Image size should less than 2M",
             "deleteConfirmTitel": "Do you REALLY WANT to DELETE?",
             "expireDate": "Expire date",
             "yes": "Yes",
             "no": "No",
             "top": "Top",
-            "loading": "Loading..."
+            "loading": "Loading...",
+            "isRequired": "is required!"
         },
         "login": {
             "title": "Sign in with your ID",

@@ -5,6 +5,7 @@ import {
   Switch,
   Route
 } from "react-router-dom";
+import { useCookies } from 'react-cookie';
 import { Layout } from 'antd';
 import SiteHeader from './Component/Header/Header';
 import Login from './Pages/Login/Login';
@@ -21,34 +22,26 @@ import User from './Pages/Users/User';
 import Template from './Pages/Template/Template';
 import Advertising from './Pages/Advertising/Advertising';
 
-function App() {
+function App(props) {
   const { Header, Content } = Layout;
   const [currentLang, setCurrentLang] = useState((navigator.language||navigator.userLanguage).substr(0, 2));
+  const [cookies, setCookie, removeCookie] = useCookies(['user_token']);
   const setLanguage = (flag) => {
     setCurrentLang(flag);
   };
 
-  const LoginContainer = () => {
-    return (
-      <Layout className="site-content-container">
-        <Router>
-          <Switch>
-            <Route exact path="/">
-              <Login language={currentLang} />
-            </Route>
-            <Route path="/login">
-              <Login language={currentLang} />
-            </Route>
-          </Switch>
-        </Router>
-      </Layout>
-    );
+  const logout = (val) => {
+    removeCookie('user_token');
+  };
+
+  const loginSuccess = (token) => {
+    setCookie('user_token', token, { path: '/' });
   };
 
   const DefaultContainer = () => {
     return (
       <>
-        <SideBar language={currentLang} />
+        <SideBar language={currentLang} callback={logout} />
         <Layout className="site-content-container">
           <Content className="white-bg content-main">
             <Route path="/settings/">
@@ -78,7 +71,9 @@ function App() {
             <Route path="/advertising/">
               <Advertising language={currentLang} />
             </Route>
-            <Error language={currentLang} />
+            {/* <Route path="*">
+              <Error language={currentLang} />
+            </Route> */}
         </Content>
         </Layout>
       </>
@@ -94,8 +89,12 @@ function App() {
         <Layout>
           <Router>
             <Switch>
-              <Route exact path="/" component={LoginContainer}/>
-              <Route path="/login" component={LoginContainer}/>
+              <Route exact path="/">
+                <Login language={currentLang} callback={loginSuccess} />
+              </Route>
+              <Route path="/login">
+                <Login language={currentLang} callback={loginSuccess} />
+              </Route>
               <Route component={DefaultContainer} />
             </Switch>
           </Router>

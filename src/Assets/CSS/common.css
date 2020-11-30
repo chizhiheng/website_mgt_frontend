@@ -16,8 +16,14 @@ h5{
 h2, h3, p, .line-height-40px{
     line-height: 40px;
 }
+.float-left{
+    float: left;
+}
 .float-right{
     float: right;
+}
+.clear-both{
+    clear: both;
 }
 /* ---- */
 .light-gray{

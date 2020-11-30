@@ -25,7 +25,9 @@ const { Sider } = Layout;
 class SideBar extends Component {
     static contextType = AppContext;
     appState = this.context;
-    language = this.props.language
+    language = this.props.language;
+    callback = this.props.callback;
+
     state = {
         openKey: [],
         menuList: [
@@ -84,13 +86,18 @@ class SideBar extends Component {
     };
    
     handleChangeMenu = ({key}) => {
-        this.props.history.push(key);
+        if (key === '/logout/') {
+            this.callback(key);
+            this.props.history.push('/');
+        } else {
+            this.props.history.push(key);
+        }
     };
 
     handleOpenChange = (v) => {
         this.setState({
             openKey: v
-        })
+        });
     };
 
     componentDidMount() {
@@ -99,11 +106,11 @@ class SideBar extends Component {
         });
         this.appState.setAppState({menuList: this.state.menuList}, this.output);
     }
-    componentDidUpdate(prevProps) {
-        if (prevProps.location.pathname !== this.props.location.pathname) {
+    // componentDidUpdate(prevProps) {
+    //     if (prevProps.location.pathname !== this.props.location.pathname) {
             
-        }
-    }
+    //     }
+    // }
 
     output = (val) => {
         // val.menuList.push({
@@ -111,7 +118,6 @@ class SideBar extends Component {
         //     key: '/logouta/',
         //     icon: ArrowRightOutlined
         // });
-        console.log(val);
     }
 
     createMenuListMap = (list) => {

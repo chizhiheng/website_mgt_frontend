@@ -6,15 +6,13 @@ export default async function RequestUtils(props) {
         'Content-Type': 'application/json; charset=UTF-8'
     };
     const {url, param} = {...props};
-    console.log('props: ', props);
     const path = host + url;
-    console.log(path);
     
     return await axios.post(path,param,headers).then((response) => {
         return response.data;
-      }).catch((error) => {
-        return error;
-      }).finally(() => {
-        // always executed
-      });
+    }).catch((error) => {
+      return error;
+    }).finally(() => {
+      // always executed
+    });
 }

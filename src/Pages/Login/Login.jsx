@@ -11,7 +11,7 @@ import RequestUtils from '../../Utils/RequestUtils';
 import Loading from '../../Component/Loading/Loading';
 
 function Login(props) {
-    const { language } = {...props};
+    const { language, callback } = {...props};
     const history = useHistory();
     const [loading, setLoading] = useState(false);
     const [value, setValue] = useState({
@@ -43,10 +43,9 @@ function Login(props) {
         const res = await RequestUtils(params);
         setLoading(false);
         if (res.code === 200) {
-            console.log(res);
+            callback(res.token);
             history.push('/settings/');
         } else {
-            console.log(res);
             setStatus({...status, id: {
                 hasFeedback: false,
                 validateStatus: 'error'
@@ -87,7 +86,7 @@ function Login(props) {
             <h2><LoginOutlined />&nbsp;&nbsp;{ Dic[language].login.title }</h2><br />
             <Form
                 {...layout}
-                name="basic"
+                name="login"
                 initialValues={{ remember: true }}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
