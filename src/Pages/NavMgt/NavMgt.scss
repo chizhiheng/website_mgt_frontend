@@ -2,6 +2,11 @@
 
     .nav-display-area{
         overflow-x: scroll;
+        div.item:first-child{
+            .nav-item-modify-container{
+                display: none;
+            }
+        }
         div.item{
             div.item{
                 padding-left: 1rem;

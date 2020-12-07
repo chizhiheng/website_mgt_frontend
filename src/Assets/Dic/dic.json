@@ -68,13 +68,13 @@
                 "addNew": "添加",
                 "cnName": "中文名称",
                 "cnNameTip": "在中文版本中显示的名字",
-                "cnNameTipErr": "中文版本导航名重复",
+                "cnNameTipErr": "中文版本导航名为空或重复",
                 "enName": "英文名称",
                 "enNameTip": "在英文版本中显示的名字",
-                "enNameTipErr": "英文版本导航名重复",
+                "enNameTipErr": "英文版本导航名为空或重复",
                 "pathName": "路径",
                 "pathNameTip": "页面路径",
-                "pathNameTipErr": "页面路径重复",
+                "pathNameTipErr": "页面路径为空或重复或开始结束没有/符号",
                 "parentItem": {
                     "label": "选择父栏目",
                     "selector": "作为一级栏目"
@@ -231,13 +231,13 @@
                 "addNew": "Add",
                 "cnName": "Chinese nav item name",
                 "cnNameTip": "The nav item name for Chinese version",
-                "cnNameTipErr": "The duplicated nav item name for Chinese version",
+                "cnNameTipErr": "The empty or duplicated nav item name for Chinese version",
                 "enName": "English nav item name",
                 "enNameTip": "The nav item name for English version",
-                "enNameTipErr": "The duplicated nav item name for English version",
+                "enNameTipErr": "The empty or duplicated nav item name for English version",
                 "pathName": "Path",
                 "pathNameTip": "The page URL",
-                "pathNameTipErr": "The duplicated page URL",
+                "pathNameTipErr": "The empty or duplicated page URL or missing / in the front or the end",
                 "parentItem": {
                     "label": "Select parent nav",
                     "selector": "As a parent nav"

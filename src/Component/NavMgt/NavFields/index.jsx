@@ -27,7 +27,7 @@ function NavFields(props) {
         etitle: '',
         key: '',
         type: 1,
-        parentKey: -1
+        s_id: -1
     });
     const [navLevel, setNavLevel] = useState(-1);
     const [titleIconColor, setTitleIconColor] = useState('rgba(0,0,0,.45)');
@@ -39,8 +39,8 @@ function NavFields(props) {
     useEffect(() => {
         defaultValue.length ? setNavList([...defaultValue]) : setNavList([]);
         if (isUpdate) {
+            console.log('update');
             setNavItemDetils({...updateVal});
-            setNavLevel(updateVal.parentKey);
         }
         setTitleIconColor('rgba(0,0,0,.45)');
         setETitleIconColor('rgba(0,0,0,.45)');
@@ -50,10 +50,22 @@ function NavFields(props) {
 
     // add nav to array
     const navModify = () => {
-        if (navItemDetails.title === '' || navItemDetails.etitle === '' || navItemDetails.key === '') {
+        if (navItemDetails.title === '') {
+            setTitleIconColor('rgba(255,0,0,1)');
             return;
         }
-
+        if (navItemDetails.etitle === '') {
+            setETitleIconColor('rgba(255,0,0,1)');
+            return;
+        }
+        if (navItemDetails.key === '') {
+            setPathIconColor('rgba(255,0,0,1)');
+            return;
+        }
+        if (navItemDetails.key.search(/^[/].*[/]$/igm) < 0){
+            setPathIconColor('rgba(255,0,0,1)');
+            return;
+        }
         setTitleIconColor('rgba(0,0,0,.45)');
         setETitleIconColor('rgba(0,0,0,.45)');
         setPathIconColor('rgba(0,0,0,.45)');
@@ -63,6 +75,13 @@ function NavFields(props) {
         } else {
             addNav();
         }
+        setNavItemDetils({
+            title: '',
+            etitle: '',
+            key: '',
+            type: 1,
+            s_id: -1
+        })
     };
 
     const addNav = () => {
@@ -93,7 +112,7 @@ function NavFields(props) {
                     etitle: '',
                     key: '',
                     type: 1,
-                    parentKey: -1
+                    s_id: -1
                 });
                 selectNavLevel(-1);
                 callBack(navList);
@@ -108,7 +127,7 @@ function NavFields(props) {
                     etitle: '',
                     key: '',
                     type: 1,
-                    parentKey: -1
+                    s_id: -1
                 });
                 selectNavLevel(-1);
                 callBack(navList);
@@ -203,7 +222,6 @@ function NavFields(props) {
                 setAddItem(true);
             }
         }
-        
     };
 
     // sub function for check duplicate
@@ -221,6 +239,7 @@ function NavFields(props) {
             }
         }
     };
+    
 
     const generteOption = (items, counter) =>{
         if (counter === 0){
@@ -231,10 +250,17 @@ function NavFields(props) {
         }
         const res = items.map((item, id) => (
             <Fragment key={`nav-${item.key}-${id}`}>
-                <Option value={item.key} key={`nav-level-${item.key}-${id}`} style={style}>{item.title}</Option>
-                {
-                     item.children && item.children.length > 0 ? generteOption(item.children, counter + 1) : ''
-                }
+            {
+                item.key !== '/'
+                ? (
+                    <>
+                        <Option value={item.key} key={`nav-level-${item.key}-${id}`} style={style}>{item.title}</Option>
+                        {
+                            item.children && item.children.length > 0 ? generteOption(item.children, counter + 1) : ''
+                        }
+                    </>
+                ) : null
+            }
             </Fragment>
         ))
         
@@ -242,9 +268,9 @@ function NavFields(props) {
     }
 
     const selectNavLevel = (val) => {
-        console.log(val);
         setNavLevel(val);
-        setNavItemDetils({...navItemDetails, parentKey: val});
+        setNavItemDetils({...navItemDetails, s_id: val});
+        // console.log('navItemDetails: ', navItemDetails);
     };
     
     return(

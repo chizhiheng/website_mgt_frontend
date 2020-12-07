@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Row, Col, Button, Modal, Tooltip
 } from 'antd';
@@ -14,37 +14,33 @@ import Dic from '../../Assets/Dic/dic.json';
 import './NavMgt.scss';
 import NavFields from '../../Component/NavMgt/NavFields/';
 
+import { useCookies } from 'react-cookie';
+import { getMenu, upsertMenu } from '../../API/apiPath';
+import RequestUtils from '../../Utils/RequestUtils';
+import Loading from '../../Component/Loading/Loading';
+
 function NavMgt(props) {
     const { language } = {...props};
     const { confirm } = Modal;
     const [updateItem, setUpdateItem] = useState({});
-    const [navList, setNavList] = useState([{
-        title: '公司简介',
-        etitle: 'Company Intro',
-        key: '/company/',
-        type: 1,
-        parentKey: -1
-    },{
-        title: '产品介绍',
-        etitle: 'Product Intro',
-        key: '/product/',
-        type: 1,
-        parentKey: -1,
-        children: [{
-            title: '产品介绍1',
-            etitle: 'Product Intro1',
-            key: '/product/1/',
-            type: 1,
-            parentKey: '/product/',
-        },{
-            title: '产品介绍2',
-            etitle: 'Product Intro2',
-            key: '/product/2/',
-            type: 1,
-            parentKey: '/product/',
-        }]
-    }]);
+    const [cookies] = useCookies(['user_token']);
+    const [loading, setLoading] = useState(false);
+    const [navList, setNavList] = useState([]);
     const [showEditOverlay, setShowEditOverlay] = useState(false);
+    const [disableApplyBtn, setDisableApplyBtn] = useState(true);
+
+    useEffect(() => {
+        let monted = true;
+
+        if (monted) {
+            setLoading(true);
+            getMenuList();
+        }
+
+        return () => {
+            monted = false;
+        };
+    }, []);
 
     // nav items edit, up, down & delete function
     const updateNavItem = (item, type) => {
@@ -55,10 +51,12 @@ function NavMgt(props) {
             const arr = [...navList]
             fetchNav(item.key, arr, 'moveUp');
             setNavList([...arr]);
+            setDisableApplyBtn(false);
         } else if (type === 'moveDown') {
             const arr = [...navList]
             fetchNav(item.key, arr, 'moveDown');
             setNavList([...arr]);
+            setDisableApplyBtn(false);
         } else if (type === 'delete') {
             showConfirm(item);
         }
@@ -73,14 +71,50 @@ function NavMgt(props) {
           okText: Dic[language].common.ok,
           okType: 'danger',
           onOk() {
-            console.log('OK');
             const arr = [...navList,];
             fetchNav(item.key, arr, 'delete');
             setNavList([...arr]);
+            setDisableApplyBtn(false);
           },
           onCancel() {
             console.log('Cancel');
           },
+        });
+    };
+
+    const formatNav = (result) => {
+        let parentArr = [];
+        result.forEach((element) => {
+            if (element.s_id === '' || element.s_id === '-1') {
+                element.children = restructureData(element, result);
+                parentArr.push(element);
+            }
+        });
+        setNavList([...parentArr]);
+    };
+
+    const restructureData = (element, result) => {
+        let res = [];
+        result.forEach((item) => {
+            if (item.s_id === element.key) {
+                item.children = restructureData(item, result);
+                res.push(item);
+            }
+        });
+        return res;
+    };
+
+    const getMenuList = () => {
+        const params = {
+            url: getMenu,
+            param: { code: cookies.user_token.toString() }
+        }
+        RequestUtils(params).then((res) => {
+            formatNav(res.result);
+            setLoading(false);
+        }).catch((e) => {
+            setLoading(false);
+            console.log(e);
         });
     };
 
@@ -125,8 +159,22 @@ function NavMgt(props) {
     };
 
     const applyNavToSite = (e) => {
-        console.log(e.target);
-        console.log('send post request to backend the param is: ', navList);
+        setLoading(true);
+        const params = {
+            url: upsertMenu,
+            param: {
+                code: cookies.user_token.toString(),
+                values: navList
+            }
+        }
+        RequestUtils(params).then((res) => {
+            setLoading(false);
+            setDisableApplyBtn(true);
+            // getMenuList();
+        }).catch((e) => {
+            setLoading(false);
+            console.log(e);
+        });
     };
 
     // generte added nav
@@ -151,9 +199,8 @@ function NavMgt(props) {
                                 icon={<FormOutlined />}
                                 name={item.key}
                                 onClick={() => {updateNavItem(item, 'edit')}}
-                            >
-                            </Button>
-                            { id === 0 ? '' :
+                            ></Button>
+                            { id === 0 ? null :
                                 <Button
                                     type="primary" 
                                     icon={<ArrowUpOutlined />}
@@ -161,7 +208,7 @@ function NavMgt(props) {
                                     onClick={() => {updateNavItem(item, 'moveUp')}}
                                 ></Button>
                             }
-                            { id === val.length - 1 ? '' :
+                            { id === val.length - 1 ? null :
                                 <Button
                                     type="primary" 
                                     icon={<ArrowDownOutlined />}
@@ -188,12 +235,15 @@ function NavMgt(props) {
     };
 
     const navFieldsCallBack = (val) => {
+        // console.log(val);
+        setDisableApplyBtn(false);
         setNavList([...val]);
         closeEditOverlay();
     };
     
     return (
         <div className="site-navmgt">
+            { loading ? <Loading text={Dic[language].common.loading}/> : null}
             {/* update nav item popup start */}
             <Modal
                 title={ Dic[language].common.update }
@@ -240,7 +290,7 @@ function NavMgt(props) {
                                         type="primary" 
                                         icon={<PlusOutlined />}
                                         onClick={applyNavToSite}
-                                        disabled={ navList.length <= 0 ? true : false }
+                                        disabled={ navList.length <= 0 || disableApplyBtn ? true : false }
                                     >
                                         { Dic[language].NavMgt.currentNav.apply }
                                     </Button>
