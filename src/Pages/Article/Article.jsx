@@ -15,7 +15,7 @@ function Article(props) {
     }
 
     return (
-        <div className="site-article">
+        <div className="site-article site-content">
             <Row className="height-100-per">
                 <Col span={24} className="border-1px-light-gray">
                     <Tabs defaultActiveKey="1" type="card" size="small">

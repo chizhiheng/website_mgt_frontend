@@ -19,7 +19,8 @@
             "no": "否",
             "top": "置顶",
             "loading": "加载中...",
-            "isRequired": "必须填写!"
+            "isRequired": "必须填写!",
+            "selectOne": "请选择"
         },
         "login": {
             "title": "使用你的账号登录",
@@ -182,7 +183,8 @@
             "no": "No",
             "top": "Top",
             "loading": "Loading...",
-            "isRequired": "is required!"
+            "isRequired": "is required!",
+            "selectOne": "Please select one"
         },
         "login": {
             "title": "Sign in with your ID",

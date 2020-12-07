@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Row, Col, Input, DatePicker, Space, Radio, Divider, Button, Tooltip
 } from 'antd';
@@ -9,13 +9,18 @@ import {
     InfoCircleOutlined
 } from '@ant-design/icons';
 import PicturesWall from './ImgContent';
+import NavSelector from './NavSelector';
+import Loading from '../Loading/Loading';
+import './content.scss';
 
 function Content(props) {
     const { language, withImgs, type } = {...props};
+    const [loading, setLoading] = useState(true);
     const { RangePicker } = DatePicker;
     const [datePickerRadio, setDatePickerRadio] = useState(1);
     const [markTopRadio, setMarkTopRadio] = useState(1);
     const [disableDatePicker, setDisableDatePicker] = useState(true);
+
     let titleText = null;
     let keywordsText = null;
     let descriptionText = null;
@@ -61,11 +66,34 @@ function Content(props) {
 
     };
 
+    const setSelectMenu = (val) => {
+        console.log('selected menu is: ', val);
+    };
+    const removeLoading = (val) => {
+        setLoading(val);
+    };
+
+    const submit = () => {
+        console.log('submit');
+    };
+
     return (
         <>
+            { loading ? <Loading text={Dic[language].common.loading}/> : null}
             <Row>
                 <Col span={12}>
-                    <Input placeholder={ Dic[language][type][titleText] } />
+                    <Input
+                        placeholder={ Dic[language][type][titleText] }
+                    />
+                </Col>
+            </Row>
+            <Row>
+                <Col span={12}>
+                    <NavSelector
+                        language={language}
+                        setSelectMenu={setSelectMenu}
+                        removeLoading={removeLoading}
+                    />
                 </Col>
             </Row>
             <Row>
@@ -133,8 +161,6 @@ function Content(props) {
                 :
                 null
             }
-            
-            
             <Row>
                 <Col span={24}>
                     <RichEditor placeholder={Dic[language].article.description} stateCallback={updateDescription} />
@@ -145,7 +171,7 @@ function Content(props) {
                     <Button
                         type="primary" 
                         icon={<PlusOutlined />}
-                        // onClick={() => {updateNavItem(item, 'edit')}}
+                        onClick={submit}
                     >
                         {Dic[language].common.add}
                     </Button>
