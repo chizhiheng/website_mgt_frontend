@@ -72,3 +72,6 @@ h2, h3, p, .line-height-40px{
 .height-100-per{
     height: 100%;
 }
+.red-border{
+    border-color: red;
+}

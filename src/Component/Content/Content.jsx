@@ -20,6 +20,25 @@ function Content(props) {
     const [datePickerRadio, setDatePickerRadio] = useState(1);
     const [markTopRadio, setMarkTopRadio] = useState(1);
     const [disableDatePicker, setDisableDatePicker] = useState(true);
+    const [returnValues, setReturnValues] = useState({
+        title: '',
+        nav: '',
+        keyword: '',
+        description: '',
+        expireDate: {
+            status: false,
+            value: []
+        },
+        top: false,
+        content: ''
+    });
+
+    const[navErr, setNevErr] = useState(false);
+    const[titleErr, setTitleErr] = useState(false);
+    const[keyWordErr, setKeyWordErr] = useState(false);
+    const[descriptionErr, setDescriptionErr] = useState(false);
+    const[expireDateErr, setExpireDateErr] = useState(false);
+    const[contentErr, setContentErr] = useState(false);
 
     let titleText = null;
     let keywordsText = null;
@@ -45,36 +64,108 @@ function Content(props) {
         keywordsTip = 'productKeyWordsTips';
         descTip = 'productDescTips';
     }
-    const enableDatePicker = (val) => {
-        if (val.target.value === 1) {
-            setDatePickerRadio(1);
-            setDisableDatePicker(true);
-        } else {
-            setDatePickerRadio(0);
-            setDisableDatePicker(false);
-        }
-    };
 
     const makeTop = (val) => {
+        let flag = false;
         if (val.target.value === 1){
             setMarkTopRadio(1);
+            flag = false;
         } else {
             setMarkTopRadio(0);
+            flag = true;
         }
+        setReturnValues({...returnValues, top: flag});
     };
-    const updateDescription = () => {
-
+    const updateDescription = (val) => {
+        setReturnValues((res) => {
+            res.content = val; 
+            return res;
+        });
+        setNevErr(false);
     };
 
     const setSelectMenu = (val) => {
-        console.log('selected menu is: ', val);
+        setReturnValues((res) => {
+            res.nav = val; 
+            return res;
+         });
+         setNevErr(false);
     };
     const removeLoading = (val) => {
         setLoading(val);
     };
 
+    const enableDatePicker = (val) => {
+        if (val.target.value === 1) {
+            setDatePickerRadio(1);
+            setDisableDatePicker(true);
+            setReturnValues((res) => {
+                res.expireDate.status = false;
+                return res;
+            });
+            setExpireDateErr(false);
+        } else {
+            setDatePickerRadio(0);
+            setDisableDatePicker(false);
+            setReturnValues((res) => {
+                res.expireDate.status = true;
+                return res;
+            });
+        }
+    };
+
     const submit = () => {
-        console.log('submit');
+        console.log('submit, values is: ', returnValues, returnValues.title);
+        removeErr();
+        if (returnValues.title === '') {
+            setTitleErr(true);
+            return;
+        }
+        if (returnValues.nav === '') {
+            setNevErr(true);
+            return;
+        }
+        if (returnValues.keyword === '') {
+            setKeyWordErr(true);
+            return;
+        }
+        if (returnValues.description === '') {
+            setDescriptionErr(true);
+            return;
+        }
+        if (returnValues.expireDate.status && returnValues.expireDate.value.length !== 2) {
+            setExpireDateErr(true);
+            return;
+        }
+        if (returnValues.content === '') {
+            setContentErr(true);
+            return;
+        }
+    };
+
+    const removeErr = () => {
+        setNevErr(false);
+        setTitleErr(false);
+        setKeyWordErr(false);
+        setDescriptionErr(false);
+        setExpireDateErr(false);
+        setContentErr(false);
+    };
+
+    const updateValue = (e, val) => {
+        const value = e.target.value;
+        removeErr();
+        setReturnValues((res) => {
+            if (val === 'title') {
+                res.title = value; 
+            } else if (val === 'kw') {
+                res.keyword = value; 
+            } else if (val === 'desc') {
+                res.description = value; 
+            }
+            return res;
+         });
+        
     };
 
     return (
@@ -84,11 +175,15 @@ function Content(props) {
                 <Col span={12}>
                     <Input
                         placeholder={ Dic[language][type][titleText] }
+                        className={ titleErr ? 'red-border' : '' }
+                        onChange={(e) => {
+                            updateValue(e, 'title');
+                        }}
                     />
                 </Col>
             </Row>
             <Row>
-                <Col span={12}>
+                <Col span={12} className={ navErr ? 'show-red-border' : '' }>
                     <NavSelector
                         language={language}
                         setSelectMenu={setSelectMenu}
@@ -100,6 +195,10 @@ function Content(props) {
                 <Col span={12}>
                     <Input
                         placeholder={ Dic[language][type][keywordsText] }
+                        className={ keyWordErr ? 'red-border' : '' }
+                        onChange={(e) => {
+                            updateValue(e, 'kw');
+                        }}
                         suffix={
                             <Tooltip title={ Dic[language][type][keywordsTip] }>
                                 <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
@@ -112,6 +211,10 @@ function Content(props) {
                 <Col span={12}>
                     <Input
                         placeholder={ Dic[language][type][descriptionText] }
+                        className={ descriptionErr ? 'red-border' : '' }
+                        onChange={(e) => {
+                            updateValue(e, 'desc');
+                        }}
                         suffix={
                             <Tooltip title={ Dic[language][type][descTip] }>
                                 <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
@@ -138,13 +241,16 @@ function Content(props) {
                 </Col>
             </Row>
             <Row>
-                <Col span={12}>
+                <Col span={12} className={ expireDateErr ? 'show-red-border' : '' }>
                     <Space direction="vertical">
                         <RangePicker
                             size="middle"
                             disabled={disableDatePicker}
                             onCalendarChange={(date, dateStrings) => {
-                                console.log(dateStrings);
+                                setReturnValues((res) => {
+                                    res.expireDate.value = dateStrings;
+                                    return res;
+                                });
                             }}
                         />
                     </Space>
@@ -162,8 +268,11 @@ function Content(props) {
                 null
             }
             <Row>
-                <Col span={24}>
-                    <RichEditor placeholder={Dic[language].article.description} stateCallback={updateDescription} />
+                <Col span={24} className={ contentErr ? 'show-red-border' : '' }>
+                    <RichEditor
+                        placeholder={Dic[language].article.description}
+                        stateCallback={updateDescription}
+                    />
                 </Col>
             </Row>
             <Row className="float-right">
@@ -173,7 +282,7 @@ function Content(props) {
                         icon={<PlusOutlined />}
                         onClick={submit}
                     >
-                        {Dic[language].common.add}
+                        { Dic[language].common.add }
                     </Button>
                 </Col>
             </Row>

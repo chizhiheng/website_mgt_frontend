@@ -1,4 +1,9 @@
 .site-content{
+    .show-red-border{
+        div.rdw-editor-wrapper .rdw-editor-main, div.nav-selector .ant-select-selector, div.ant-picker-range{
+            border-color: red;
+        }
+    }
     .nav-selector{
         width: 100%;
     }

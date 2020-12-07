@@ -12,7 +12,7 @@ import Loading from '../../Loading/Loading';
 
 function NavSelector(props) {
     const { Option } = Select;
-    const {language, setSelectMenu, removeLoading} = {...props};
+    const {language, setSelectMenu, removeLoading, navErr} = {...props};
     const [selectValue, setSelectValue] = useState('');
 
     const [cookies] = useCookies(['user_token']);
