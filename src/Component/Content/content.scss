@@ -8,3 +8,43 @@
         width: 100%;
     }
 }
+
+.img-selector-overlay{
+    height: 85%;
+    .ant-modal-content{
+        height: 100%;
+        .ant-modal-body{
+            height: 75%;
+            overflow-y: scroll;
+
+            .ant-card{
+                margin-right: 1rem;
+                margin-bottom: 1rem;
+                float: left;
+
+                .ant-card-body{
+                    position: relative;
+                    .select-box{
+                        position: absolute;
+                        top: 71px;
+                        right: 5px;
+                        svg{
+                            width: 18px;
+                            height: 18px;
+                        }
+                    }
+                }
+                .ant-card-cover{
+                    img{
+                        height: 200px;
+                    }
+                }
+            }
+        }
+        .ant-modal-footer{
+            .ant-upload-list-picture-card-container{
+                display: none;
+            }
+        }
+    }
+}

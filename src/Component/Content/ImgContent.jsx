@@ -12,50 +12,28 @@ function getBase64(file) {
 }
 
 class PicturesWall extends React.Component {
-  state = {
-    previewVisible: false,
-    previewImage: '',
-    previewTitle: '',
-    fileList: [
-      {
-        uid: '-1',
-        name: 'image.png',
-        status: 'done',
-        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      },
-      {
-        uid: '-2',
-        name: 'image.png',
-        status: 'done',
-        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      },
-      {
-        uid: '-3',
-        name: 'image.png',
-        status: 'done',
-        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      },
-      {
-        uid: '-4',
-        name: 'image.png',
-        status: 'done',
-        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      },
-      {
-        uid: '-xxx',
-        percent: 50,
-        name: 'image.png',
-        status: 'uploading',
-        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      },
-      {
-        uid: '-5',
-        name: 'image.png',
-        status: 'error',
-      },
-    ],
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      previewVisible: false,
+      previewImage: '',
+      previewTitle: '',
+      fileList: [],
+      callBack: props.callBack,
+      maxImgNumber: props.maxImgNumber,
+      url: props.url,
+      userToken: props.userToken
+    };
+  }
 
+  componentDidMount() {
+    this.setState((state, props) => {
+      if (props.imgs.length) {
+        state.fileList = props.imgs
+      }
+    });
+  };
+  
   handleCancel = () => this.setState({ previewVisible: false });
 
   handlePreview = async file => {
@@ -70,7 +48,10 @@ class PicturesWall extends React.Component {
     });
   };
 
-  handleChange = ({ fileList }) => this.setState({ fileList });
+  handleChange = ({ fileList }) => {
+    this.setState({ fileList });
+    this.state.callBack(fileList);
+  };
 
   render() {
     const { previewVisible, previewImage, fileList, previewTitle } = this.state;
@@ -83,13 +64,16 @@ class PicturesWall extends React.Component {
     return (
       <>
         <Upload
-          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+          action={this.state.url}
           listType="picture-card"
           fileList={fileList}
+          data={() => ({
+            userToken: this.state.userToken
+          })}
           onPreview={this.handlePreview}
           onChange={this.handleChange}
         >
-          {fileList.length >= 28 ? null : uploadButton}
+          {fileList.length >= this.state.maxImgNumber ? null : uploadButton}
         </Upload>
         <Modal
           visible={previewVisible}

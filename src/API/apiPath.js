@@ -1,5 +1,11 @@
+export const host = 'http://localhost/website_mgt_backend/api';
 export const loginApiPath = '/userlogin.php';
 export const getSiteInfo = '/getSiteInfo.php';
 export const upsertSiteInfo = '/upsertSiteInfo.php';
 export const getMenu = '/getMenu.php';
 export const upsertMenu = '/upsertMenu.php';
+export const upsertContent = '/upsertContent.php';
+export const insertImg = '/insertImg.php';
+export const getImgs = '/getImgs.php';
+export const deleteImg = '/deleteImg.php';
+export const getContentList = '/getContentList.php';

@@ -8,11 +8,10 @@ import Dic from '../../../Assets/Dic/dic.json';
 import { useCookies } from 'react-cookie';
 import { getMenu } from '../../../API/apiPath';
 import RequestUtils from '../../../Utils/RequestUtils';
-import Loading from '../../Loading/Loading';
 
 function NavSelector(props) {
     const { Option } = Select;
-    const {language, setSelectMenu, removeLoading, navErr} = {...props};
+    const { language, setSelectMenu, removeLoading, type, errCallBack } = {...props};
     const [selectValue, setSelectValue] = useState('');
 
     const [cookies] = useCookies(['user_token']);
@@ -22,9 +21,17 @@ function NavSelector(props) {
         let monted = true;
 
         if (monted) {
+            let typeVal = 1;
+            if (type === 'article') {
+                typeVal = 1;
+            } else if (type === 'news') {
+                typeVal = 2;
+            } else if (type === 'product') {
+                typeVal = 3;
+            }
             const params = {
                 url: getMenu,
-                param: { code: cookies.user_token.toString() }
+                param: { code: cookies.user_token.toString(), type: typeVal }
             }
             RequestUtils(params).then((res) => {
                 formatNav(res.result);
@@ -62,9 +69,31 @@ function NavSelector(props) {
         return res;
     };
 
+    // loop nav itself
+    const fetchNav = (key, treeList) => {
+        for (let index = 0; index < treeList.length; index++) {
+            const element = treeList[index];
+            if (element.key === key) {
+                if (element.children && element.children.length !== 0) {
+                    return true;
+                }
+            }
+            if (element.children && element.children.length) {
+                return fetchNav(key, element.children);
+            }
+        }
+    };
+
     const selectNavLevel = (val) => {
+        const hasChild = fetchNav(val, navList);
+        if (hasChild) {
+            errCallBack(true);
+        } else {
+            errCallBack(false);
+        }
         setSelectValue(val);
         setSelectMenu(val);
+        console.log('val: ', val, navList, hasChild);
     };
     const generteOption = (items, counter) =>{
         if (counter === 0){

@@ -107,7 +107,7 @@ function NavMgt(props) {
     const getMenuList = () => {
         const params = {
             url: getMenu,
-            param: { code: cookies.user_token.toString() }
+            param: { code: cookies.user_token.toString(), type: 'all' }
         }
         RequestUtils(params).then((res) => {
             formatNav(res.result);

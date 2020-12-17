@@ -1,109 +1,104 @@
-import React from 'react';
-import { Table, Space } from 'antd';
-import axios from 'axios';
+import React, {useEffect, useState} from 'react';
+import { Table, Space, Button } from 'antd';
+import RequestUtils from '../../Utils/RequestUtils';
+import Dic from '../../Assets/Dic/dic.json';
 
-const columns = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    sorter: true,
-    render: name => `${name.first} ${name.last}`,
-    width: '20%',
-  },
-  {
-    title: 'Gender',
-    dataIndex: 'gender',
-    filters: [
-      { text: 'Male', value: 'male' },
-      { text: 'Female', value: 'female' },
-    ],
-    width: '20%',
-  },
-  {
-    title: 'Email',
-    dataIndex: 'email',
-  },
-  // {
-  //   title: 'Action',
-  //   key: 'action',
-  //   render: (text, record) => (
-  //     <Space size="middle">
-  //       <a>Invite {record.name}</a>
-  //       <a>Delete</a>
-  //     </Space>
-  //   ),
-  // }
-];
-
-const getRandomuserParams = params => {
-  return {
-    results: params.pagination.pageSize,
-    page: params.pagination.current,
-    ...params,
-  };
-};
-
-class TableWithAjax extends React.Component {
-  state = {
-    data: [],
-    pagination: {
-      current: 1,
-      pageSize: 10,
-    },
-    loading: false,
-  };
-
-  componentDidMount() {
-    const { pagination } = this.state;
-    this.fetch({ pagination });
-  }
-
-  handleTableChange = (pagination, filters, sorter) => {
-    this.fetch({
-      sortField: sorter.field,
-      sortOrder: sorter.order,
-      pagination,
-      ...filters,
+function TableWithAjax(props) {
+    const [state, setState] = useState({
+        data: [],
+        pagination: {
+            current: 1,
+            pageSize: props.pageSize,
+        },
+        loading: false
     });
-  };
+    const [columns, setColumns] = useState([
+        {
+          title: Dic[props.language].article.table.title,
+          dataIndex: 'content_title',
+          // sorter: true,
+          // render: name => `${name.first} ${name.last}`,
+          // width: '25%',
+        }, {
+          title: Dic[props.language].article.table.belong,
+          dataIndex: 'nav_name',
+          // width: '15%',
+        }, {
+          title: Dic[props.language].article.table.createdDate,
+          dataIndex: 'created_date',
+          // width: '15%',
+        }, {
+          title: Dic[props.language].article.table.action,
+          key: 'action',
+          render: (record) => (
+            <Space size="middle">
+              <Button
+                onClick={() => {
+                  props.tableCallBack(record, 'update');
+                }}
+              >
+                {Dic[props.language].common.update}
+              </Button>
+              <Button
+                onClick={() => {
+                  props.tableCallBack(record, 'delete');
+                }}
+              >
+                {Dic[props.language].common.delete}
+              </Button>
+            </Space>
+          ),
+        }
+    ]);
 
-  fetch = (params = {}) => {
-    console.log('params: ', params);
-    this.setState({ loading: true });
-    axios.get('https://randomuser.me/api', {
-        data: getRandomuserParams(params)
-    }).then((response) => {
-        // handle success
-        console.log('success', response.data.results);
-        this.setState({
-            loading: false,
-            data: response.data.results,
-            pagination: {
-                ...params.pagination,
-                total: 200,
-                // 200 is mock data, you should read it from server
-                // total: data.totalCount,
-            },
+    useEffect(() => {
+      if (props.language !== 'zh') {
+        const arr = [ ...columns ];
+        arr[1] = {
+          title: Dic[props.language].article.table.belong,
+          dataIndex: 'nav_ename',
+        }
+        setColumns([ ...arr ]);
+      }
+      
+      fetch(state);
+    }, [props.language]);
+
+    const handleTableChange = (pagination, filters, sorter) => {
+        fetch({
+            sortField: sorter.field,
+            sortOrder: sorter.order,
+            pagination,
+            ...filters,
         });
-    }).catch((error) => {
-        // handle error
-        console.log(error);
-    });
-  };
+    };
 
-  render() {
-    const { data, pagination, loading } = this.state;
+    const fetch = (params = {}) => {
+        setState({ loading: true });
+        RequestUtils(props.postParams).then((res) => {
+            setState({
+                loading: false,
+                data: res.result,
+                pagination: {
+                    ...params.pagination,
+                    total: res.result.length
+                },
+            });
+        }).catch((e) => {
+            console.log(e);
+        });
+    };
+
     return (
-      <Table
-        columns={columns}
-        rowKey={record => record.login.uuid}
-        dataSource={data}
-        pagination={pagination}
-        loading={loading}
-        onChange={this.handleTableChange}
-      />
+        <Table
+          columns={columns}
+          rowKey={record => record.id}
+          dataSource={state.data}
+          pagination={state.pagination}
+          loading={state.loading}
+          onChange={handleTableChange}
+        />
     );
-  }
 }
 
 export default TableWithAjax;

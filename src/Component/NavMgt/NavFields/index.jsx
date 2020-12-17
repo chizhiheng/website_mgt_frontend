@@ -287,7 +287,7 @@ function NavFields(props) {
                 }
                 <Row>
                     <Col span={24}>
-                        <Radio.Group defaultValue={1} onChange={(e) => {updateNavDetail(e, 'navType');}} value={navItemDetails.type}>
+                        <Radio.Group defaultValue={1} onChange={(e) => {updateNavDetail(e, 'navType');}} value={Number(navItemDetails.type)}>
                             <Radio value={1}>{ Dic[language].NavMgt.addNav.type.article }</Radio>
                             <Radio value={2}>{ Dic[language].NavMgt.addNav.type.news }</Radio>
                             <Radio value={3}>{ Dic[language].NavMgt.addNav.type.product }</Radio>

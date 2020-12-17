@@ -11,6 +11,7 @@
             "update": "更新",
             "upload": "上传",
             "delete": "删除",
+            "view": "预览",
             "imgTypeErrorJPG": "不是jpg格式文件",
             "imgSizeError": "图片大小应小于 2M",
             "deleteConfirmTitel": "你真的想删除吗？",
@@ -115,7 +116,13 @@
             "articleKeyWords": "此文章页面关键字",
             "articleDesc": "此文章页面描述",
             "articleKeyWordsTips": "在搜索中显示此文章的关键字",
-            "articleDescTips": "在搜索中显示此文章的描述文字"
+            "articleDescTips": "在搜索中显示此文章的描述文字",
+            "table": {
+                "title": "标题",
+                "belong": "归属栏目",
+                "createdDate": "创建日期",
+                "action": "操作"
+            }
         },
         "news": {
             "addNews": "添加新闻",
@@ -135,7 +142,8 @@
             "productKeyWords": "此产品页面关键字",
             "productDesc": "此产品页面描述",
             "productKeyWordsTips": "在搜索中显示此产品的关键字",
-            "productDescTips": "在搜索中显示此产品的描述文字"
+            "productDescTips": "在搜索中显示此产品的描述文字",
+            "openImg": "从图库中选择图片 / 上传新图片"
         },
         "template": {
             "apply": "应用此模版",
@@ -175,6 +183,7 @@
             "update": "Update",
             "upload": "Upload",
             "delete": "Delete",
+            "view": "预览",
             "imgTypeErrorJPG": "is not a jpg file",
             "imgSizeError": "Image size should less than 2M",
             "deleteConfirmTitel": "Do you REALLY WANT to DELETE?",
@@ -279,7 +288,13 @@
             "articleKeyWords": "Article page keywords",
             "articleDesc": "Article page descriptions",
             "articleKeyWordsTips": "Display the keywords of this article in the search result",
-            "articleDescTips": "Display the description of this article in the search result."
+            "articleDescTips": "Display the description of this article in the search result.",
+            "table": {
+                "title": "Title",
+                "belong": "Belong to",
+                "createdDate": "Date created",
+                "action": "Action"
+            }
         },
         "news": {
             "addNews": "Add news",
@@ -299,7 +314,8 @@
             "productKeyWords": "Product page keywords",
             "productDesc": "Product page descriptions",
             "productKeyWordsTips": "Display the keywords of this product in the search result",
-            "productDescTips": "Display the description of this product in the search result."
+            "productDescTips": "Display the description of this product in the search result.",
+            "openImg": "Select image from gallery / Upload new images"
         },
         "template": {
             "apply": "Apply this",

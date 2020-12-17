@@ -1,22 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import {
-    Row, Col, Input, DatePicker, Space, Radio, Divider, Button, Tooltip
+    Row, Col, Input, DatePicker, Space, Radio, Divider, Button, Tooltip, Modal, Card
 } from 'antd';
 import RichEditor from '../RichEditor/Editor';
 import Dic from '../../Assets/Dic/dic.json';
 import {
     PlusOutlined,
-    InfoCircleOutlined
+    InfoCircleOutlined,
+    PicCenterOutlined,
+    BorderOutlined,
+    CheckSquareOutlined,
+    DeleteOutlined
 } from '@ant-design/icons';
 import PicturesWall from './ImgContent';
 import NavSelector from './NavSelector';
 import Loading from '../Loading/Loading';
+import SelectedImgList from './SelectedImgList';
 import './content.scss';
 
 function Content(props) {
-    const { language, withImgs, type } = {...props};
+    const { language, withImgs, type, callBack, imgs, userToken, url, imgInLibrary, getImageFromLib, deleteImageFromLib, imgHost } = {...props};
     const [loading, setLoading] = useState(true);
+    const [showAddImgLoading, setShowAddImgLoading] = useState(false);
     const { RangePicker } = DatePicker;
+    const { Meta } = Card;
     const [datePickerRadio, setDatePickerRadio] = useState(1);
     const [markTopRadio, setMarkTopRadio] = useState(1);
     const [disableDatePicker, setDisableDatePicker] = useState(true);
@@ -30,9 +37,10 @@ function Content(props) {
             value: []
         },
         top: false,
-        content: ''
+        content: '',
+        imgIds: []
     });
-
+    
     const[navErr, setNevErr] = useState(false);
     const[titleErr, setTitleErr] = useState(false);
     const[keyWordErr, setKeyWordErr] = useState(false);
@@ -65,6 +73,28 @@ function Content(props) {
         descTip = 'productDescTips';
     }
 
+    const [showImgOverlay, setShowImgOverlay] = useState(false);
+    const [imgInLibraryList, setImgInLibraryList] = useState([]);
+    const [selectedImages, setSelectedImages] = useState([]);
+    const [selectedImageIds, setSelectedImageIds] = useState([]);
+
+    useEffect(() => {
+        if (withImgs) {
+            setImgInLibraryList([...imgInLibrary]);
+            if (selectedImages.length) {
+                const arr = imgInLibraryList;
+                arr.forEach((item) => {
+                    selectedImages.forEach((el) => {
+                        if (item.id === el.id) {
+                            item.selected = true;
+                        }
+                    });
+                });
+                setImgInLibraryList([...arr]);
+            }
+        }
+    }, [imgInLibrary]);
+
     const makeTop = (val) => {
         let flag = false;
         if (val.target.value === 1){
@@ -81,7 +111,7 @@ function Content(props) {
             res.content = val; 
             return res;
         });
-        setNevErr(false);
+        setContentErr(false);
     };
 
     const setSelectMenu = (val) => {
@@ -89,7 +119,7 @@ function Content(props) {
             res.nav = val; 
             return res;
          });
-         setNevErr(false);
+        //  setNevErr(false);
     };
     const removeLoading = (val) => {
         setLoading(val);
@@ -115,7 +145,6 @@ function Content(props) {
     };
 
     const submit = () => {
-        console.log('submit, values is: ', returnValues, returnValues.title);
         removeErr();
         if (returnValues.title === '') {
             setTitleErr(true);
@@ -141,10 +170,14 @@ function Content(props) {
             setContentErr(true);
             return;
         }
+        if (!navErr){
+            callBack(returnValues);
+        }
+        
     };
 
     const removeErr = () => {
-        setNevErr(false);
+        // setNevErr(false);
         setTitleErr(false);
         setKeyWordErr(false);
         setDescriptionErr(false);
@@ -168,6 +201,60 @@ function Content(props) {
         
     };
 
+    const errCallBack = (flag) => {
+        if (flag) {
+            setNevErr(true);
+        } else {
+            setNevErr(false);
+        }
+    };
+
+    const getImgList = async (list) => {
+        // setShowAddImgLoading(true);
+        await getImageFromLib();
+        // setShowAddImgLoading(false);
+    };
+
+    const removeImg = (imgId) => {
+        deleteImageFromLib(imgId);
+    };
+
+    const selectImg = (id, item) => {
+        const tmp = {...item};
+        tmp.selected = !tmp.selected;
+        setImgInLibraryList((res) => {
+            res[id] = {...tmp};
+            return res;
+        });
+        setImgInLibraryList([...imgInLibraryList]);
+        
+        const imgIds = [];
+        const arr2 = [];
+
+        imgInLibraryList.forEach((item) => {
+            if (item.selected) {
+                const element = {
+                    uid: item.id,
+                    name: item.img_name,
+                    status: 'done',
+                    url: imgHost + item.img_name,
+                };
+                arr2.push(element);
+                imgIds.push(item.id);
+            }
+        });
+        setSelectedImages([...arr2]);
+        setReturnValues((res) => {
+            res.imgs = imgIds;
+            return res;
+        });
+        setSelectedImageIds([...imgIds]);
+    };
+
+    const closeSelectOverlay = () => {
+        setShowImgOverlay(false);
+    };
+
     return (
         <>
             { loading ? <Loading text={Dic[language].common.loading}/> : null}
@@ -188,6 +275,8 @@ function Content(props) {
                         language={language}
                         setSelectMenu={setSelectMenu}
                         removeLoading={removeLoading}
+                        type={type}
+                        errCallBack={errCallBack}
                     />
                 </Col>
             </Row>
@@ -261,8 +350,84 @@ function Content(props) {
                 withImgs
                 ?
                     <>
-                        <PicturesWall />
-                        <Divider />
+                        <Row>
+                            <Col span={24}>
+                                {/* current pic list */}
+                                <SelectedImgList
+                                    imgs={selectedImages}
+                                    language={language}
+                                />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col span={24}>
+                                <Button
+                                    className="float-right margin-right-2rem"
+                                    type="dashed" 
+                                    icon={<PicCenterOutlined />}
+                                    onClick={ () =>  {
+                                        getImgList();
+                                        setShowImgOverlay(true);
+                                    }}
+                                >
+                                    { Dic[language].product.openImg }
+                                </Button>
+                                <br />
+                                <Divider className="clear-both" />
+                            </Col>
+                        </Row>
+                        {/* add image overlay start */}
+                        <Modal
+                            visible={showImgOverlay}
+                            title={ Dic[language].product.openImg }
+                            footer={
+                                // add new image
+                                <PicturesWall
+                                    imgs={0}
+                                    callBack={(list) => {
+                                        getImgList();
+                                    }}
+                                    url={url}
+                                    userToken={userToken}
+                                    maxImgNumber={500}
+                                />
+                            }
+                            className="img-selector-overlay"
+                            width={window.screen.availWidth}
+                            onCancel={()=> {
+                                closeSelectOverlay();
+                            }}
+                        >
+                            {
+                                showAddImgLoading ? <Loading text={Dic[language].common.loading}/> : null
+                            }
+                            {
+                                imgInLibraryList.map((item, id) => (
+                                    <Card
+                                        key={id}
+                                        hoverable
+                                        style={{ width: 240 }}
+                                        cover={<img alt="example" src={item.img_path} />}
+                                        actions={[
+                                            <div
+                                                onClick={() => {
+                                                    selectImg(id, item);
+                                                }}
+                                            >
+                                                { item.selected || selectedImageIds.indexOf(item.id) > -1 ? <CheckSquareOutlined key="selected" /> : <BorderOutlined key="unselect" /> }
+                                            </div>,
+                                            <DeleteOutlined
+                                                key="edit"
+                                                onClick={() => removeImg(item.id)}
+                                            />
+                                        ]}
+                                    >
+                                        <Meta title={item.img_name} description={item.created_date} />
+                                    </Card>
+                                ))
+                            }
+                        </Modal>
+                        {/* add image overlay stop */}
                     </>
                 :
                 null
@@ -270,7 +435,7 @@ function Content(props) {
             <Row>
                 <Col span={24} className={ contentErr ? 'show-red-border' : '' }>
                     <RichEditor
-                        placeholder={Dic[language].article.description}
+                        placeholder={Dic[language][type].description}
                         stateCallback={updateDescription}
                     />
                 </Col>
@@ -280,7 +445,9 @@ function Content(props) {
                     <Button
                         type="primary" 
                         icon={<PlusOutlined />}
-                        onClick={submit}
+                        onClick={() => {
+                            submit();
+                        }}
                     >
                         { Dic[language].common.add }
                     </Button>

@@ -1,7 +1,7 @@
 import axios from 'axios';
+import { host } from '../API/apiPath';
 
 export default async function RequestUtils(props) {
-    const host = 'http://localhost/website_mgt_backend/api';
     const headers = {
         'Content-Type': 'application/json; charset=UTF-8'
     };
