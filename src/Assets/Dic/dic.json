@@ -68,7 +68,7 @@
             "addNav": {
                 "title": "添加新导航",
                 "addNew": "添加",
-                "cnName": "中文名称",
+                "cnName": "导航名称, 以符号'/'开始和结束",
                 "cnNameTip": "在中文版本中显示的名字",
                 "cnNameTipErr": "中文版本导航名为空或重复",
                 "enName": "英文名称",
@@ -241,7 +241,7 @@
             "addNav": {
                 "title": "Add new navigation",
                 "addNew": "Add",
-                "cnName": "Chinese nav item name",
+                "cnName": "Nav item name, start and end with '/'",
                 "cnNameTip": "The nav item name for Chinese version",
                 "cnNameTipErr": "The empty or duplicated nav item name for Chinese version",
                 "enName": "English nav item name",

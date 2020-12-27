@@ -31,7 +31,7 @@ function NavFields(props) {
     });
     const [navLevel, setNavLevel] = useState(-1);
     const [titleIconColor, setTitleIconColor] = useState('rgba(0,0,0,.45)');
-    const [eTitleIconColor, setETitleIconColor] = useState('rgba(0,0,0,.45)');
+    // const [eTitleIconColor, setETitleIconColor] = useState('rgba(0,0,0,.45)');
     const [pathIconColor, setPathIconColor] = useState('rgba(0,0,0,.45)');
     const [disabledAddBtn, setDisabledAddBtn] = useState(false);
     const [addItem, setAddItem] = useState(true);
@@ -43,7 +43,7 @@ function NavFields(props) {
             setNavItemDetils({...updateVal});
         }
         setTitleIconColor('rgba(0,0,0,.45)');
-        setETitleIconColor('rgba(0,0,0,.45)');
+        // setETitleIconColor('rgba(0,0,0,.45)');
         setPathIconColor('rgba(0,0,0,.45)');
         setDisabledAddBtn(false);
     }, [defaultValue, isUpdate, updateVal]);
@@ -54,10 +54,10 @@ function NavFields(props) {
             setTitleIconColor('rgba(255,0,0,1)');
             return;
         }
-        if (navItemDetails.etitle === '') {
-            setETitleIconColor('rgba(255,0,0,1)');
-            return;
-        }
+        // if (navItemDetails.etitle === '') {
+        //     setETitleIconColor('rgba(255,0,0,1)');
+        //     return;
+        // }
         if (navItemDetails.key === '') {
             setPathIconColor('rgba(255,0,0,1)');
             return;
@@ -67,7 +67,7 @@ function NavFields(props) {
             return;
         }
         setTitleIconColor('rgba(0,0,0,.45)');
-        setETitleIconColor('rgba(0,0,0,.45)');
+        // setETitleIconColor('rgba(0,0,0,.45)');
         setPathIconColor('rgba(0,0,0,.45)');
 
         if (isUpdate) {
@@ -92,10 +92,10 @@ function NavFields(props) {
                     setTitleIconColor('rgba(255,0,0,1)');
                     add = false;
                 }
-                if (item.etitle === navItemDetails.etitle){
-                    setETitleIconColor('rgba(255,0,0,1)');
-                    add = false;
-                }
+                // if (item.etitle === navItemDetails.etitle){
+                //     setETitleIconColor('rgba(255,0,0,1)');
+                //     add = false;
+                // }
                 if (item.key === navItemDetails.key){
                     setPathIconColor('rgba(255,0,0,1)');
                     add = false;
@@ -179,7 +179,7 @@ function NavFields(props) {
     const updateNavDetail = (e, type) => {
         let flag = null;
         setTitleIconColor('rgba(0,0,0,.45)');
-        setETitleIconColor('rgba(0,0,0,.45)');
+        // setETitleIconColor('rgba(0,0,0,.45)');
         setPathIconColor('rgba(0,0,0,.45)');
 
         const navArr = cloneDeep(navList);
@@ -197,18 +197,18 @@ function NavFields(props) {
                 setDisabledAddBtn(false);
                 setAddItem(true);
             }
-        } else if (type === 'enName') {
-            setNavItemDetils({...navItemDetails, etitle: e.target.value});
-            flag = checkDuplicateValue(navArr, e.target.value, 'etitle');
-            if (flag || e.target.value === '') {
-                setETitleIconColor('rgba(255,0,0,1)');
-                setDisabledAddBtn(true);
-                setAddItem(false);
-            } else {
-                setETitleIconColor('rgba(0,0,0,.45)');
-                setDisabledAddBtn(false);
-                setAddItem(true);
-            }
+        // } else if (type === 'enName') {
+        //     setNavItemDetils({...navItemDetails, etitle: e.target.value});
+        //     flag = checkDuplicateValue(navArr, e.target.value, 'etitle');
+        //     if (flag || e.target.value === '') {
+        //         setETitleIconColor('rgba(255,0,0,1)');
+        //         setDisabledAddBtn(true);
+        //         setAddItem(false);
+        //     } else {
+        //         setETitleIconColor('rgba(0,0,0,.45)');
+        //         setDisabledAddBtn(false);
+        //         setAddItem(true);
+        //     }
         } else if (type === 'path') {
             setNavItemDetils({...navItemDetails, key: e.target.value});
             flag = checkDuplicateValue(navArr, e.target.value, 'key');
@@ -336,7 +336,7 @@ function NavFields(props) {
                         />
                     </Col>
                 </Row>
-                <Row>
+                {/* <Row>
                     <Col span={24}>
                         <Input
                             size="large"
@@ -354,7 +354,7 @@ function NavFields(props) {
                             }}
                         />
                     </Col>
-                </Row>
+                </Row> */}
                 <Row>
                     <Col span={24}>
                         {
