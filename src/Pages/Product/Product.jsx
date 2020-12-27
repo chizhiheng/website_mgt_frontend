@@ -7,7 +7,7 @@ import Content from '../../Component/Content/Content';
 import TableWithAjax from '../../Component/Content/TableContent';
 
 import { useCookies } from 'react-cookie';
-import { host, upsertContent, insertImg, getImgs, deleteImg, getContentList } from '../../API/apiPath';
+import { host, insertContent, insertImg, getImgs, deleteImg, getContentList, updateContent, deleteContent, getContentDetails } from '../../API/apiPath';
 import RequestUtils from '../../Utils/RequestUtils';
 import Loading from '../../Component/Loading/Loading';
 import './Product.scss';
@@ -26,23 +26,39 @@ function Product(props) {
     const [overLayType, setOverLayType] = useState('');
     const [modifyItem, setModifyItem] = useState({});
     const [showEdit, setShowEdit] = useState(false);
+    const [reloadTable, setReloadTable] = useState(false);
+    const [contentDefaultValue, setContentDefaultValue] = useState({});
+    const [disabledBtn, setDisabledBtn] = useState(true);
 
     const callBack = (val) => {
-        setLoading(true);
-        const params = {
-            url: upsertContent,
-            param: {
-                code: cookies.user_token.toString(),
-                type: 3,
-                content: val
+        if (val.flag === 'insert') {
+            setLoading(true);
+            if (!val.imgs) {
+                val.imgs = [];
             }
+            const params = {
+                url: insertContent,
+                param: {
+                    code: cookies.user_token.toString(),
+                    type: 3,
+                    content: val
+                }
+            }
+            RequestUtils(params).then((res) => {
+                setLoading(false);
+            }).catch((e) => {
+                setLoading(false);
+                console.log(e);
+            });
+        } else if (val.flag === 'update') {
+            if (window.document.querySelectorAll('.product-edit-popup .red-border').length > 0){
+                setDisabledBtn(true);
+            } else {
+                setDisabledBtn(false);
+            }
+            val.id = modifyItem.id;
+            setModifyItem({...val});
         }
-        RequestUtils(params).then((res) => {
-            setLoading(false);
-        }).catch((e) => {
-            setLoading(false);
-            console.log(e);
-        });
     };
 
     const getImageFromLib = () => {
@@ -144,6 +160,23 @@ function Product(props) {
     const tableCallBack = (record, flag) => {
         setModifyItem({ ...record });
         if (flag === 'update') {
+            setLoading(true);
+            const params = {
+                url: getContentDetails,
+                param: {
+                    code: cookies.user_token.toString(),
+                    content_id: record.id,
+                    type: 3
+                }
+            };
+            RequestUtils(params).then((res) => {
+                setLoading(false);
+                setContentDefaultValue({...res.result[0]});
+                setOverLayType('update');
+            }).catch((e) => {
+                setLoading(false);
+                console.log(e);
+            });
             setOverLayType('update');
         } else if (flag === 'delete') {
             setOverLayType('delete');
@@ -152,13 +185,42 @@ function Product(props) {
     };
     
     const handleOk = () => {
-        setShowEdit(false);
-        console.log(overLayType);
-        console.log(modifyItem);
+        setLoading(true);
+        let params = {
+            url: '',
+            param: {
+                code: cookies.user_token.toString(),
+                contentId: modifyItem.id,
+                type: 3
+            }
+        }
+        if (overLayType === 'delete') {
+            params.url = deleteContent;
+        }
+        if (overLayType === 'update') {
+            params.param.details = {...modifyItem};
+            params.url = updateContent;
+        }
+        RequestUtils(params).then((res) => {
+            setLoading(false);
+            setShowEdit(false);
+            setReloadTable(!reloadTable);
+        }).catch((e) => {
+            setLoading(false);
+            console.log(e);
+        });
     };
 
     const handleCancel = () => {
         setShowEdit(false);
+        setContentDefaultValue({});
+        setImgInLibrary([]);
+    };
+
+    const clickTab = (e) => {
+        if (e === '2') {
+            setReloadTable(!reloadTable);
+        }
     };
 
     return (
@@ -166,7 +228,7 @@ function Product(props) {
             { loading ? <Loading text={Dic[language].common.loading}/> : null}
             <Row className="height-100-per">
                 <Col span={24} className="border-1px-light-gray">
-                    <Tabs defaultActiveKey="1" type="card" size="small">
+                    <Tabs defaultActiveKey="1" type="card" size="small" onTabClick={clickTab}>
                         <TabPane tab={ Dic[language].product.addProduct } key="1">
                             <Content
                                 language={language}
@@ -196,6 +258,7 @@ function Product(props) {
                                 language={language}
                                 pageSize={8}
                                 tableCallBack={tableCallBack}
+                                reload={reloadTable}
                             />
                         </TabPane>
                     </Tabs>
@@ -206,11 +269,31 @@ function Product(props) {
                 visible={showEdit}
                 onOk={() => handleOk(overLayType)}
                 onCancel={handleCancel}
+                width={1000}
+                className="product-edit-popup"
+                okButtonProps={{
+                    disabled: disabledBtn
+                }}
             >
                 {
                     overLayType === 'update'
                     ?
-                        <p>is update</p>
+                        <Content
+                            language={language}
+                            withImgs
+                            type="product"
+                            callBack={(val) => {
+                                callBack(val);
+                            }}
+                            url={host + insertImg}
+                            userToken={cookies.user_token.toString()}
+                            imgs={selectedImgs}
+                            imgInLibrary={imgInLibrary}
+                            getImageFromLib={getImageFromLib}
+                            deleteImageFromLib={deleteImageFromLib}
+                            imgHost={imgHost}
+                            defaultVal={contentDefaultValue}
+                        />
                     :
                         null
                 }

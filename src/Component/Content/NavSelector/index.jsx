@@ -11,7 +11,7 @@ import RequestUtils from '../../../Utils/RequestUtils';
 
 function NavSelector(props) {
     const { Option } = Select;
-    const { language, setSelectMenu, removeLoading, type, errCallBack } = {...props};
+    const { language, setSelectMenu, removeLoading, type, errCallBack, value } = {...props};
     const [selectValue, setSelectValue] = useState('');
 
     const [cookies] = useCookies(['user_token']);
@@ -46,6 +46,10 @@ function NavSelector(props) {
             monted = false;
         };
     }, []);
+
+    useEffect(()=> {
+        selectNavLevel(value);
+    }, [value]);
 
     const formatNav = (result) => {
         let parentArr = [];
@@ -93,7 +97,6 @@ function NavSelector(props) {
         }
         setSelectValue(val);
         setSelectMenu(val);
-        console.log('val: ', val, navList, hasChild);
     };
     const generteOption = (items, counter) =>{
         if (counter === 0){
@@ -126,6 +129,7 @@ function NavSelector(props) {
             onChange={selectNavLevel}
             className="nav-selector"
             placeholder={Dic[language].common.selectOne}
+            value={selectValue}
         >
             {
                 generteOption(navList, 0)

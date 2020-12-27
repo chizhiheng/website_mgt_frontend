@@ -1,0 +1,27 @@
+.site-news{
+
+}
+.news-edit-popup{
+    height: 85%;
+    .ant-modal-content{
+        height: 100%;
+        .ant-modal-body{
+            height: 90%;
+            overflow-y: scroll;
+            .ant-row{
+                height: 48px;
+                .nav-selector{
+                    width: 100%;
+                }
+            }
+        }
+        .ant-modal-footer{
+            margin-top: 1rem;
+        }
+    }
+    .red-border{
+        div.rdw-editor-wrapper .rdw-editor-main, div.nav-selector .ant-select-selector, div.ant-picker-range{
+            border-color: red;
+        }
+    }
+}

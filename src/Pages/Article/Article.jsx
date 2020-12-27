@@ -7,12 +7,13 @@ import Content from '../../Component/Content/Content';
 import TableWithAjax from '../../Component/Content/TableContent';
 
 import { useCookies } from 'react-cookie';
-import { upsertContent, getContentList } from '../../API/apiPath';
+import { insertContent, getContentList, updateContent, deleteContent, getContentDetails } from '../../API/apiPath';
 import RequestUtils from '../../Utils/RequestUtils';
 import Loading from '../../Component/Loading/Loading';
 import {
     ExclamationCircleOutlined
 } from '@ant-design/icons';
+import './Article.scss';
 
 function Article(props) {
     const { language } = {...props};
@@ -22,29 +23,58 @@ function Article(props) {
     const [overLayType, setOverLayType] = useState('');
     const [modifyItem, setModifyItem] = useState({});
     const [showEdit, setShowEdit] = useState(false);
+    const [reloadTable, setReloadTable] = useState(false);
+    const [contentDefaultValue, setContentDefaultValue] = useState({});
+    const [disabledBtn, setDisabledBtn] = useState(true);
 
     const callBack = (val) => {
-        setLoading(true);
-        const params = {
-            url: upsertContent,
-            param: {
-                code: cookies.user_token.toString(),
-                type: 1,
-                content: val
+        if (val.flag === 'insert') {
+            setLoading(true);
+            const params = {
+                url: insertContent,
+                param: {
+                    code: cookies.user_token.toString(),
+                    type: 1,
+                    content: val
+                }
+            };
+            RequestUtils(params).then((res) => {
+                setLoading(false);
+            }).catch((e) => {
+                setLoading(false);
+                console.log(e);
+            });
+        } else if (val.flag === 'update') {
+            if (window.document.querySelectorAll('.article-edit-popup .red-border').length > 0){
+                setDisabledBtn(true);
+            } else {
+                setDisabledBtn(false);
             }
+            val.id = modifyItem.id;
+            setModifyItem({...val});
         }
-        RequestUtils(params).then((res) => {
-            setLoading(false);
-        }).catch((e) => {
-            setLoading(false);
-            console.log(e);
-        });
     };
 
     const tableCallBack = (record, flag) => {
         setModifyItem({ ...record });
         if (flag === 'update') {
-            setOverLayType('update');
+            setLoading(true);
+            const params = {
+                url: getContentDetails,
+                param: {
+                    code: cookies.user_token.toString(),
+                    content_id: record.id,
+                    type: 1
+                }
+            };
+            RequestUtils(params).then((res) => {
+                setLoading(false);
+                setContentDefaultValue({...res.result[0]});
+                setOverLayType('update');
+            }).catch((e) => {
+                setLoading(false);
+                console.log(e);
+            });
         } else if (flag === 'delete') {
             setOverLayType('delete');
         }
@@ -52,13 +82,40 @@ function Article(props) {
     };
 
     const handleOk = () => {
-        setShowEdit(false);
-        console.log(overLayType);
-        console.log(modifyItem);
+        setLoading(true);
+        let params = {
+            url: '',
+            param: {
+                code: cookies.user_token.toString(),
+                contentId: modifyItem.id,
+                type: 1
+            }
+        }
+        if (overLayType === 'delete') {
+            params.url = deleteContent;
+        }
+        if (overLayType === 'update') {
+            params.param.details = {...modifyItem};
+            params.url = updateContent;
+        }
+        RequestUtils(params).then((res) => {
+            setLoading(false);
+            setShowEdit(false);
+            setReloadTable(!reloadTable);
+        }).catch((e) => {
+            setLoading(false);
+            console.log(e);
+        });
     };
 
     const handleCancel = () => {
         setShowEdit(false);
+    };
+
+    const clickTab = (e) => {
+        if (e === '2') {
+            setReloadTable(!reloadTable);
+        }
     };
 
     return (
@@ -66,14 +123,14 @@ function Article(props) {
             { loading ? <Loading text={Dic[language].common.loading}/> : null}
             <Row className="height-100-per">
                 <Col span={24} className="border-1px-light-gray">
-                    <Tabs defaultActiveKey="1" type="card" size="small">
+                    <Tabs defaultActiveKey="1" type="card" size="small" onTabClick={clickTab}>
                         <TabPane tab={ Dic[language].article.addArticle } key="1">
                             <Content
                                 language={language}
                                 withImgs={false}
                                 type="article"
-                                callBack={(val) => {
-                                    callBack(val);
+                                callBack={(val, flag) => {
+                                    callBack(val, flag);
                                 }}
                             />
                         </TabPane>
@@ -89,6 +146,7 @@ function Article(props) {
                                 language={language}
                                 pageSize={8}
                                 tableCallBack={tableCallBack}
+                                reload={reloadTable}
                             />
                         </TabPane>
                     </Tabs>
@@ -99,11 +157,24 @@ function Article(props) {
                 visible={showEdit}
                 onOk={() => handleOk(overLayType)}
                 onCancel={handleCancel}
+                width={1000}
+                className="article-edit-popup"
+                okButtonProps={{
+                    disabled: disabledBtn
+                }}
             >
                 {
                     overLayType === 'update'
                     ?
-                        <p>is update</p>
+                        <Content
+                            language={language}
+                            withImgs={false}
+                            type="article"
+                            callBack={(val, flag) => {
+                                callBack(val);
+                            }}
+                            defaultVal={contentDefaultValue}
+                        />
                     :
                         null
                 }

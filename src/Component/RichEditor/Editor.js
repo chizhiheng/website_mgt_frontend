@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
 import { EditorState, convertToRaw, ContentState, convertFromHTML } from 'draft-js';
@@ -7,18 +7,17 @@ import './Editor.scss';
 
 export default function RichEditor(props) {
     const [editorContent, setEditorContent] = useState(EditorState.createEmpty());
-    const {placeholder, stateCallback, content} = props;
-    
-    // if (content != ''){
-    //     setEditorContent(convertFromHTML(content));
-    // }
-    // const templateContent = `<div></div>`;
-    // const blocksFromHtml = convertFromHTML(templateContent);
-    // const editorStateContentInitial = ContentState.createFromBlockArray(
-    //     blocksFromHtml.contentBlocks,
-    //     blocksFromHtml.entityMap,
-    //   );
+    const {placeholder, stateCallback, value} = props;
 
+    useEffect(()=> {
+      if (value) {
+        setEditorContent(EditorState.createWithContent(
+          ContentState.createFromBlockArray(
+            convertFromHTML(value)
+          )
+        ));
+      }
+    }, [value]);
     function uploadImageCallBack(file) {
         return new Promise((resolve, reject) => {
           const reader = new FileReader();
@@ -88,16 +87,7 @@ export default function RichEditor(props) {
     function onEditorStateChange(editorState) {
         const richEditorContent = draftToHtml(convertToRaw(editorState.getCurrentContent()));
         stateCallback(richEditorContent);
-    //     console.log(editorState);
-    //     const oldState = editorContent; // 变更前的editorState
-    //     const newState = editorState; // 变更后的editorState
-    
-    //     const oldText = oldState.getCurrentContent().getPlainText();
-    //     const newText = newState.getCurrentContent().getPlainText();
-    
-    //     // if (newText !== oldText) {   // 加判断后居中 列表 不生效，所以注释
-          setEditorContent(editorState);
-    //    //  }
+        setEditorContent(editorState);
       }
 
     return (

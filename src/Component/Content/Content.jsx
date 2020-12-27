@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import moment from 'moment';
 import {
     Row, Col, Input, DatePicker, Space, Radio, Divider, Button, Tooltip, Modal, Card
 } from 'antd';
@@ -16,10 +17,23 @@ import PicturesWall from './ImgContent';
 import NavSelector from './NavSelector';
 import Loading from '../Loading/Loading';
 import SelectedImgList from './SelectedImgList';
-import './content.scss';
+import './Content.scss';
 
 function Content(props) {
-    const { language, withImgs, type, callBack, imgs, userToken, url, imgInLibrary, getImageFromLib, deleteImageFromLib, imgHost } = {...props};
+    const {
+        language,
+        withImgs,
+        type,
+        callBack,
+        imgs,
+        userToken,
+        url,
+        imgInLibrary,
+        getImageFromLib,
+        deleteImageFromLib,
+        imgHost,
+        defaultVal,
+    } = {...props};
     const [loading, setLoading] = useState(true);
     const [showAddImgLoading, setShowAddImgLoading] = useState(false);
     const { RangePicker } = DatePicker;
@@ -77,6 +91,12 @@ function Content(props) {
     const [imgInLibraryList, setImgInLibraryList] = useState([]);
     const [selectedImages, setSelectedImages] = useState([]);
     const [selectedImageIds, setSelectedImageIds] = useState([]);
+    const [title, setTitle] = useState('');
+    const [keywords, setKeywords] = useState('');
+    const [description, setDescription] = useState('');
+    const [dateRange, setDateRange] = useState([]);
+    const [editorContent, setEditorContent] = useState('<p></p>');
+    const [navValue, setNavValue] = useState(null);
 
     useEffect(() => {
         if (withImgs) {
@@ -93,18 +113,95 @@ function Content(props) {
                 setImgInLibraryList([...arr]);
             }
         }
-    }, [imgInLibrary]);
+        
+        if (defaultVal) {
+            setReturnValues((res) => {
+                res.title = defaultVal.title;
+                res.keyword = defaultVal.keywords;
+                res.description = defaultVal.description;
+                res.nav = defaultVal.key;
+                res.expireDate = {
+                    status: true,
+                    value: [defaultVal.start_date, defaultVal.end_date]
+                };
+                res.imgs = [];
+                res.top = defaultVal.is_top === '1' ? true : false;
+                res.content = defaultVal.content;
+                return res;
+            });
+            if (defaultVal.title !== '') {
+                setTitle(defaultVal.title);
+            }
+            if (defaultVal.keywords !== '') {
+                setKeywords(defaultVal.keywords);
+            }
+            if (defaultVal.description !== '') {
+                setDescription(defaultVal.description);
+            }
+            if (defaultVal.start_date && defaultVal.end_date){
+                enableDatePicker(0);
+                setDateRange([moment(defaultVal.start_date, 'YYYY-MM-DD'), moment(defaultVal.end_date, 'YYYY-MM-DD')]);
+            }
+            if (defaultVal.is_top === '1') {
+                makeTop(0);
+            }
+            setNavValue(defaultVal.key)
+            if (defaultVal.content !== '') {
+                updateDescription(defaultVal.content);
+                setEditorContent(defaultVal.content)
+            }
+            if (defaultVal.imgs && defaultVal.imgs.length > 0) {
+                const arr = [];
+                let imgs = [];
+                defaultVal.imgs.forEach((item)=>{
+                    imgs.push(item.id);
+                });
+                setReturnValues((res) => {
+                    res.imgs = imgs;
+                    return res;
+                });
+                defaultVal.imgs.forEach((item) => {
+                    const element = {
+                        uid: item.id,
+                        name: item.img_name,
+                        status: 'done',
+                        url: imgHost + item.img_name,
+                    };
+                    arr.push(element);
+                });
+                const imgList = [...imgInLibraryList];
+                arr.forEach((item)=>{
+                    imgList.forEach((el) => {
+                        if (item.uid === el.id) {
+                            el.selected = true;
+                        }
+                    });
+                });
+                setSelectedImages([...arr]);
+                setImgInLibraryList([...imgList]);
+            } else {
+                setSelectedImages([]);
+                setImgInLibraryList([]);
+            }
+        }
+    }, [imgInLibrary, defaultVal]);
 
     const makeTop = (val) => {
         let flag = false;
-        if (val.target.value === 1){
+        if (val === 1){
             setMarkTopRadio(1);
             flag = false;
         } else {
             setMarkTopRadio(0);
             flag = true;
         }
-        setReturnValues({...returnValues, top: flag});
+        setReturnValues((res) => {
+            res.top = flag;
+            return res;
+        });
+        if (defaultVal) {
+            sendReturnVal();
+        }
     };
     const updateDescription = (val) => {
         setReturnValues((res) => {
@@ -112,21 +209,25 @@ function Content(props) {
             return res;
         });
         setContentErr(false);
+        if (defaultVal) {
+            sendReturnVal();
+        }
     };
-
     const setSelectMenu = (val) => {
         setReturnValues((res) => {
             res.nav = val; 
             return res;
-         });
-        //  setNevErr(false);
+        });
+        setNavValue(val);
+        if (defaultVal) {
+            sendReturnVal();
+        }
     };
     const removeLoading = (val) => {
         setLoading(val);
     };
-
     const enableDatePicker = (val) => {
-        if (val.target.value === 1) {
+        if (val === 1) {
             setDatePickerRadio(1);
             setDisableDatePicker(true);
             setReturnValues((res) => {
@@ -142,65 +243,95 @@ function Content(props) {
                 return res;
             });
         }
+        if (defaultVal) {
+            const obj = {...returnValues};
+            obj.flag = 'update';
+            submit(obj);
+        }
     };
-
-    const submit = () => {
+    const submit = (vals) => {
         removeErr();
         if (returnValues.title === '') {
             setTitleErr(true);
-            return;
+            if (!defaultVal) {
+                return;
+            }
         }
-        if (returnValues.nav === '') {
+        if (!vals.nav) {
             setNevErr(true);
             return;
         }
-        if (returnValues.keyword === '') {
+        if (vals.keyword === '') {
             setKeyWordErr(true);
-            return;
+            if (!defaultVal) {
+                return;
+            }
         }
-        if (returnValues.description === '') {
+        if (vals.description === '') {
             setDescriptionErr(true);
-            return;
+            if (!defaultVal) {
+                return;
+            }
         }
-        if (returnValues.expireDate.status && returnValues.expireDate.value.length !== 2) {
+        if (vals.expireDate.status && vals.expireDate.value.length !== 2) {
             setExpireDateErr(true);
-            return;
+            if (!defaultVal) {
+                return;
+            }
         }
-        if (returnValues.content === '') {
+        if (vals.content === '') {
             setContentErr(true);
-            return;
+            if (!defaultVal) {
+                return;
+            }
         }
-        if (!navErr){
-            callBack(returnValues);
+        callBack(vals);
+        if (!defaultVal) {
+            setTitle('');
+            setKeywords('');
+            setDescription('');
+            setDateRange([]);
+            setEditorContent('<p></p>');
+            setSelectedImages([]);
+            setImgInLibraryList([]);
+            setNavValue(null);
         }
-        
     };
-
     const removeErr = () => {
-        // setNevErr(false);
+        setNevErr(false);
         setTitleErr(false);
         setKeyWordErr(false);
         setDescriptionErr(false);
         setExpireDateErr(false);
         setContentErr(false);
     };
-
+    const sendReturnVal = () => {
+        setTimeout(()=>{
+            let vals = {...returnValues};
+            vals.flag = 'update';
+            submit(vals);
+        }, 100);
+    };
     const updateValue = (e, val) => {
         const value = e.target.value;
         removeErr();
         setReturnValues((res) => {
             if (val === 'title') {
                 res.title = value; 
+                setTitle(value);
             } else if (val === 'kw') {
                 res.keyword = value; 
+                setKeywords(value);
             } else if (val === 'desc') {
                 res.description = value; 
+                setDescription(value);
             }
             return res;
-         });
-        
+        });
+        if (defaultVal) {
+            sendReturnVal();
+        }
     };
-
     const errCallBack = (flag) => {
         if (flag) {
             setNevErr(true);
@@ -208,17 +339,14 @@ function Content(props) {
             setNevErr(false);
         }
     };
-
     const getImgList = async (list) => {
         // setShowAddImgLoading(true);
         await getImageFromLib();
         // setShowAddImgLoading(false);
     };
-
     const removeImg = (imgId) => {
         deleteImageFromLib(imgId);
     };
-
     const selectImg = (id, item) => {
         const tmp = {...item};
         tmp.selected = !tmp.selected;
@@ -248,9 +376,11 @@ function Content(props) {
             res.imgs = imgIds;
             return res;
         });
+        if (defaultVal) {
+            sendReturnVal();
+        }
         setSelectedImageIds([...imgIds]);
     };
-
     const closeSelectOverlay = () => {
         setShowImgOverlay(false);
     };
@@ -266,17 +396,19 @@ function Content(props) {
                         onChange={(e) => {
                             updateValue(e, 'title');
                         }}
+                        value={title}
                     />
                 </Col>
             </Row>
             <Row>
-                <Col span={12} className={ navErr ? 'show-red-border' : '' }>
+                <Col span={12} className={ navErr ? 'red-border' : '' }>
                     <NavSelector
                         language={language}
                         setSelectMenu={setSelectMenu}
                         removeLoading={removeLoading}
                         type={type}
                         errCallBack={errCallBack}
+                        value={navValue}
                     />
                 </Col>
             </Row>
@@ -293,6 +425,7 @@ function Content(props) {
                                 <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
                             </Tooltip>
                         }
+                        value={keywords}
                     />
                 </Col>
             </Row>
@@ -309,6 +442,7 @@ function Content(props) {
                                 <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
                             </Tooltip>
                         }
+                        value={description}
                     />
                 </Col>
             </Row>
@@ -316,14 +450,14 @@ function Content(props) {
             <Row>
             <Col span={12}>
                     { Dic[language].common.expireDate }:&nbsp;&nbsp;
-                    <Radio.Group defaultValue={1} onChange={enableDatePicker} value={datePickerRadio}>
+                    <Radio.Group defaultValue={1} onChange={(e) => {enableDatePicker(e.target.value)}} value={datePickerRadio}>
                         <Radio value={1}>{ Dic[language].common.no }</Radio>
                         <Radio value={0}>{ Dic[language].common.yes }</Radio>
                     </Radio.Group>
                 </Col>
                 <Col span={12}>
                     { Dic[language].common.top }:&nbsp;&nbsp;
-                    <Radio.Group defaultValue={1} onChange={makeTop} value={markTopRadio}>
+                    <Radio.Group defaultValue={1} onChange={(e) => {makeTop(e.target.value)}} value={markTopRadio}>
                         <Radio value={1}>{ Dic[language].common.no }</Radio>
                         <Radio value={0}>{ Dic[language].common.yes }</Radio>
                     </Radio.Group>
@@ -336,11 +470,20 @@ function Content(props) {
                             size="middle"
                             disabled={disableDatePicker}
                             onCalendarChange={(date, dateStrings) => {
-                                setReturnValues((res) => {
-                                    res.expireDate.value = dateStrings;
-                                    return res;
-                                });
+                                if (dateStrings[0] !== '' && dateStrings[1] !== '') {
+                                    setDateRange([moment(dateStrings[0], 'YYYY-MM-DD'), moment(dateStrings[1], 'YYYY-MM-DD')]);
+                                    setReturnValues((res) => {
+                                        res.expireDate.value = dateStrings;
+                                        return res;
+                                    });
+                                    if (defaultVal) {
+                                        const obj = {...returnValues};
+                                        obj.flag = 'update';
+                                        submit(obj);
+                                    }
+                                }
                             }}
+                            value={dateRange.length ? dateRange : []}
                         />
                     </Space>
                 </Col>
@@ -372,10 +515,9 @@ function Content(props) {
                                 >
                                     { Dic[language].product.openImg }
                                 </Button>
-                                <br />
-                                <Divider className="clear-both" />
                             </Col>
                         </Row>
+                        <Divider className="clear-both" />
                         {/* add image overlay start */}
                         <Modal
                             visible={showImgOverlay}
@@ -437,22 +579,31 @@ function Content(props) {
                     <RichEditor
                         placeholder={Dic[language][type].description}
                         stateCallback={updateDescription}
+                        value={editorContent}
                     />
                 </Col>
             </Row>
-            <Row className="float-right">
-                <Col span={24}>
-                    <Button
-                        type="primary" 
-                        icon={<PlusOutlined />}
-                        onClick={() => {
-                            submit();
-                        }}
-                    >
-                        { Dic[language].common.add }
-                    </Button>
-                </Col>
-            </Row>
+            {
+                !defaultVal
+                ?
+                    <Row className="float-right">
+                        <Col span={24}>
+                            <Button
+                                type="primary" 
+                                icon={<PlusOutlined />}
+                                onClick={() => {
+                                    let vals = {...returnValues};
+                                    vals.flag = 'insert';
+                                    submit(vals);
+                                }}
+                            >
+                                { Dic[language].common.add }
+                            </Button>
+                        </Col>
+                    </Row>
+                : null
+            }
+            
         </>
     );
 }

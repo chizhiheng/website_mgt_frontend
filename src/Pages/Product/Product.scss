@@ -6,3 +6,26 @@
         }
     }
 }
+.product-edit-popup{
+    height: 85%;
+    .ant-modal-content{
+        .ant-modal-body{
+            // height: 75%;
+            overflow-y: scroll;
+            .ant-row{
+                height: 48px;
+                .nav-selector{
+                    width: 100%;
+                }
+            }
+        }
+        .ant-modal-footer{
+            margin-top: 1rem;
+        }
+    }
+    .red-border{
+        div.rdw-editor-wrapper .rdw-editor-main, div.nav-selector .ant-select-selector, div.ant-picker-range{
+            border-color: red;
+        }
+    }
+}

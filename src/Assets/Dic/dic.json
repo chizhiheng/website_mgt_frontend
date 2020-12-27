@@ -120,6 +120,7 @@
             "table": {
                 "title": "标题",
                 "belong": "归属栏目",
+                "top": "置顶",
                 "createdDate": "创建日期",
                 "action": "操作"
             }
@@ -292,6 +293,7 @@
             "table": {
                 "title": "Title",
                 "belong": "Belong to",
+                "top": "Top",
                 "createdDate": "Date created",
                 "action": "Action"
             }

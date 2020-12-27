@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { Table, Space, Button } from 'antd';
 import RequestUtils from '../../Utils/RequestUtils';
 import Dic from '../../Assets/Dic/dic.json';
+import './TableContent.scss';
 
 function TableWithAjax(props) {
     const [state, setState] = useState({
@@ -18,18 +19,27 @@ function TableWithAjax(props) {
           dataIndex: 'content_title',
           // sorter: true,
           // render: name => `${name.first} ${name.last}`,
-          // width: '25%',
+          width: '37%',
         }, {
           title: Dic[props.language].article.table.belong,
           dataIndex: 'nav_name',
-          // width: '15%',
+          width: '20%',
+        }, {
+          title: Dic[props.language].article.table.top,
+          dataIndex: 'is_top',
+          render: (is_top) => is_top === '1' ? Dic[props.language].common.yes : Dic[props.language].common.no,
+          width: '8%',
+          className: 'text-align-center',
         }, {
           title: Dic[props.language].article.table.createdDate,
           dataIndex: 'created_date',
-          // width: '15%',
+          className: 'text-align-right',
+          width: '20%',
         }, {
           title: Dic[props.language].article.table.action,
           key: 'action',
+          className: 'text-align-right',
+          width: '15%',
           render: (record) => (
             <Space size="middle">
               <Button
@@ -52,17 +62,29 @@ function TableWithAjax(props) {
     ]);
 
     useEffect(() => {
-      if (props.language !== 'zh') {
-        const arr = [ ...columns ];
-        arr[1] = {
-          title: Dic[props.language].article.table.belong,
-          dataIndex: 'nav_ename',
+      let monted = true;
+
+      if (monted) {
+        if (props.reload) {
+          
         }
-        setColumns([ ...arr ]);
+
+        if (props.language !== 'zh') {
+          const arr = [ ...columns ];
+          arr[1] = {
+            title: Dic[props.language].article.table.belong,
+            dataIndex: 'nav_ename',
+          }
+          setColumns([ ...arr ]);
+        }
+        
+        fetch(state);
       }
-      
-      fetch(state);
-    }, [props.language]);
+
+      return () => {
+        monted = false;
+      };
+    }, [props.reload]);
 
     const handleTableChange = (pagination, filters, sorter) => {
         fetch({
@@ -97,6 +119,7 @@ function TableWithAjax(props) {
           pagination={state.pagination}
           loading={state.loading}
           onChange={handleTableChange}
+          className="table-content"
         />
     );
 }
