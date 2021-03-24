@@ -16,7 +16,8 @@ import {
   ContainerOutlined,
   Html5Outlined,
   SoundOutlined,
-  SettingOutlined
+  SettingOutlined,
+  LayoutOutlined
 } from '@ant-design/icons';
 
 const { SubMenu } = Menu;
@@ -55,6 +56,10 @@ class SideBar extends Component {
                     title: Dic[this.language].menu.content.product,
                     key: '/content/product/',
                     icon: FileImageOutlined,
+                }, {
+                    title: Dic[this.language].menu.content.pageImg,
+                    key: '/content/pageBanner/',
+                    icon: LayoutOutlined
                 }]
             }, {
                 title: Dic[this.language].menu.generate.name,

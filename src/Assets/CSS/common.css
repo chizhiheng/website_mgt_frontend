@@ -61,6 +61,9 @@ h2, h3, p, .line-height-40px{
 .margin-right-2rem{
     margin-right: 2rem;
 }
+.padding-right-2rem{
+    padding-right: 2rem !important
+}
 .padding-05-rem{
     padding: 0.5rem
 }

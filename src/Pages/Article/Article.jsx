@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Row, Col, Tabs, Modal
 } from 'antd';
@@ -7,7 +7,7 @@ import Content from '../../Component/Content/Content';
 import TableWithAjax from '../../Component/Content/TableContent';
 
 import { useCookies } from 'react-cookie';
-import { insertContent, getContentList, updateContent, deleteContent, getContentDetails } from '../../API/apiPath';
+import { insertContent, getContentList, updateContent, deleteContent, getContentDetails, getLangList } from '../../API/apiPath';
 import RequestUtils from '../../Utils/RequestUtils';
 import Loading from '../../Component/Loading/Loading';
 import {
@@ -170,7 +170,7 @@ function Article(props) {
                             language={language}
                             withImgs={false}
                             type="article"
-                            callBack={(val, flag) => {
+                            callBack={(val) => {
                                 callBack(val);
                             }}
                             defaultVal={contentDefaultValue}

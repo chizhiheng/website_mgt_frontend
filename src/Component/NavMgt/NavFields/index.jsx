@@ -1,5 +1,5 @@
 import React, {Fragment, useState, useEffect} from 'react';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, forEach } from 'lodash';
 import {
     Row, Col, Button, Input, Tooltip, Radio, Divider, Select
 } from 'antd';
@@ -18,20 +18,25 @@ function NavFields(props) {
         btnLabel,
         defaultValue,
         isUpdate,
-        updateVal
+        updateVal,
+        langSupport
     } = {...props};
     const { Option } = Select;
     const [navList, setNavList] = useState([]);
     const [navItemDetails, setNavItemDetils] = useState({
         title: '',
-        etitle: '',
+        en_title: '',
+        jp_title: '',
+        kr_title: '',
         key: '',
         type: 1,
         s_id: -1
     });
     const [navLevel, setNavLevel] = useState(-1);
     const [titleIconColor, setTitleIconColor] = useState('rgba(0,0,0,.45)');
-    // const [eTitleIconColor, setETitleIconColor] = useState('rgba(0,0,0,.45)');
+    const [eTitleIconColor, setETitleIconColor] = useState('rgba(0,0,0,.45)');
+    const [jTitleIconColor, setJTitleIconColor] = useState('rgba(0,0,0,.45)');
+    const [kTitleIconColor, setKTitleIconColor] = useState('rgba(0,0,0,.45)');
     const [pathIconColor, setPathIconColor] = useState('rgba(0,0,0,.45)');
     const [disabledAddBtn, setDisabledAddBtn] = useState(false);
     const [addItem, setAddItem] = useState(true);
@@ -39,14 +44,15 @@ function NavFields(props) {
     useEffect(() => {
         defaultValue.length ? setNavList([...defaultValue]) : setNavList([]);
         if (isUpdate) {
-            console.log('update');
             setNavItemDetils({...updateVal});
         }
         setTitleIconColor('rgba(0,0,0,.45)');
-        // setETitleIconColor('rgba(0,0,0,.45)');
+        setETitleIconColor('rgba(0,0,0,.45)');
+        setJTitleIconColor('rgba(0,0,0,.45)');
+        setKTitleIconColor('rgba(0,0,0,.45)');
         setPathIconColor('rgba(0,0,0,.45)');
         setDisabledAddBtn(false);
-    }, [defaultValue, isUpdate, updateVal]);
+    }, [defaultValue, isUpdate, updateVal, langSupport]);
 
     // add nav to array
     const navModify = () => {
@@ -54,10 +60,18 @@ function NavFields(props) {
             setTitleIconColor('rgba(255,0,0,1)');
             return;
         }
-        // if (navItemDetails.etitle === '') {
-        //     setETitleIconColor('rgba(255,0,0,1)');
-        //     return;
-        // }
+        if (navItemDetails.en_title === '') {
+            setETitleIconColor('rgba(255,0,0,1)');
+            return;
+        }
+        if (navItemDetails.jp_title === '') {
+            setETitleIconColor('rgba(255,0,0,1)');
+            return;
+        }
+        if (navItemDetails.kr_title === '') {
+            setETitleIconColor('rgba(255,0,0,1)');
+            return;
+        }
         if (navItemDetails.key === '') {
             setPathIconColor('rgba(255,0,0,1)');
             return;
@@ -67,7 +81,9 @@ function NavFields(props) {
             return;
         }
         setTitleIconColor('rgba(0,0,0,.45)');
-        // setETitleIconColor('rgba(0,0,0,.45)');
+        setETitleIconColor('rgba(0,0,0,.45)');
+        setJTitleIconColor('rgba(0,0,0,.45)');
+        setKTitleIconColor('rgba(0,0,0,.45)');
         setPathIconColor('rgba(0,0,0,.45)');
 
         if (isUpdate) {
@@ -77,7 +93,9 @@ function NavFields(props) {
         }
         setNavItemDetils({
             title: '',
-            etitle: '',
+            en_title: '',
+            jp_title: '',
+            kr_title: '',
             key: '',
             type: 1,
             s_id: -1
@@ -92,10 +110,18 @@ function NavFields(props) {
                     setTitleIconColor('rgba(255,0,0,1)');
                     add = false;
                 }
-                // if (item.etitle === navItemDetails.etitle){
-                //     setETitleIconColor('rgba(255,0,0,1)');
-                //     add = false;
-                // }
+                if (item.en_title === navItemDetails.en_title){
+                    setETitleIconColor('rgba(255,0,0,1)');
+                    add = false;
+                }
+                if (item.jp_title === navItemDetails.jp_title){
+                    setJTitleIconColor('rgba(255,0,0,1)');
+                    add = false;
+                }
+                if (item.kr_title === navItemDetails.kr_title){
+                    setKTitleIconColor('rgba(255,0,0,1)');
+                    add = false;
+                }
                 if (item.key === navItemDetails.key){
                     setPathIconColor('rgba(255,0,0,1)');
                     add = false;
@@ -109,7 +135,9 @@ function NavFields(props) {
                 });
                 setNavItemDetils({
                     title: '',
-                    etitle: '',
+                    en_title: '',
+                    jp_title: '',
+                    kr_title: '',
                     key: '',
                     type: 1,
                     s_id: -1
@@ -124,7 +152,9 @@ function NavFields(props) {
                 setNavList([...val]);
                 setNavItemDetils({
                     title: '',
-                    etitle: '',
+                    en_title: '',
+                    jp_title: '',
+                    kr_title: '',
                     key: '',
                     type: 1,
                     s_id: -1
@@ -160,12 +190,14 @@ function NavFields(props) {
                 } else {
                     if (element.key === navItemDetails.key) {
                         element.title = navItemDetails.title;
-                        element.etitle = navItemDetails.etitle;
+                        element.en_title = navItemDetails.en_title;
+                        element.jp_title = navItemDetails.jp_title;
+                        element.kr_title = navItemDetails.kr_title;
                         element.type = navItemDetails.type;
                         return true; // 或者 break;
                     }
                 }
-                
+
                 if (element.children && element.children.length) {
                     fetchNav(element.children, type);
                 }
@@ -179,7 +211,9 @@ function NavFields(props) {
     const updateNavDetail = (e, type) => {
         let flag = null;
         setTitleIconColor('rgba(0,0,0,.45)');
-        // setETitleIconColor('rgba(0,0,0,.45)');
+        setETitleIconColor('rgba(0,0,0,.45)');
+        setJTitleIconColor('rgba(0,0,0,.45)');
+        setKTitleIconColor('rgba(0,0,0,.45)');
         setPathIconColor('rgba(0,0,0,.45)');
 
         const navArr = cloneDeep(navList);
@@ -197,18 +231,42 @@ function NavFields(props) {
                 setDisabledAddBtn(false);
                 setAddItem(true);
             }
-        // } else if (type === 'enName') {
-        //     setNavItemDetils({...navItemDetails, etitle: e.target.value});
-        //     flag = checkDuplicateValue(navArr, e.target.value, 'etitle');
-        //     if (flag || e.target.value === '') {
-        //         setETitleIconColor('rgba(255,0,0,1)');
-        //         setDisabledAddBtn(true);
-        //         setAddItem(false);
-        //     } else {
-        //         setETitleIconColor('rgba(0,0,0,.45)');
-        //         setDisabledAddBtn(false);
-        //         setAddItem(true);
-        //     }
+        } else if (type === 'enName') {
+            setNavItemDetils({...navItemDetails, en_title: e.target.value});
+            flag = checkDuplicateValue(navArr, e.target.value, 'en_title');
+            if (flag || e.target.value === '') {
+                setETitleIconColor('rgba(255,0,0,1)');
+                setDisabledAddBtn(true);
+                setAddItem(false);
+            } else {
+                setETitleIconColor('rgba(0,0,0,.45)');
+                setDisabledAddBtn(false);
+                setAddItem(true);
+            }
+        } else if (type === 'jpName') {
+            setNavItemDetils({...navItemDetails, jp_title: e.target.value});
+            flag = checkDuplicateValue(navArr, e.target.value, 'jp_title');
+            if (flag || e.target.value === '') {
+                setJTitleIconColor('rgba(255,0,0,1)');
+                setDisabledAddBtn(true);
+                setAddItem(false);
+            } else {
+                setJTitleIconColor('rgba(0,0,0,.45)');
+                setDisabledAddBtn(false);
+                setAddItem(true);
+            }
+        } else if (type === 'krName') {
+            setNavItemDetils({...navItemDetails, kr_title: e.target.value});
+            flag = checkDuplicateValue(navArr, e.target.value, 'kr_title');
+            if (flag || e.target.value === '') {
+                setKTitleIconColor('rgba(255,0,0,1)');
+                setDisabledAddBtn(true);
+                setAddItem(false);
+            } else {
+                setKTitleIconColor('rgba(0,0,0,.45)');
+                setDisabledAddBtn(false);
+                setAddItem(true);
+            }
         } else if (type === 'path') {
             setNavItemDetils({...navItemDetails, key: e.target.value});
             flag = checkDuplicateValue(navArr, e.target.value, 'key');
@@ -231,7 +289,7 @@ function NavFields(props) {
             if (element[type] === name || element[type].indexOf(name) !== -1) {
                 return true;
             }
-            
+
             if (element.children && element.children.length) {
                 if (checkDuplicateValue(element.children, name, type)) {
                     return true;
@@ -239,7 +297,6 @@ function NavFields(props) {
             }
         }
     };
-    
 
     const generteOption = (items, counter) =>{
         if (counter === 0){
@@ -263,7 +320,7 @@ function NavFields(props) {
             }
             </Fragment>
         ))
-        
+
         return res;
     }
 
@@ -272,12 +329,12 @@ function NavFields(props) {
         setNavItemDetils({...navItemDetails, s_id: val});
         // console.log('navItemDetails: ', navItemDetails);
     };
-    
+
     return(
         <Row className="height-100-per">
             <Col span={24} className="border-1px-light-gray">
                 {
-                    showTitle ? 
+                    showTitle ?
                     <Row>
                         <Col span={24}>
                             <h4>{ Dic[language].NavMgt.addNav.title }</h4>
@@ -287,7 +344,7 @@ function NavFields(props) {
                 }
                 <Row>
                     <Col span={24}>
-                        <Radio.Group defaultValue={1} onChange={(e) => {updateNavDetail(e, 'navType');}} value={Number(navItemDetails.type)}>
+                        <Radio.Group disabled={isUpdate} defaultValue={1} onChange={(e) => {updateNavDetail(e, 'navType');}} value={Number(navItemDetails.type)}>
                             <Radio value={1}>{ Dic[language].NavMgt.addNav.type.article }</Radio>
                             <Radio value={2}>{ Dic[language].NavMgt.addNav.type.news }</Radio>
                             <Radio value={3}>{ Dic[language].NavMgt.addNav.type.product }</Radio>
@@ -336,54 +393,106 @@ function NavFields(props) {
                         />
                     </Col>
                 </Row>
-                {/* <Row>
-                    <Col span={24}>
-                        <Input
-                            size="large"
-                            placeholder={ Dic[language].NavMgt.addNav.enName }
-                            prefix={<EditOutlined />}
-                            value={navItemDetails.etitle}
-                            className={ eTitleIconColor.indexOf('255') !== -1 ? 'red-border' : '' }
-                            suffix={
-                                <Tooltip title={ eTitleIconColor.indexOf('255') !== -1 ? Dic[language].NavMgt.addNav.enNameTipErr : Dic[language].NavMgt.addNav.enNameTip }>
-                                    <InfoCircleOutlined style={{ color: `${ eTitleIconColor }` }} />
-                                </Tooltip>
-                            }
-                            onChange={(e) => {
-                                updateNavDetail(e, 'enName');
-                            }}
-                        />
-                    </Col>
-                </Row> */}
+                {
+                    langSupport.en === '1' ?
+                    <Row>
+                        <Col span={24}>
+                            <Input
+                                size="large"
+                                placeholder={ Dic[language].NavMgt.addNav.enName }
+                                prefix={<EditOutlined />}
+                                value={navItemDetails.en_title}
+                                className={ eTitleIconColor.indexOf('255') !== -1 ? 'red-border' : '' }
+                                suffix={
+                                    <Tooltip title={ eTitleIconColor.indexOf('255') !== -1 ? Dic[language].NavMgt.addNav.enNameTipErr : Dic[language].NavMgt.addNav.enNameTip }>
+                                        <InfoCircleOutlined style={{ color: `${ eTitleIconColor }` }} />
+                                    </Tooltip>
+                                }
+                                onChange={(e) => {
+                                    updateNavDetail(e, 'enName');
+                                }}
+                            />
+                        </Col>
+                    </Row>
+                    : ''
+                }
+                {
+                    langSupport.jp === '1' ?
+                    <Row>
+                        <Col span={24}>
+                            <Input
+                                size="large"
+                                placeholder={ Dic[language].NavMgt.addNav.jpName }
+                                prefix={<EditOutlined />}
+                                value={navItemDetails.jp_title}
+                                className={ jTitleIconColor.indexOf('255') !== -1 ? 'red-border' : '' }
+                                suffix={
+                                    <Tooltip title={ jTitleIconColor.indexOf('255') !== -1 ? Dic[language].NavMgt.addNav.jpNameTipErr : Dic[language].NavMgt.addNav.jpNameTip }>
+                                        <InfoCircleOutlined style={{ color: `${ jTitleIconColor }` }} />
+                                    </Tooltip>
+                                }
+                                onChange={(e) => {
+                                    updateNavDetail(e, 'jpName');
+                                }}
+                            />
+                        </Col>
+                    </Row>
+                    : ''
+                }
+                {
+                    langSupport.kr === '1' ?
+                    <Row>
+                        <Col span={24}>
+                            <Input
+                                size="large"
+                                placeholder={ Dic[language].NavMgt.addNav.krName }
+                                prefix={<EditOutlined />}
+                                value={navItemDetails.kr_title}
+                                className={ kTitleIconColor.indexOf('255') !== -1 ? 'red-border' : '' }
+                                suffix={
+                                    <Tooltip title={ kTitleIconColor.indexOf('255') !== -1 ? Dic[language].NavMgt.addNav.krNameTipErr : Dic[language].NavMgt.addNav.krNameTip }>
+                                        <InfoCircleOutlined style={{ color: `${ kTitleIconColor }` }} />
+                                    </Tooltip>
+                                }
+                                onChange={(e) => {
+                                    updateNavDetail(e, 'krName');
+                                }}
+                            />
+                        </Col>
+                    </Row>
+                    : ''
+                }
                 <Row>
                     <Col span={24}>
                         {
                             isUpdate
-                            ? <p>{Dic[language].NavMgt.addNav.pathName}: {navItemDetails.key}</p>
+                            ? <p>{Dic[language].NavMgt.addNav.currentPathName}: {navItemDetails.key}</p>
                             : (
-                                <Input
-                                    size="large"
-                                    placeholder={ Dic[language].NavMgt.addNav.pathName }
-                                    prefix={<EditOutlined />}
-                                    value={navItemDetails.key}
-                                    className={ pathIconColor.indexOf('255') !== -1 ? 'red-border' : '' }
-                                    suffix={
-                                        <Tooltip title={ pathIconColor.indexOf('255') !== -1 ? Dic[language].NavMgt.addNav.pathNameTipErr : Dic[language].NavMgt.addNav.pathNameTip }>
-                                            <InfoCircleOutlined style={{ color: `${ pathIconColor }` }} />
-                                        </Tooltip>
-                                    }
-                                    onChange={(e) => {
-                                        updateNavDetail(e, 'path');
-                                    }}
-                                />
+                                <>
+                                    <Input
+                                        size="large"
+                                        placeholder={ Dic[language].NavMgt.addNav.pathName }
+                                        prefix={<EditOutlined />}
+                                        value={navItemDetails.key}
+                                        className={ pathIconColor.indexOf('255') !== -1 ? 'red-border' : '' }
+                                        suffix={
+                                            <Tooltip title={ pathIconColor.indexOf('255') !== -1 ? Dic[language].NavMgt.addNav.pathNameTipErr : Dic[language].NavMgt.addNav.pathNameTip }>
+                                                <InfoCircleOutlined style={{ color: `${ pathIconColor }` }} />
+                                            </Tooltip>
+                                        }
+                                        onChange={(e) => {
+                                            updateNavDetail(e, 'path');
+                                        }}
+                                    />
+                                </>
                             )
                         }
                     </Col>
                 </Row>
                 <Row className="float-right">
                     <Col span={24}>
-                        <Button 
-                            type="primary" 
+                        <Button
+                            type="primary"
                             icon={<PlusOutlined />}
                             disabled={disabledAddBtn}
                             onClick={() => {navModify()}}

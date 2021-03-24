@@ -101,54 +101,12 @@ function Product(props) {
             console.log(e);
         });;
     };
-    
+
     useEffect(() => {
         let monted = true;
 
         if (monted) {
             setLoading(true);
-            setSelectedImgs([{
-                uid: '-1',
-                name: 'image.png',
-                status: 'done',
-                code: '',
-                url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-            },
-            {
-                uid: '-2',
-                name: 'image.png',
-                status: 'done',
-                code: '',
-                url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-            },
-            {
-                uid: '-3',
-                name: 'image.png',
-                status: 'done',
-                code: '',
-                url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-            },
-            {
-                uid: '-4',
-                name: 'image.png',
-                status: 'done',
-                code: '',
-                url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-            },
-            {
-                uid: '-xxx',
-                percent: 50,
-                name: 'image.png',
-                status: 'uploading',
-                code: '',
-                url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-            },
-            {
-                uid: '-5',
-                name: 'image.png',
-                status: 'error',
-                code: '',
-            }]);
             getImageFromLib();
         }
 
@@ -183,7 +141,7 @@ function Product(props) {
         }
         setShowEdit(true);
     };
-    
+
     const handleOk = () => {
         setLoading(true);
         let params = {
@@ -299,7 +257,7 @@ function Product(props) {
                 }
                 {
                     overLayType === 'delete'
-                    ? 
+                    ?
                         <p><ExclamationCircleOutlined /> { Dic[props.language].common.deleteConfirmTitel }</p>
                     :
                     null

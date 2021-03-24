@@ -11,6 +11,7 @@ import SiteHeader from './Component/Header/Header';
 import Login from './Pages/Login/Login';
 import Settings from './Pages/Settings/Settings';
 import NavMgt from './Pages/NavMgt/NavMgt';
+import PageBanner from './Pages/PageBanner/PageBanner';
 import Error from './Pages/Error/Error'
 // import SiteFooter from './Component/Footer/Footer';
 import SideBar from './Component/SideBar/SideBar';
@@ -52,6 +53,9 @@ function App(props) {
             </Route>
             <Route path="/content/article/">
               <Article language={currentLang} />
+            </Route>
+            <Route path="/content/pageBanner/">
+              <PageBanner language={currentLang} />
             </Route>
             <Route path="/content/news/">
               <News language={currentLang} />

@@ -1,7 +1,7 @@
 {
     "zh": {
         "appTitle": {
-            "title": "汇德电子商务 ",
+            "title": "汇德电子科技",
             "subTitle": "网站后台管理应用平台"
         },
         "common": {
@@ -44,7 +44,11 @@
                     "siteKeywordsDesc": "在搜索中显示网站的关键字，可多个词组关于网站的信息。如：产品名等",
                     "siteDescription": "网站描述",
                     "siteDescriptionDesc": "在搜索中显示网站的描述文字。如：公司简介精简版或简短的产品介绍等",
+                    "siteLanguage": "网站支持语言",
+                    "siteLanguageDesc": "选择支持的语言需要提供对应语言的内容信息",
                     "siteContact": {
+                        "companyName": "公司名称",
+                        "companyAddress": "公司地址",
                         "email": "电子邮箱",
                         "emailDesc": "电子邮箱地址，在联系我们页面显示",
                         "phone1": "联系电话1",
@@ -68,13 +72,20 @@
             "addNav": {
                 "title": "添加新导航",
                 "addNew": "添加",
-                "cnName": "导航名称, 以符号'/'开始和结束",
+                "cnName": "导航名称",
                 "cnNameTip": "在中文版本中显示的名字",
                 "cnNameTipErr": "中文版本导航名为空或重复",
                 "enName": "英文名称",
                 "enNameTip": "在英文版本中显示的名字",
                 "enNameTipErr": "英文版本导航名为空或重复",
-                "pathName": "路径",
+                "jpName": "日文名称",
+                "jpNameTip": "在日文版本中显示的名字",
+                "jpNameTipErr": "韩文版本导航名为空或重复",
+                "krName": "韩文名称",
+                "krNameTip": "在韩文版本中显示的名字",
+                "krNameTipErr": "日文版本导航名为空或重复",
+                "currentPathName": "当前路径名称",
+                "pathName": "当前路径, 以符号'/'开始和结束",
                 "pathNameTip": "页面路径",
                 "pathNameTipErr": "页面路径为空或重复或开始结束没有/符号",
                 "parentItem": {
@@ -95,6 +106,7 @@
             "users": "用户管理",
             "content": {
                 "nav": "添加导航",
+                "pageImg": "页面 Banner",
                 "name": "内容管理",
                 "news": "新闻类",
                 "article": "文章类",
@@ -148,7 +160,11 @@
         },
         "template": {
             "apply": "应用此模版",
-            "current": "当前模版"
+            "current": "当前模版",
+            "tab": {
+                "weiChat": "微信",
+                "webPage": "网页"
+            }
         },
         "generate": {
             "html": {
@@ -217,7 +233,11 @@
                     "siteKeywordsDesc": "Display the keywords of the site in the search result, which can be multiple phrases of information about the your site. Such as: product name and so on",
                     "siteDescription": "Site description",
                     "siteDescriptionDesc": "Display the description of the site in the search result. For example: a short version of the company or a short product introduction",
+                    "siteLanguage": "Site Language",
+                    "siteLanguageDesc": "Which languages we are support",
                     "siteContact": {
+                        "companyName": "Company name",
+                        "companyAddress": "Company address",
                         "email": "Email",
                         "emailDesc": "Your email address, will display in contact page",
                         "phone1": "Phone1",
@@ -241,13 +261,20 @@
             "addNav": {
                 "title": "Add new navigation",
                 "addNew": "Add",
-                "cnName": "Nav item name, start and end with '/'",
+                "cnName": "Nav item name",
                 "cnNameTip": "The nav item name for Chinese version",
                 "cnNameTipErr": "The empty or duplicated nav item name for Chinese version",
                 "enName": "English nav item name",
                 "enNameTip": "The nav item name for English version",
                 "enNameTipErr": "The empty or duplicated nav item name for English version",
-                "pathName": "Path",
+                "jpName": "Japan nav item name",
+                "jpNameTip": "The nav item name for Japan version",
+                "jpNameTipErr": "The empty or duplicated nav item name for Japan version",
+                "krName": "Korea nav item name",
+                "krNameTip": "The nav item name for Korea version",
+                "krNameTipErr": "The empty or duplicated nav item name for Korea version",
+                "currentPathName": "Current path name",
+                "pathName": "Current path, start and end with '/'",
                 "pathNameTip": "The page URL",
                 "pathNameTipErr": "The empty or duplicated page URL or missing / in the front or the end",
                 "parentItem": {
@@ -321,7 +348,11 @@
         },
         "template": {
             "apply": "Apply this",
-            "current": "Current use"
+            "current": "Current use",
+            "tab": {
+                "weiChat": "WeiChat",
+                "webPage": "Web Page"
+            }
         },
         "generate": {
             "html": {

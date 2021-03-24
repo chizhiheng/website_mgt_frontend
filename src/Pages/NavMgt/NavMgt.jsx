@@ -28,6 +28,7 @@ function NavMgt(props) {
     const [navList, setNavList] = useState([]);
     const [showEditOverlay, setShowEditOverlay] = useState(false);
     const [disableApplyBtn, setDisableApplyBtn] = useState(true);
+    const [supportLangs, setSupportLangs] = useState({});
 
     useEffect(() => {
         let monted = true;
@@ -110,6 +111,7 @@ function NavMgt(props) {
             param: { code: cookies.user_token.toString(), type: 'all' }
         }
         RequestUtils(params).then((res) => {
+            setSupportLangs(res.lang);
             formatNav(res.result);
             setLoading(false);
         }).catch((e) => {
@@ -185,8 +187,10 @@ function NavMgt(props) {
                     placement="top"
                     title={
                         <>
-                            <span>{`${Dic[language].NavMgt.addNav.cnName}: ${item.title}`}</span><br />
-                            <span>{`${Dic[language].NavMgt.addNav.enName}: ${item.etitle}`}</span><br />
+                            <span>{ supportLangs.cn === '1' ? `${Dic[language].NavMgt.addNav.cnName}: ${item.title}` : ''}</span><br />
+                            <span>{ supportLangs.en === '1' ? `${Dic[language].NavMgt.addNav.enName}: ${item.en_title}` : '' }</span><br />
+                            <span>{ supportLangs.jp === '1' ? `${Dic[language].NavMgt.addNav.jpName}: ${item.jp_title}` : '' }</span><br />
+                            <span>{ supportLangs.kr === '1' ? `${Dic[language].NavMgt.addNav.krName}: ${item.kr_title}` : '' }</span><br />
                             <span>{ item.children && item.children.length ? '' : `${Dic[language].NavMgt.addNav.pathName}: ${item.key}` }</span>
                         </>
                     }
@@ -235,7 +239,7 @@ function NavMgt(props) {
     };
 
     const navFieldsCallBack = (val) => {
-        // console.log(val);
+        console.log('navFieldsCallBack', val);
         setDisableApplyBtn(false);
         setNavList([...val]);
         closeEditOverlay();
@@ -262,6 +266,7 @@ function NavMgt(props) {
                     btnLabel={ Dic[language].common.update }
                     isUpdate
                     updateVal={updateItem}
+                    langSupport={supportLangs}
                 />
             </Modal>
             {/* update nav item popup stop */}
@@ -308,6 +313,7 @@ function NavMgt(props) {
                         btnLabel={ Dic[language].NavMgt.addNav.addNew }
                         isUpdate={false}
                         updateVal={false}
+                        langSupport={supportLangs}
                     />
                 </Col>
             </Row>

@@ -12,3 +12,4 @@ export const getContentList = '/getContentList.php';
 export const insertImg = '/insertImg.php';
 export const getImgs = '/getImgs.php';
 export const deleteImg = '/deleteImg.php';
+export const getLangList = '/getLangList.php';

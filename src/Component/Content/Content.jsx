@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import {
-    Row, Col, Input, DatePicker, Space, Radio, Divider, Button, Tooltip, Modal, Card
+    Row, Col, Input, DatePicker, Space, Radio, Divider, Button, Tooltip, Modal, Card, Select
 } from 'antd';
+import { useCookies } from 'react-cookie';
 import RichEditor from '../RichEditor/Editor';
 import Dic from '../../Assets/Dic/dic.json';
 import {
@@ -18,8 +19,11 @@ import NavSelector from './NavSelector';
 import Loading from '../Loading/Loading';
 import SelectedImgList from './SelectedImgList';
 import './Content.scss';
+import { getLangList } from '../../API/apiPath';
+import RequestUtils from '../../Utils/RequestUtils';
 
 function Content(props) {
+    const [cookies] = useCookies(['user_token']);
     const {
         language,
         withImgs,
@@ -34,6 +38,7 @@ function Content(props) {
         imgHost,
         defaultVal,
     } = {...props};
+    const { Option } = Select;
     const [loading, setLoading] = useState(true);
     const [showAddImgLoading, setShowAddImgLoading] = useState(false);
     const { RangePicker } = DatePicker;
@@ -52,15 +57,74 @@ function Content(props) {
         },
         top: false,
         content: '',
-        imgIds: []
+        imgIds: [],
+        langKey: 'cn',
+        cn: {
+          title: '',
+          nav: '',
+          keyword: '',
+          description: '',
+          expireDate: {
+              status: false,
+              value: []
+          },
+          top: false,
+          content: '',
+          imgIds: [],
+          langKey: 'cn',
+        },
+        en: {
+          title: '',
+          nav: '',
+          keyword: '',
+          description: '',
+          expireDate: {
+              status: false,
+              value: []
+          },
+          top: false,
+          content: '',
+          imgIds: [],
+          langKey: 'en',
+        },
+        jp: {
+          title: '',
+          nav: '',
+          keyword: '',
+          description: '',
+          expireDate: {
+              status: false,
+              value: []
+          },
+          top: false,
+          content: '',
+          imgIds: [],
+          langKey: 'jp',
+        },
+        kr: {
+          title: '',
+          nav: '',
+          keyword: '',
+          description: '',
+          expireDate: {
+              status: false,
+              value: []
+          },
+          top: false,
+          content: '',
+          imgIds: [],
+          langKey: 'kr',
+        }
     });
-    
+
     const[navErr, setNevErr] = useState(false);
     const[titleErr, setTitleErr] = useState(false);
     const[keyWordErr, setKeyWordErr] = useState(false);
     const[descriptionErr, setDescriptionErr] = useState(false);
     const[expireDateErr, setExpireDateErr] = useState(false);
     const[contentErr, setContentErr] = useState(false);
+
+    const [langList, setLangList] = useState([]);
 
     let titleText = null;
     let keywordsText = null;
@@ -97,6 +161,32 @@ function Content(props) {
     const [dateRange, setDateRange] = useState([]);
     const [editorContent, setEditorContent] = useState('<p></p>');
     const [navValue, setNavValue] = useState(null);
+    const [selectedLang, setSelectedLang] = useState('');
+
+    useEffect(() => {
+        let monted = true;
+
+        if (monted) {
+            const params = {
+                url: getLangList,
+                param: {
+                    code: cookies.user_token.toString(),
+                }
+            };
+            RequestUtils(params).then((res) => {
+                // setSelectedLang(res.result[0].key);
+                selectLang(res.result[0].key);
+                setLangList(res.result);
+            }).catch((e) => {
+                setLoading(false);
+                console.log(e);
+            });
+        }
+
+        return () => {
+            monted = false;
+        };
+    }, []);
 
     useEffect(() => {
         if (withImgs) {
@@ -113,8 +203,9 @@ function Content(props) {
                 setImgInLibraryList([...arr]);
             }
         }
-        
+
         if (defaultVal) {
+            selectLang(defaultVal.lang_key);
             setReturnValues((res) => {
                 res.title = defaultVal.title;
                 res.keyword = defaultVal.keywords;
@@ -127,6 +218,7 @@ function Content(props) {
                 res.imgs = [];
                 res.top = defaultVal.is_top === '1' ? true : false;
                 res.content = defaultVal.content;
+                res.langKey = defaultVal.lang_key;
                 return res;
             });
             if (defaultVal.title !== '') {
@@ -184,6 +276,8 @@ function Content(props) {
                 setImgInLibraryList([]);
             }
         }
+
+        removeErr();
     }, [imgInLibrary, defaultVal]);
 
     const makeTop = (val) => {
@@ -205,7 +299,7 @@ function Content(props) {
     };
     const updateDescription = (val) => {
         setReturnValues((res) => {
-            res.content = val; 
+            res.content = val;
             return res;
         });
         setContentErr(false);
@@ -215,7 +309,7 @@ function Content(props) {
     };
     const setSelectMenu = (val) => {
         setReturnValues((res) => {
-            res.nav = val; 
+            res.nav = val;
             return res;
         });
         setNavValue(val);
@@ -317,13 +411,13 @@ function Content(props) {
         removeErr();
         setReturnValues((res) => {
             if (val === 'title') {
-                res.title = value; 
+                res.title = value;
                 setTitle(value);
             } else if (val === 'kw') {
-                res.keyword = value; 
+                res.keyword = value;
                 setKeywords(value);
             } else if (val === 'desc') {
-                res.description = value; 
+                res.description = value;
                 setDescription(value);
             }
             return res;
@@ -355,7 +449,7 @@ function Content(props) {
             return res;
         });
         setImgInLibraryList([...imgInLibraryList]);
-        
+
         const imgIds = [];
         const arr2 = [];
 
@@ -384,6 +478,19 @@ function Content(props) {
     const closeSelectOverlay = () => {
         setShowImgOverlay(false);
     };
+    const selectLang = (val, flag) => {
+        if (defaultVal && !flag) {
+            val = defaultVal.lang_key;
+        }
+        setSelectedLang(val);
+        setReturnValues((res)=>{
+            res.langKey = val;
+            return res;
+        });
+        if (flag) {
+            sendReturnVal();
+        }
+    };
 
     return (
         <>
@@ -398,6 +505,21 @@ function Content(props) {
                         }}
                         value={title}
                     />
+                </Col>
+                <Col span={12} className="text-align-right padding-right-2rem">
+                    <span>{ Dic[language].common.selectOne }: </span>
+                    <Select
+                    onChange={(e) => {
+                        selectLang(e, true);
+                    }}
+                    value={selectedLang}
+                    >
+                        {
+                            langList.map((item, id) => {
+                                return <Option value={item.key} key={`nav-level-${item.key}-${id}`}>{language === 'zh' ? item.name : item.eName}</Option>
+                            })
+                        }
+                    </Select>
                 </Col>
             </Row>
             <Row>
@@ -506,7 +628,7 @@ function Content(props) {
                             <Col span={24}>
                                 <Button
                                     className="float-right margin-right-2rem"
-                                    type="dashed" 
+                                    type="dashed"
                                     icon={<PicCenterOutlined />}
                                     onClick={ () =>  {
                                         getImgList();
@@ -589,7 +711,7 @@ function Content(props) {
                     <Row className="float-right">
                         <Col span={24}>
                             <Button
-                                type="primary" 
+                                type="primary"
                                 icon={<PlusOutlined />}
                                 onClick={() => {
                                     let vals = {...returnValues};
@@ -603,7 +725,7 @@ function Content(props) {
                     </Row>
                 : null
             }
-            
+
         </>
     );
 }
