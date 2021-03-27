@@ -8,6 +8,7 @@
             "ok": "确定",
             "cancel": "取消",
             "add": "新增",
+            "clean": "清除",
             "update": "更新",
             "upload": "上传",
             "delete": "删除",
@@ -21,7 +22,13 @@
             "top": "置顶",
             "loading": "加载中...",
             "isRequired": "必须填写!",
-            "selectOne": "请选择"
+            "selectOne": "请选择",
+            "systemPopup": {
+              "existed": {
+                "title": "注意",
+                "description": "当前栏目下已经存在所选语言的内容，请更改栏目或语言"
+              }
+            }
         },
         "login": {
             "title": "使用你的账号登录",
@@ -85,7 +92,7 @@
                 "krNameTip": "在韩文版本中显示的名字",
                 "krNameTipErr": "日文版本导航名为空或重复",
                 "currentPathName": "当前路径名称",
-                "pathName": "当前路径, 以符号'/'开始和结束",
+                "pathName": "当前栏目路径, 以符号'/'开始和结束",
                 "pathNameTip": "页面路径",
                 "pathNameTipErr": "页面路径为空或重复或开始结束没有/符号",
                 "parentItem": {
@@ -131,6 +138,7 @@
             "articleDescTips": "在搜索中显示此文章的描述文字",
             "table": {
                 "title": "标题",
+                "lang": "语言",
                 "belong": "归属栏目",
                 "top": "置顶",
                 "createdDate": "创建日期",
@@ -157,6 +165,9 @@
             "productKeyWordsTips": "在搜索中显示此产品的关键字",
             "productDescTips": "在搜索中显示此产品的描述文字",
             "openImg": "从图库中选择图片 / 上传新图片"
+        },
+        "banner": {
+          "selectPage": "选择想要添加 banner的页面"
         },
         "template": {
             "apply": "应用此模版",
@@ -197,6 +208,7 @@
             "ok": "OK",
             "cancel": "Cancel",
             "add": "Add new",
+            "clean": "Clean",
             "update": "Update",
             "upload": "Upload",
             "delete": "Delete",
@@ -210,7 +222,13 @@
             "top": "Top",
             "loading": "Loading...",
             "isRequired": "is required!",
-            "selectOne": "Please select one"
+            "selectOne": "Please select one",
+            "systemPopup": {
+              "existed": {
+                "title": "Alert",
+                "description": "The content of the selected language already exists under the current nav menu. Please change the nav menu or language"
+              }
+            }
         },
         "login": {
             "title": "Sign in with your ID",
@@ -274,7 +292,7 @@
                 "krNameTip": "The nav item name for Korea version",
                 "krNameTipErr": "The empty or duplicated nav item name for Korea version",
                 "currentPathName": "Current path name",
-                "pathName": "Current path, start and end with '/'",
+                "pathName": "Current nav path, start and end with '/'",
                 "pathNameTip": "The page URL",
                 "pathNameTipErr": "The empty or duplicated page URL or missing / in the front or the end",
                 "parentItem": {
@@ -295,6 +313,7 @@
             "users": "User management",
             "content": {
                 "nav": "Add Navigation",
+                "pageImg": "Page Banner",
                 "name": "Content management",
                 "news": "News",
                 "article": "Article",
@@ -319,6 +338,7 @@
             "articleDescTips": "Display the description of this article in the search result.",
             "table": {
                 "title": "Title",
+                "lang": "Language",
                 "belong": "Belong to",
                 "top": "Top",
                 "createdDate": "Date created",
@@ -345,6 +365,9 @@
             "productKeyWordsTips": "Display the keywords of this product in the search result",
             "productDescTips": "Display the description of this product in the search result.",
             "openImg": "Select image from gallery / Upload new images"
+        },
+        "banner": {
+          "selectPage": "Select which page you want to add banner"
         },
         "template": {
             "apply": "Apply this",

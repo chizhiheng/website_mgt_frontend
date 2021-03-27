@@ -8,7 +8,13 @@ import zhCN from 'antd/lib/locale/zh_CN';
 window.appState = {};
 const initState = {
     menuList: [],
-    locale: (navigator.language||navigator.userLanguage).substr(0, 2)
+    locale: (navigator.language||navigator.userLanguage).substr(0, 2),
+    systemPopup: {
+      display: false,
+      type: '',
+      title: '',
+      desc: ''
+    }
 }
 
 const AppContext = createContext(null);
@@ -22,7 +28,7 @@ const AppContextProvider = ({ children }) => {
         if (!isObjectLike(newState)) {
           throw new Error('setAppState: Type of `newState` should be Object liked.');
         }
-        
+
         let mergedState = state;
         setState((prevState) => {
             mergedState = { ...prevState, ...newState };
@@ -34,7 +40,7 @@ const AppContextProvider = ({ children }) => {
             //   }
             return mergedState;
         });
-    
+
         if (callback) {
           callback(mergedState);
         }
@@ -43,7 +49,7 @@ const AppContextProvider = ({ children }) => {
     return (
         <AppContext.Provider
           value={{
-            state: state,
+            appState: state,
             getAppState,
             setAppState,
             // events: events,

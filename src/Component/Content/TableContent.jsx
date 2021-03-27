@@ -19,16 +19,20 @@ function TableWithAjax(props) {
           dataIndex: 'content_title',
           // sorter: true,
           // render: name => `${name.first} ${name.last}`,
-          width: '37%',
+          width: '38%',
+        }, {
+          title: Dic[props.language].article.table.lang,
+          dataIndex: props.language === 'zh' ? 'cn_lang' : 'en_lang',
+          width: '8%',
         }, {
           title: Dic[props.language].article.table.belong,
-          dataIndex: 'nav_name',
-          width: '20%',
+          dataIndex: props.language === 'en' ? 'nav_ename' : 'nav_name',
+          width: '12%',
         }, {
           title: Dic[props.language].article.table.top,
           dataIndex: 'is_top',
           render: (is_top) => is_top === '1' ? Dic[props.language].common.yes : Dic[props.language].common.no,
-          width: '8%',
+          width: '7%',
           className: 'text-align-center',
         }, {
           title: Dic[props.language].article.table.createdDate,
@@ -66,18 +70,18 @@ function TableWithAjax(props) {
 
       if (monted) {
         if (props.reload) {
-          
+
         }
 
-        if (props.language !== 'zh') {
-          const arr = [ ...columns ];
-          arr[1] = {
-            title: Dic[props.language].article.table.belong,
-            dataIndex: 'nav_ename',
-          }
-          setColumns([ ...arr ]);
-        }
-        
+        // if (props.language !== 'zh') {
+        //   const arr = [ ...columns ];
+        //   arr[2] = {
+        //     title: Dic[props.language].article.table.belong,
+        //     dataIndex: 'nav_ename',
+        //   }
+        //   setColumns([ ...arr ]);
+        // }
+
         fetch(state);
       }
 

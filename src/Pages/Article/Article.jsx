@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
     Row, Col, Tabs, Modal
 } from 'antd';
@@ -14,9 +14,11 @@ import {
     ExclamationCircleOutlined
 } from '@ant-design/icons';
 import './Article.scss';
+import { AppContext } from '../../context/AppContext';
 
 function Article(props) {
     const { language } = {...props};
+    const { appState, setAppState } = useContext(AppContext);
     const [loading, setLoading] = useState(false);
     const [cookies] = useCookies(['user_token']);
     const { TabPane } = Tabs;
@@ -26,6 +28,7 @@ function Article(props) {
     const [reloadTable, setReloadTable] = useState(false);
     const [contentDefaultValue, setContentDefaultValue] = useState({});
     const [disabledBtn, setDisabledBtn] = useState(true);
+    const [responseExisted, setResponseExisted] = useState(false);
 
     const callBack = (val) => {
         if (val.flag === 'insert') {
@@ -40,6 +43,15 @@ function Article(props) {
             };
             RequestUtils(params).then((res) => {
                 setLoading(false);
+                if (res.result === 'Content existed with same nav and language.') {
+                  setResponseExisted(true);
+                  setAppState({systemPopup: {
+                    display: true,
+                    type: 'warning',
+                    title: Dic[language].common.systemPopup.existed.title,
+                    desc: Dic[language].common.systemPopup.existed.description
+                  }})
+                }
             }).catch((e) => {
                 setLoading(false);
                 console.log(e);
@@ -132,6 +144,7 @@ function Article(props) {
                                 callBack={(val, flag) => {
                                     callBack(val, flag);
                                 }}
+                                responseExisted={responseExisted}
                             />
                         </TabPane>
                         <TabPane tab={ Dic[language].article.articleList } key="2">
@@ -180,7 +193,7 @@ function Article(props) {
                 }
                 {
                     overLayType === 'delete'
-                    ? 
+                    ?
                         <p><ExclamationCircleOutlined /> { Dic[props.language].common.deleteConfirmTitel }</p>
                     :
                     null

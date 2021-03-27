@@ -131,7 +131,7 @@ function NavMgt(props) {
                     console.log('moveDown');
                     downGo(treeList, index);
                 } else if (type === 'delete') {
-                    treeList.splice(index, 1); 
+                    treeList.splice(index, 1);
                 }
                 return true;
             }
@@ -149,7 +149,7 @@ function NavMgt(props) {
         }
     }
     const downGo= (fieldData,index) => {
-        if(index !== fieldData.length-1) {     
+        if(index !== fieldData.length-1) {
             fieldData[index] = fieldData.splice(index+1, 1, fieldData[index])[0];
         }else{
             fieldData.unshift( fieldData.splice(index,1)[0]);
@@ -196,17 +196,17 @@ function NavMgt(props) {
                     }
                 >
                     <span className="nav-label">
-                        { language === 'zh' ? item.title : item.etitle } { item.children && item.children.length ? '' : `- ${item.key}` }
+                        { language === 'zh' ? item.title : item.en_title } { item.children && item.children.length ? '' : `- ${item.key}` }
                         <span className="nav-item-modify-container float-right">
                             <Button
-                                type="primary" 
+                                type="primary"
                                 icon={<FormOutlined />}
                                 name={item.key}
                                 onClick={() => {updateNavItem(item, 'edit')}}
                             ></Button>
                             { id === 0 ? null :
                                 <Button
-                                    type="primary" 
+                                    type="primary"
                                     icon={<ArrowUpOutlined />}
                                     name={item.key}
                                     onClick={() => {updateNavItem(item, 'moveUp')}}
@@ -214,14 +214,14 @@ function NavMgt(props) {
                             }
                             { id === val.length - 1 ? null :
                                 <Button
-                                    type="primary" 
+                                    type="primary"
                                     icon={<ArrowDownOutlined />}
                                     name={item.key}
                                     onClick={() => {updateNavItem(item, 'moveDown')}}
                                 ></Button>
                             }
                             <Button
-                                type="primary" 
+                                type="primary"
                                 icon={<DeleteOutlined />}
                                 name={item.key}
                                 onClick={() => {updateNavItem(item, 'delete')}}
@@ -230,7 +230,7 @@ function NavMgt(props) {
                     </span>
                 </Tooltip>
                 {
-                    item.children && item.children.length > 0 ? 
+                    item.children && item.children.length > 0 ?
                         generteNav(item.children, 'children')
                     : ''
                 }
@@ -244,7 +244,7 @@ function NavMgt(props) {
         setNavList([...val]);
         closeEditOverlay();
     };
-    
+
     return (
         <div className="site-navmgt">
             { loading ? <Loading text={Dic[language].common.loading}/> : null}
@@ -291,8 +291,8 @@ function NavMgt(props) {
                             </Row>
                             <Row className="float-right">
                                 <Col span={24}>
-                                    <Button 
-                                        type="primary" 
+                                    <Button
+                                        type="primary"
                                         icon={<PlusOutlined />}
                                         onClick={applyNavToSite}
                                         disabled={ navList.length <= 0 || disableApplyBtn ? true : false }

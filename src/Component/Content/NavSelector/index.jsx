@@ -13,21 +13,24 @@ function NavSelector(props) {
     const { Option } = Select;
     const { language, setSelectMenu, removeLoading, type, errCallBack, value } = {...props};
     const [selectValue, setSelectValue] = useState('');
+    const [returnRes, setReturnRes] = useState([]);
 
     const [cookies] = useCookies(['user_token']);
     const [navList, setNavList] = useState([]);
-    
+
     useEffect(() => {
         let monted = true;
 
         if (monted) {
             let typeVal = 1;
             if (type === 'article') {
-                typeVal = 1;
+              typeVal = 1;
             } else if (type === 'news') {
-                typeVal = 2;
+              typeVal = 2;
             } else if (type === 'product') {
-                typeVal = 3;
+              typeVal = 3;
+            } else if (type === 'all') {
+              typeVal = 'all';
             }
             const params = {
                 url: getMenu,
@@ -35,6 +38,7 @@ function NavSelector(props) {
             }
             RequestUtils(params).then((res) => {
                 formatNav(res.result);
+                setReturnRes(res.result);
                 removeLoading(false);
             }).catch((e) => {
                 removeLoading(false);
@@ -95,8 +99,20 @@ function NavSelector(props) {
         } else {
             errCallBack(false);
         }
+        let value = {
+          key: '',
+          title: '',
+          en_title: '',
+          kr_title: '',
+          jp_title: ''
+        };
+        returnRes.forEach((item) => {
+          if (item.key === val) {
+            value = {...item};
+          }
+        });
         setSelectValue(val);
-        setSelectMenu(val);
+        setSelectMenu(value);
     };
     const generteOption = (items, counter) =>{
         if (counter === 0){
@@ -108,19 +124,26 @@ function NavSelector(props) {
         const res = items.map((item, id) => (
             <Fragment key={`nav-${item.key}-${id}`}>
             {
-                item.key !== '/'
+                item.key !== '/' && type !== 'all'
                 ? (
-                    <>
-                        <Option value={item.key} key={`nav-level-${item.key}-${id}`} style={style}>{item.title}</Option>
-                        {
-                            item.children && item.children.length > 0 ? generteOption(item.children, counter + 1) : ''
-                        }
-                    </>
-                ) : null
+                  <>
+                    <Option value={item.key} key={`nav-level-${item.key}-${id}`} style={style}>{item.title}</Option>
+                    {
+                        item.children && item.children.length > 0 ? generteOption(item.children, counter + 1) : ''
+                    }
+                  </>
+                ) : (
+                  <>
+                    <Option value={item.key} key={`nav-level-${item.key}-${id}`} style={style}>{item.title}</Option>
+                    {
+                        item.children && item.children.length > 0 ? generteOption(item.children, counter + 1) : ''
+                    }
+                  </>
+                )
             }
             </Fragment>
         ))
-        
+
         return res;
     }
 

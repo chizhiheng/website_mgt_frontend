@@ -12,7 +12,8 @@ import {
     PicCenterOutlined,
     BorderOutlined,
     CheckSquareOutlined,
-    DeleteOutlined
+    DeleteOutlined,
+    ClearOutlined
 } from '@ant-design/icons';
 import PicturesWall from './ImgContent';
 import NavSelector from './NavSelector';
@@ -58,63 +59,7 @@ function Content(props) {
         top: false,
         content: '',
         imgIds: [],
-        langKey: 'cn',
-        cn: {
-          title: '',
-          nav: '',
-          keyword: '',
-          description: '',
-          expireDate: {
-              status: false,
-              value: []
-          },
-          top: false,
-          content: '',
-          imgIds: [],
-          langKey: 'cn',
-        },
-        en: {
-          title: '',
-          nav: '',
-          keyword: '',
-          description: '',
-          expireDate: {
-              status: false,
-              value: []
-          },
-          top: false,
-          content: '',
-          imgIds: [],
-          langKey: 'en',
-        },
-        jp: {
-          title: '',
-          nav: '',
-          keyword: '',
-          description: '',
-          expireDate: {
-              status: false,
-              value: []
-          },
-          top: false,
-          content: '',
-          imgIds: [],
-          langKey: 'jp',
-        },
-        kr: {
-          title: '',
-          nav: '',
-          keyword: '',
-          description: '',
-          expireDate: {
-              status: false,
-              value: []
-          },
-          top: false,
-          content: '',
-          imgIds: [],
-          langKey: 'kr',
-        }
+        langKey: 'cn'
     });
 
     const[navErr, setNevErr] = useState(false);
@@ -159,7 +104,7 @@ function Content(props) {
     const [keywords, setKeywords] = useState('');
     const [description, setDescription] = useState('');
     const [dateRange, setDateRange] = useState([]);
-    const [editorContent, setEditorContent] = useState('<p></p>');
+    const [editorContent, setEditorContent] = useState('');
     const [navValue, setNavValue] = useState(null);
     const [selectedLang, setSelectedLang] = useState('');
 
@@ -205,80 +150,82 @@ function Content(props) {
         }
 
         if (defaultVal) {
-            selectLang(defaultVal.lang_key);
-            setReturnValues((res) => {
-                res.title = defaultVal.title;
-                res.keyword = defaultVal.keywords;
-                res.description = defaultVal.description;
-                res.nav = defaultVal.key;
-                res.expireDate = {
-                    status: true,
-                    value: [defaultVal.start_date, defaultVal.end_date]
-                };
-                res.imgs = [];
-                res.top = defaultVal.is_top === '1' ? true : false;
-                res.content = defaultVal.content;
-                res.langKey = defaultVal.lang_key;
-                return res;
-            });
-            if (defaultVal.title !== '') {
-                setTitle(defaultVal.title);
-            }
-            if (defaultVal.keywords !== '') {
-                setKeywords(defaultVal.keywords);
-            }
-            if (defaultVal.description !== '') {
-                setDescription(defaultVal.description);
-            }
-            if (defaultVal.start_date && defaultVal.end_date){
-                enableDatePicker(0);
-                setDateRange([moment(defaultVal.start_date, 'YYYY-MM-DD'), moment(defaultVal.end_date, 'YYYY-MM-DD')]);
-            }
-            if (defaultVal.is_top === '1') {
-                makeTop(0);
-            }
-            setNavValue(defaultVal.key)
-            if (defaultVal.content !== '') {
-                updateDescription(defaultVal.content);
-                setEditorContent(defaultVal.content)
-            }
-            if (defaultVal.imgs && defaultVal.imgs.length > 0) {
-                const arr = [];
-                let imgs = [];
-                defaultVal.imgs.forEach((item)=>{
-                    imgs.push(item.id);
-                });
-                setReturnValues((res) => {
-                    res.imgs = imgs;
-                    return res;
-                });
-                defaultVal.imgs.forEach((item) => {
-                    const element = {
-                        uid: item.id,
-                        name: item.img_name,
-                        status: 'done',
-                        url: imgHost + item.img_name,
-                    };
-                    arr.push(element);
-                });
-                const imgList = [...imgInLibraryList];
-                arr.forEach((item)=>{
-                    imgList.forEach((el) => {
-                        if (item.uid === el.id) {
-                            el.selected = true;
-                        }
-                    });
-                });
-                setSelectedImages([...arr]);
-                setImgInLibraryList([...imgList]);
-            } else {
-                setSelectedImages([]);
-                setImgInLibraryList([]);
-            }
+          selectLang(defaultVal.lang_key);
+          setReturnValues((res) => {
+              res.title = defaultVal.title;
+              res.keyword = defaultVal.keywords;
+              res.description = defaultVal.description;
+              res.nav = defaultVal.key;
+              res.expireDate = {
+                  status: true,
+                  value: [defaultVal.start_date, defaultVal.end_date]
+              };
+              res.imgs = [];
+              res.top = defaultVal.is_top === '1' ? true : false;
+              res.content = defaultVal.content;
+              res.langKey = defaultVal.lang_key;
+              return res;
+          });
+          if (defaultVal.title !== '') {
+              setTitle(defaultVal.title);
+          }
+          if (defaultVal.keywords !== '') {
+              setKeywords(defaultVal.keywords);
+          }
+          if (defaultVal.description !== '') {
+              setDescription(defaultVal.description);
+          }
+          if (defaultVal.start_date && defaultVal.end_date){
+              enableDatePicker(0);
+              setDateRange([moment(defaultVal.start_date, 'YYYY-MM-DD'), moment(defaultVal.end_date, 'YYYY-MM-DD')]);
+          }
+          if (defaultVal.is_top === '1') {
+              makeTop(0);
+          }
+          setNavValue(defaultVal.key)
+          if (defaultVal.content !== '') {
+              updateDescription(defaultVal.content);
+              setEditorContent(defaultVal.content)
+          }
+          if (defaultVal.imgs && defaultVal.imgs.length > 0) {
+              const arr = [];
+              let imgs = [];
+              defaultVal.imgs.forEach((item)=>{
+                  imgs.push(item.id);
+              });
+              setReturnValues((res) => {
+                  res.imgs = imgs;
+                  return res;
+              });
+              defaultVal.imgs.forEach((item) => {
+                  const element = {
+                      uid: item.id,
+                      name: item.img_name,
+                      status: 'done',
+                      url: imgHost + item.img_name,
+                  };
+                  arr.push(element);
+              });
+              const imgList = [...imgInLibraryList];
+              arr.forEach((item)=>{
+                  imgList.forEach((el) => {
+                      if (item.uid === el.id) {
+                          el.selected = true;
+                      }
+                  });
+              });
+              setSelectedImages([...arr]);
+              setImgInLibraryList([...imgList]);
+          } else {
+              setSelectedImages([]);
+              setImgInLibraryList([]);
+          }
+        } else {
+          console.log(2222);
         }
 
         removeErr();
-    }, [imgInLibrary, defaultVal]);
+    }, [imgInLibrary, defaultVal, navValue]);
 
     const makeTop = (val) => {
         let flag = false;
@@ -308,14 +255,14 @@ function Content(props) {
         }
     };
     const setSelectMenu = (val) => {
-        setReturnValues((res) => {
-            res.nav = val;
-            return res;
-        });
-        setNavValue(val);
-        if (defaultVal) {
-            sendReturnVal();
-        }
+      setReturnValues((res) => {
+          res.nav = val.key;
+          return res;
+      });
+      setNavValue(val.key);
+      if (defaultVal) {
+          sendReturnVal();
+      }
     };
     const removeLoading = (val) => {
         setLoading(val);
@@ -380,16 +327,16 @@ function Content(props) {
             }
         }
         callBack(vals);
-        if (!defaultVal) {
-            setTitle('');
-            setKeywords('');
-            setDescription('');
-            setDateRange([]);
-            setEditorContent('<p></p>');
-            setSelectedImages([]);
-            setImgInLibraryList([]);
-            setNavValue(null);
-        }
+    };
+    const cleanData = () => {
+      setTitle('');
+      setKeywords('');
+      setDescription('');
+      setDateRange([]);
+      setSelectedImages([]);
+      setImgInLibraryList([]);
+      setNavValue(null);
+      setEditorContent('');
     };
     const removeErr = () => {
         setNevErr(false);
@@ -524,14 +471,14 @@ function Content(props) {
             </Row>
             <Row>
                 <Col span={12} className={ navErr ? 'red-border' : '' }>
-                    <NavSelector
-                        language={language}
-                        setSelectMenu={setSelectMenu}
-                        removeLoading={removeLoading}
-                        type={type}
-                        errCallBack={errCallBack}
-                        value={navValue}
-                    />
+                  <NavSelector
+                      language={language}
+                      setSelectMenu={setSelectMenu}
+                      removeLoading={removeLoading}
+                      type={type}
+                      errCallBack={errCallBack}
+                      value={navValue}
+                  />
                 </Col>
             </Row>
             <Row>
@@ -710,6 +657,15 @@ function Content(props) {
                 ?
                     <Row className="float-right">
                         <Col span={24}>
+                            <Button
+                                type="secondry"
+                                icon={<ClearOutlined />}
+                                onClick={() => {
+                                  cleanData();
+                                }}
+                            >
+                                { Dic[language].common.clean }
+                            </Button>&nbsp;&nbsp;&nbsp;&nbsp;
                             <Button
                                 type="primary"
                                 icon={<PlusOutlined />}

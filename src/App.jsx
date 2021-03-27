@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import './App.scss';
 import {
   BrowserRouter as Router,
@@ -22,6 +22,7 @@ import Generate from './Pages/Generate/Generate';
 import User from './Pages/Users/User';
 import Template from './Pages/Template/Template';
 import Advertising from './Pages/Advertising/Advertising';
+import SysPopup from './Component/SysPopup/SysPopup';
 
 function App(props) {
   const { Header, Content } = Layout;
@@ -86,6 +87,7 @@ function App(props) {
 
   return (
     <div className="site-main">
+      <SysPopup language={currentLang} />
       <Layout>
         <Header className="header">
           <SiteHeader className="site-header" language={currentLang} callback={setLanguage} />
