@@ -23,7 +23,8 @@ class PicturesWall extends React.Component {
       maxImgNumber: props.maxImgNumber,
       url: props.url,
       userToken: props.userToken,
-      type: props.type
+      type: props.type,
+      errCB: props.errCB
     };
   }
 
@@ -50,8 +51,14 @@ class PicturesWall extends React.Component {
   };
 
   handleChange = ({ fileList }) => {
-    this.setState({ fileList });
-    this.state.callBack(fileList);
+    if (fileList[fileList.length-1].response) {
+      if (fileList[fileList.length-1].response.result === 'Invalid image') {
+        this.state.errCB(fileList[fileList.length-1].response);
+      } else {
+        this.setState({ fileList });
+        this.state.callBack(fileList);
+      }
+    }
   };
 
   render() {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import moment from 'moment';
 import {
     Row, Col, Input, DatePicker, Space, Radio, Divider, Button, Tooltip, Modal, Card, Select
@@ -22,9 +22,11 @@ import SelectedImgList from './SelectedImgList';
 import './Content.scss';
 import { getLangList } from '../../API/apiPath';
 import RequestUtils from '../../Utils/RequestUtils';
+import { AppContext } from '../../context/AppContext';
 
 function Content(props) {
     const [cookies] = useCookies(['user_token']);
+    const { appState, setAppState } = useContext(AppContext);
     const {
         language,
         withImgs,
@@ -394,7 +396,6 @@ function Content(props) {
         }
     };
     const getImgList = async (list) => {
-      console.log(222222);
         // setShowAddImgLoading(true);
         await getImageFromLib();
         // setShowAddImgLoading(false);
@@ -616,6 +617,14 @@ function Content(props) {
                                     url={url}
                                     userToken={userToken}
                                     maxImgNumber={500}
+                                    errCB = {(err) => {
+                                      setAppState({systemPopup: {
+                                        display: true,
+                                        type: 'error',
+                                        title: Dic[language].common.systemPopup.imgErr.title,
+                                        desc: Dic[language].common.systemPopup.imgErr.description + '(' + err.max_size + ')'
+                                      }});
+                                    }}
                                 />
                             }
                             className="img-selector-overlay"

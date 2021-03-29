@@ -20,6 +20,7 @@ function SysPopup (props) {
     <Modal
       title={appState.systemPopup.title}
       visible={appState.systemPopup.display}
+      destroyOnClose
       footer={[
         // <Button type="secondry" onClick={callback}>{ Dic[props.language].common.cancel }</Button>,
         <Button type="primary" onClick={okBtn}>{ Dic[language].common.ok }</Button>

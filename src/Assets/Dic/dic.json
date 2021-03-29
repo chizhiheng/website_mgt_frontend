@@ -27,6 +27,10 @@
               "existed": {
                 "title": "注意",
                 "description": "当前栏目下已经存在所选语言的内容，请更改栏目或语言"
+              },
+              "imgErr": {
+                "title": "出错了",
+                "description": "上传图片失败，可能是因为图片过大导致，当前系统允许最大上传图片大小为:"
               }
             }
         },
@@ -227,6 +231,10 @@
               "existed": {
                 "title": "Alert",
                 "description": "The content of the selected language already exists under the current nav menu. Please change the nav menu or language"
+              },
+              "imgErr": {
+                "title": "Error",
+                "description": "Upload image faild. Please check image size, system max allow image size is: "
               }
             }
         },

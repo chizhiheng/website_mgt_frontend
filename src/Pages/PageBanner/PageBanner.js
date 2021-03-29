@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
     Row, Col, Button, Modal, Card
 } from 'antd';
 import {
-  PlusOutlined, PicCenterOutlined
+  PlusOutlined, PicCenterOutlined, DeleteOutlined
 } from '@ant-design/icons';
 import NavSelector from '../../Component/Content/NavSelector/';
 import Dic from '../../Assets/Dic/dic.json';
@@ -13,6 +13,7 @@ import { host, insertImg, getImgs } from '../../API/apiPath';
 import RequestUtils from '../../Utils/RequestUtils';
 import { useCookies } from 'react-cookie';
 import PicturesWall from '../../Component/Content/ImgContent';
+import { AppContext } from '../../context/AppContext';
 
 function PageBanner(props) {
     const { language } = {...props};
@@ -23,7 +24,9 @@ function PageBanner(props) {
     const [selectorLoading, setSelectorLoading] = useState(false);
     const [showImgOverlay, setShowImgOverlay] = useState(false);
     const [showAddImgLoading, setShowAddImgLoading] = useState(false);
-    const imgHost = host.replace('/api', '') + '/upload/banner/';
+    const imgHost = host.replace('/api', '') + '/upload/';
+    const { appState, setAppState } = useContext(AppContext);
+    const { Meta } = Card;
 
     const url = host + insertImg;
     console.log('url:', url);
@@ -114,8 +117,16 @@ function PageBanner(props) {
                     }}
                     type="banner"
                     url={url}
-                    userToken={cookies}
+                    userToken={cookies.user_token.toString()}
                     maxImgNumber={500}
+                    errCB = {(err) => {
+                      setAppState({systemPopup: {
+                        display: true,
+                        type: 'error',
+                        title: Dic[language].common.systemPopup.imgErr.title,
+                        desc: Dic[language].common.systemPopup.imgErr.description + '(' + err.max_size + ')'
+                      }});
+                    }}
                 />
             }
             className="img-selector-overlay"
@@ -128,29 +139,29 @@ function PageBanner(props) {
                 showAddImgLoading ? <Loading text={Dic[language].common.loading}/> : null
             }
             {
-                // imgInLibraryList.map((item, id) => (
-                //     <Card
-                //         key={id}
-                //         hoverable
-                //         style={{ width: 240 }}
-                //         cover={<img alt="example" src={item.img_path} />}
-                //         actions={[
-                //             <div
-                //                 onClick={() => {
-                //                     selectImg(id, item);
-                //                 }}
-                //             >
-                //                 { item.selected || selectedImageIds.indexOf(item.id) > -1 ? <CheckSquareOutlined key="selected" /> : <BorderOutlined key="unselect" /> }
-                //             </div>,
-                //             <DeleteOutlined
-                //                 key="edit"
-                //                 onClick={() => removeImg(item.id)}
-                //             />
-                //         ]}
-                //     >
-                //         <Meta title={item.img_name} description={item.created_date} />
-                //     </Card>
-                // ))
+                bannerList.map((item, id) => (
+                    <Card
+                        key={id}
+                        hoverable
+                        style={{ width: 240 }}
+                        cover={<img alt="example" src={item.img_path} />}
+                        actions={[
+                            <div
+                                onClick={() => {
+                                    // selectImg(id, item);
+                                }}
+                            >
+                                {/* { item.selected || selectedImageIds.indexOf(item.id) > -1 ? <CheckSquareOutlined key="selected" /> : <BorderOutlined key="unselect" /> } */}
+                            </div>,
+                            <DeleteOutlined
+                                key="edit"
+                                // onClick={() => removeImg(item.id)}
+                            />
+                        ]}
+                    >
+                        <Meta title={item.img_name} description={item.created_date} />
+                    </Card>
+                ))
             }
         </Modal>
         </Row>
