@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Row, Col, Tabs, Modal
 } from 'antd';
@@ -181,7 +181,7 @@ function News(props) {
                 }
                 {
                     overLayType === 'delete'
-                    ? 
+                    ?
                         <p><ExclamationCircleOutlined /> { Dic[props.language].common.deleteConfirmTitel }</p>
                     :
                     null

@@ -14,7 +14,7 @@ function Template(props) {
     };
 
     const apply = () => {
-        console.log();
+        // console.log();
     };
     return (
         <div className="site-template site-content">

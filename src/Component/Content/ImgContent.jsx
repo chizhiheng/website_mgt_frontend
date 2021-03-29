@@ -22,7 +22,8 @@ class PicturesWall extends React.Component {
       callBack: props.callBack,
       maxImgNumber: props.maxImgNumber,
       url: props.url,
-      userToken: props.userToken
+      userToken: props.userToken,
+      type: props.type
     };
   }
 
@@ -33,7 +34,7 @@ class PicturesWall extends React.Component {
       }
     });
   };
-  
+
   handleCancel = () => this.setState({ previewVisible: false });
 
   handlePreview = async file => {
@@ -68,7 +69,8 @@ class PicturesWall extends React.Component {
           listType="picture-card"
           fileList={fileList}
           data={() => ({
-            userToken: this.state.userToken
+            userToken: this.state.userToken,
+            type: this.state.type
           })}
           onPreview={this.handlePreview}
           onChange={this.handleChange}

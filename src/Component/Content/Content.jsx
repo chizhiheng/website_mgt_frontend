@@ -109,44 +109,55 @@ function Content(props) {
     const [selectedLang, setSelectedLang] = useState('');
 
     useEffect(() => {
-        let monted = true;
+      let monted = true;
+      // const abortController = new AbortController();
+      // const signal = abortController.signal;
 
-        if (monted) {
-            const params = {
-                url: getLangList,
-                param: {
-                    code: cookies.user_token.toString(),
-                }
-            };
-            RequestUtils(params).then((res) => {
-                // setSelectedLang(res.result[0].key);
-                selectLang(res.result[0].key);
-                setLangList(res.result);
-            }).catch((e) => {
-                setLoading(false);
-                console.log(e);
-            });
+      const params = {
+        url: getLangList,
+        param: {
+            code: cookies.user_token.toString()
         }
+        // signal: signal
+      };
+      RequestUtils(params).then((res) => {
+        if (monted) {
+          // setSelectedLang(res.result[0].key);
+          selectLang(res.result[0].key);
+          setLangList(res.result);
+        }
+      }).catch((e) => {
+        if (monted) {
+          setLoading(false);
+          console.log(e);
+        }
+      });
 
-        return () => {
-            monted = false;
-        };
+
+      return () => {
+          monted = false;
+          // abortController.abort();
+      };
     }, []);
 
     useEffect(() => {
+      let monted = true;
+
+      if (monted) {
         if (withImgs) {
-            setImgInLibraryList([...imgInLibrary]);
-            if (selectedImages.length) {
-                const arr = imgInLibraryList;
-                arr.forEach((item) => {
-                    selectedImages.forEach((el) => {
-                        if (item.id === el.id) {
-                            item.selected = true;
-                        }
-                    });
+          if (selectedImages.length) {
+            const arr = [...imgInLibrary];
+            arr.forEach((item) => {
+                selectedImages.forEach((el) => {
+                    if (item.id === el.id) {
+                        item.selected = true;
+                    }
                 });
-                setImgInLibraryList([...arr]);
-            }
+            });
+            setImgInLibraryList([...arr]);
+          } else {
+            setImgInLibraryList([...imgInLibrary]);
+          }
         }
 
         if (defaultVal) {
@@ -188,44 +199,46 @@ function Content(props) {
               setEditorContent(defaultVal.content)
           }
           if (defaultVal.imgs && defaultVal.imgs.length > 0) {
-              const arr = [];
-              let imgs = [];
-              defaultVal.imgs.forEach((item)=>{
-                  imgs.push(item.id);
-              });
-              setReturnValues((res) => {
-                  res.imgs = imgs;
-                  return res;
-              });
-              defaultVal.imgs.forEach((item) => {
-                  const element = {
-                      uid: item.id,
-                      name: item.img_name,
-                      status: 'done',
-                      url: imgHost + item.img_name,
-                  };
-                  arr.push(element);
-              });
-              const imgList = [...imgInLibraryList];
-              arr.forEach((item)=>{
-                  imgList.forEach((el) => {
-                      if (item.uid === el.id) {
-                          el.selected = true;
-                      }
-                  });
-              });
-              setSelectedImages([...arr]);
-              setImgInLibraryList([...imgList]);
+            const arr = [];
+            let imgs = [];
+            defaultVal.imgs.forEach((item)=>{
+                imgs.push(item.id);
+            });
+            setReturnValues((res) => {
+                res.imgs = imgs;
+                return res;
+            });
+            defaultVal.imgs.forEach((item) => {
+                const element = {
+                    uid: item.id,
+                    name: item.img_name,
+                    status: 'done',
+                    url: imgHost + item.img_name,
+                };
+                arr.push(element);
+            });
+            const imgList = [...imgInLibrary];
+            arr.forEach((item)=>{
+                imgList.forEach((el) => {
+                    if (item.uid === el.id) {
+                        el.selected = true;
+                    }
+                });
+            });
+            setSelectedImages([...arr]);
+            setImgInLibraryList([...imgList]);
           } else {
-              setSelectedImages([]);
-              setImgInLibraryList([]);
+            setSelectedImages([]);
+            setImgInLibraryList([]);
           }
-        } else {
-          console.log(2222);
         }
-
         removeErr();
-    }, [imgInLibrary, defaultVal, navValue]);
+      }
+
+      return () => {
+        monted = false;
+      };
+    }, [imgInLibrary, defaultVal, navValue, langList]);
 
     const makeTop = (val) => {
         let flag = false;
@@ -381,6 +394,7 @@ function Content(props) {
         }
     };
     const getImgList = async (list) => {
+      console.log(222222);
         // setShowAddImgLoading(true);
         await getImageFromLib();
         // setShowAddImgLoading(false);
@@ -598,6 +612,7 @@ function Content(props) {
                                     callBack={(list) => {
                                         getImgList();
                                     }}
+                                    type="product"
                                     url={url}
                                     userToken={userToken}
                                     maxImgNumber={500}

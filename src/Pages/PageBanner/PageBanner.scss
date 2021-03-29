@@ -1,0 +1,51 @@
+.site-page-banner {
+  .page-banner-details-row {
+    border-bottom: 1px dashed #d1d1d1;
+    padding-bottom: 1rem;
+  }
+  .page-banner-list {
+    height: 10rem;
+    border-bottom: 1px dashed #d1d1d1;
+    margin: 0 1rem;
+  }
+
+  .img-selector-overlay{
+    height: 85%;
+    .ant-modal-content{
+        height: 100%;
+        .ant-modal-body{
+            height: 75%;
+            overflow-y: scroll;
+
+            .ant-card{
+                margin-right: 1rem;
+                margin-bottom: 1rem;
+                float: left;
+
+                .ant-card-body{
+                    position: relative;
+                    .select-box{
+                        position: absolute;
+                        top: 71px;
+                        right: 5px;
+                        svg{
+                            width: 18px;
+                            height: 18px;
+                        }
+                    }
+                }
+                .ant-card-cover{
+                    img{
+                        height: 200px;
+                    }
+                }
+            }
+        }
+        .ant-modal-footer{
+            .ant-upload-list-picture-card-container{
+                display: none;
+            }
+        }
+    }
+  }
+}

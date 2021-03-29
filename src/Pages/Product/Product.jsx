@@ -65,7 +65,8 @@ function Product(props) {
         const params = {
             url: getImgs,
             param: {
-                code: cookies.user_token.toString()
+                code: cookies.user_token.toString(),
+                type: 'product'
             }
         };
         RequestUtils(params).then((res) => {
@@ -82,7 +83,7 @@ function Product(props) {
             setImgInLibrary([]);
             setLoading(false);
             console.log(e);
-        });;
+        });
     };
 
     const deleteImageFromLib = (imgId) => {

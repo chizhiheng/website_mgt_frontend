@@ -78,7 +78,7 @@ function NavMgt(props) {
             setDisableApplyBtn(false);
           },
           onCancel() {
-            console.log('Cancel');
+            // console.log('Cancel');
           },
         });
     };
@@ -128,7 +128,7 @@ function NavMgt(props) {
                 if (type === 'moveUp') {
                     upGo(treeList, index);
                 } else if (type === 'moveDown') {
-                    console.log('moveDown');
+                    // console.log('moveDown');
                     downGo(treeList, index);
                 } else if (type === 'delete') {
                     treeList.splice(index, 1);
@@ -239,7 +239,7 @@ function NavMgt(props) {
     };
 
     const navFieldsCallBack = (val) => {
-        console.log('navFieldsCallBack', val);
+        // console.log('navFieldsCallBack', val);
         setDisableApplyBtn(false);
         setNavList([...val]);
         closeEditOverlay();

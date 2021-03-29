@@ -31,40 +31,40 @@ function Article(props) {
     const [responseExisted, setResponseExisted] = useState(false);
 
     const callBack = (val) => {
-        if (val.flag === 'insert') {
-            setLoading(true);
-            const params = {
-                url: insertContent,
-                param: {
-                    code: cookies.user_token.toString(),
-                    type: 1,
-                    content: val
-                }
-            };
-            RequestUtils(params).then((res) => {
-                setLoading(false);
-                if (res.result === 'Content existed with same nav and language.') {
-                  setResponseExisted(true);
-                  setAppState({systemPopup: {
-                    display: true,
-                    type: 'warning',
-                    title: Dic[language].common.systemPopup.existed.title,
-                    desc: Dic[language].common.systemPopup.existed.description
-                  }})
-                }
-            }).catch((e) => {
-                setLoading(false);
-                console.log(e);
-            });
-        } else if (val.flag === 'update') {
-            if (window.document.querySelectorAll('.article-edit-popup .red-border').length > 0){
-                setDisabledBtn(true);
-            } else {
-                setDisabledBtn(false);
-            }
-            val.id = modifyItem.id;
-            setModifyItem({...val});
-        }
+      if (val.flag === 'insert') {
+          setLoading(true);
+          const params = {
+              url: insertContent,
+              param: {
+                  code: cookies.user_token.toString(),
+                  type: 1,
+                  content: val
+              }
+          };
+          RequestUtils(params).then((res) => {
+              setLoading(false);
+              if (res.result === 'Content existed with same nav and language.') {
+                setResponseExisted(true);
+                setAppState({systemPopup: {
+                  display: true,
+                  type: 'warning',
+                  title: Dic[language].common.systemPopup.existed.title,
+                  desc: Dic[language].common.systemPopup.existed.description
+                }})
+              }
+          }).catch((e) => {
+              setLoading(false);
+              console.log(e);
+          });
+      } else if (val.flag === 'update') {
+          if (window.document.querySelectorAll('.article-edit-popup .red-border').length > 0){
+              setDisabledBtn(true);
+          } else {
+              setDisabledBtn(false);
+          }
+          val.id = modifyItem.id;
+          setModifyItem({...val});
+      }
     };
 
     const tableCallBack = (record, flag) => {

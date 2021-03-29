@@ -27,18 +27,18 @@ export default function RichEditor(props) {
           reader.onload = function(e) {
             img.src = this.result;
           };
-      
+
           img.onload = function() {
-            console.log(img); // 获取图片
-            console.log(img.src.length)
+            // console.log(img); // 获取图片
+            // console.log(img.src.length)
             // 缩放图片需要的canvas（也可以在DOM中直接定义canvas标签，这样就能把压缩完的图片不转base64也能直接显示出来）
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
-      
+
             // 图片原始尺寸
             const originWidth = this.width;
             const originHeight = this.height;
-      
+
             // 最大尺寸限制，可通过设置宽高来实现图片压缩程度
             const maxWidth = 400;
             const maxHeight = 500;
@@ -64,7 +64,7 @@ export default function RichEditor(props) {
             // 图片压缩
             context.drawImage(img, 0, 0, targetWidth, targetHeight);
             /* 第一个参数是创建的img对象；第二三个参数是左上角坐标，后面两个是画布区域宽高 */
-      
+
             // 压缩后的图片转base64 url
             /* canvas.toDataURL(mimeType, qualityArgument),mimeType 默认值是'image/png';
              * qualityArgument表示导出的图片质量，只有导出为jpeg和webp格式的时候此参数才有效，默认值是0.92 */
@@ -74,10 +74,10 @@ export default function RichEditor(props) {
                 link: newUrl,
               },
             });
-      
+
             // 也可以把压缩后的图片转blob格式用于上传
             canvas.toBlob((blob)=>{
-                console.log(blob)
+                // console.log(blob)
                 //把blob作为参数传给后端
             }, 'image/jpeg', 0.92)
           };
