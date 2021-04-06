@@ -32,7 +32,8 @@
                 "title": "出错了",
                 "description": "上传图片失败，可能是因为图片过大导致，当前系统允许最大上传图片大小为:"
               }
-            }
+            },
+            "comingSoon": "敬请期待"
         },
         "login": {
             "title": "使用你的账号登录",
@@ -240,7 +241,8 @@
                 "title": "Error",
                 "description": "Upload image faild. Please check image size, system max allow image size is: "
               }
-            }
+            },
+            "comingSoon": "Coming soon"
         },
         "login": {
             "title": "Sign in with your ID",

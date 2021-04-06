@@ -2,8 +2,10 @@
     .template-container{
         width: 100%;
 
+        .template-item img, .template-item {
+          width: 300px;
+        }
         .template-item{
-            width: 200px;
             float: left;
             margin: 0 2rem 1rem 0;
             .template-img{

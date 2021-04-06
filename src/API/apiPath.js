@@ -16,3 +16,4 @@ export const getLangList = '/getLangList.php';
 export const upsertNavImg = '/upsertNavImg.php';
 export const getNavImg = '/getNavImg.php';
 export const deleteNavImg = '/deleteNavImg.php';
+export const getTemplates = '/getTemplates.php';
