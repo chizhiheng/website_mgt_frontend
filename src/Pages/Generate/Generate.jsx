@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
     Row, Col, Divider, Progress, Button
 } from 'antd';
@@ -11,12 +11,20 @@ import './Generate.scss';
 function Generate(props) {
     const { language } = {...props};
 
+    useEffect(() => {
+      let monted = true;
+
+      return () => {
+        monted = false;
+      };
+    }, []);
+
     return (
         <div className="site-generate-html">
             <Row className="height-100-per">
                 <Col span={24} className="border-1px-light-gray">
                     <Row>
-                        
+
                     </Row>
                     <Row>
                         <Col span={6}>
@@ -42,7 +50,7 @@ function Generate(props) {
                     <Row className="float-right">
                         <Col span={12}>
                             <Button
-                                type="primary" 
+                                type="primary"
                                 icon={<Html5Outlined />}
                                 // onClick={() => {updateNavItem(item, 'edit')}}
                             >
@@ -51,7 +59,7 @@ function Generate(props) {
                         </Col>
                         <Col span={12}>
                             <Button
-                                type="primary" 
+                                type="primary"
                                 icon={<WechatOutlined />}
                                 // onClick={() => {updateNavItem(item, 'edit')}}
                             >

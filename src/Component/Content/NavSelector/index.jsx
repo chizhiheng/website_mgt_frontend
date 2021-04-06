@@ -51,9 +51,9 @@ function NavSelector(props) {
         };
     }, []);
 
-    // useEffect(()=> {
-    //   selectNavLevel(value);
-    // }, [value]);
+    useEffect(()=> {
+      selectNavLevel(value);
+    }, [value]);
 
     const formatNav = (result) => {
       let parentArr = [];
@@ -93,7 +93,6 @@ function NavSelector(props) {
     };
 
     const selectNavLevel = (val) => {
-      console.log(val, navList);
       const hasChild = fetchNav(val, navList);
       if (hasChild) {
           errCallBack(true);

@@ -194,7 +194,15 @@ function Content(props) {
           if (defaultVal.is_top === '1') {
               makeTop(0);
           }
-          setNavValue(defaultVal.key)
+
+          let val = '';
+          if (navValue === null) {
+            val = defaultVal.key;
+          } else {
+            val = navValue;
+          }
+
+          setNavValue(val);
           if (defaultVal.content !== '') {
               updateDescription(defaultVal.content);
               setEditorContent(defaultVal.content)
@@ -305,42 +313,43 @@ function Content(props) {
         }
     };
     const submit = (vals) => {
-        removeErr();
-        if (returnValues.title === '') {
-            setTitleErr(true);
-            if (!defaultVal) {
-                return;
-            }
-        }
-        if (!vals.nav) {
-            setNevErr(true);
-            return;
-        }
-        if (vals.keyword === '') {
-            setKeyWordErr(true);
-            if (!defaultVal) {
-                return;
-            }
-        }
-        if (vals.description === '') {
-            setDescriptionErr(true);
-            if (!defaultVal) {
-                return;
-            }
-        }
-        if (vals.expireDate.status && vals.expireDate.value.length !== 2) {
-            setExpireDateErr(true);
-            if (!defaultVal) {
-                return;
-            }
-        }
-        if (vals.content === '') {
-            setContentErr(true);
-            if (!defaultVal) {
-                return;
-            }
-        }
-        callBack(vals);
+      removeErr();
+      if (returnValues.title === '') {
+          setTitleErr(true);
+          if (!defaultVal) {
+              return;
+          }
+      }
+      if (!vals.nav) {
+          setNevErr(true);
+          return;
+      }
+      if (vals.keyword === '') {
+          setKeyWordErr(true);
+          if (!defaultVal) {
+              return;
+          }
+      }
+      if (vals.description === '') {
+          setDescriptionErr(true);
+          if (!defaultVal) {
+              return;
+          }
+      }
+      if (vals.expireDate.status && vals.expireDate.value.length !== 2) {
+          setExpireDateErr(true);
+          if (!defaultVal) {
+              return;
+          }
+      }
+      if (vals.content === '') {
+          setContentErr(true);
+          if (!defaultVal) {
+              return;
+          }
+      }
+      vals.nav = navValue;
+      callBack(vals);
     };
     const cleanData = () => {
       setTitle('');
@@ -467,7 +476,10 @@ function Content(props) {
                         value={title}
                     />
                 </Col>
-                <Col span={12} className="text-align-right padding-right-2rem">
+                {
+                  !defaultVal
+                  ?
+                  <Col span={12} className="text-align-right padding-right-2rem">
                     <span>{ Dic[language].common.selectOne }: </span>
                     <Select
                     onChange={(e) => {
@@ -481,7 +493,10 @@ function Content(props) {
                             })
                         }
                     </Select>
-                </Col>
+                  </Col>
+                  : null
+                }
+
             </Row>
             <Row>
                 <Col span={12} className={ navErr ? 'red-border' : '' }>
@@ -705,7 +720,6 @@ function Content(props) {
                     </Row>
                 : null
             }
-
         </>
     );
 }
