@@ -51,19 +51,19 @@ function NavSelector(props) {
         };
     }, []);
 
-    useEffect(()=> {
-        selectNavLevel(value);
-    }, [value]);
+    // useEffect(()=> {
+    //   selectNavLevel(value);
+    // }, [value]);
 
     const formatNav = (result) => {
-        let parentArr = [];
-        result.forEach((element) => {
-            if (element.s_id === '' || element.s_id === '-1') {
-                element.children = restructureData(element, result);
-                parentArr.push(element);
-            }
-        });
-        setNavList([...parentArr]);
+      let parentArr = [];
+      result.forEach((element) => {
+        if (element.s_id === '' || element.s_id === '-1') {
+          element.children = restructureData(element, result);
+          parentArr.push(element);
+        }
+      });
+      setNavList([...parentArr]);
     };
 
     const restructureData = (element, result) => {
@@ -93,26 +93,27 @@ function NavSelector(props) {
     };
 
     const selectNavLevel = (val) => {
-        const hasChild = fetchNav(val, navList);
-        if (hasChild) {
-            errCallBack(true);
-        } else {
-            errCallBack(false);
+      console.log(val, navList);
+      const hasChild = fetchNav(val, navList);
+      if (hasChild) {
+          errCallBack(true);
+      } else {
+          errCallBack(false);
+      }
+      let value = {
+        key: '',
+        title: '',
+        en_title: '',
+        kr_title: '',
+        jp_title: ''
+      };
+      returnRes.forEach((item) => {
+        if (item.key === val) {
+          value = {...item};
         }
-        let value = {
-          key: '',
-          title: '',
-          en_title: '',
-          kr_title: '',
-          jp_title: ''
-        };
-        returnRes.forEach((item) => {
-          if (item.key === val) {
-            value = {...item};
-          }
-        });
-        setSelectValue(val);
-        setSelectMenu(value);
+      });
+      setSelectValue(val);
+      setSelectMenu(value);
     };
     const generteOption = (items, counter) =>{
         if (counter === 0){
@@ -148,16 +149,16 @@ function NavSelector(props) {
     }
 
     return (
-        <Select
-            onChange={selectNavLevel}
-            className="nav-selector"
-            placeholder={Dic[language].common.selectOne}
-            value={selectValue}
-        >
-            {
-                generteOption(navList, 0)
-            }
-        </Select>
+      <Select
+        onChange={selectNavLevel}
+        className="nav-selector"
+        placeholder={Dic[language].common.selectOne}
+        value={selectValue}
+      >
+        {
+          generteOption(navList, 0)
+        }
+      </Select>
     );
 }
 

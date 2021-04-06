@@ -20,7 +20,7 @@
             }
         }
         .ant-modal-footer{
-            margin-top: 1rem;
+          margin-top: 1rem;
         }
     }
     .red-border{
@@ -28,4 +28,8 @@
             border-color: red;
         }
     }
+}
+
+.product-delete-popup {
+  width: 50% !important;
 }

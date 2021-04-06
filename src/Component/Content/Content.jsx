@@ -135,7 +135,6 @@ function Content(props) {
         }
       });
 
-
       return () => {
           monted = false;
           // abortController.abort();
@@ -649,11 +648,12 @@ function Content(props) {
                                                     selectImg(id, item);
                                                 }}
                                             >
-                                                { item.selected || selectedImageIds.indexOf(item.id) > -1 ? <CheckSquareOutlined key="selected" /> : <BorderOutlined key="unselect" /> }
+                                                { item.selected || selectedImageIds.indexOf(item.id) > -1 ? <CheckSquareOutlined key="selected" className="icon-fill-blue" /> : <BorderOutlined key="unselect" className="icon-fill-blue" /> }
                                             </div>,
                                             <DeleteOutlined
                                                 key="edit"
                                                 onClick={() => removeImg(item.id)}
+                                                className="icon-fill-red"
                                             />
                                         ]}
                                     >

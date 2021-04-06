@@ -50,7 +50,7 @@ function Article(props) {
                   type: 'warning',
                   title: Dic[language].common.systemPopup.existed.title,
                   desc: Dic[language].common.systemPopup.existed.description
-                }})
+                }});
               }
           }).catch((e) => {
               setLoading(false);
@@ -68,29 +68,30 @@ function Article(props) {
     };
 
     const tableCallBack = (record, flag) => {
-        setModifyItem({ ...record });
-        if (flag === 'update') {
-            setLoading(true);
-            const params = {
-                url: getContentDetails,
-                param: {
-                    code: cookies.user_token.toString(),
-                    content_id: record.id,
-                    type: 1
-                }
-            };
-            RequestUtils(params).then((res) => {
-                setLoading(false);
-                setContentDefaultValue({...res.result[0]});
-                setOverLayType('update');
-            }).catch((e) => {
-                setLoading(false);
-                console.log(e);
-            });
-        } else if (flag === 'delete') {
-            setOverLayType('delete');
-        }
-        setShowEdit(true);
+      setModifyItem({ ...record });
+      if (flag === 'update') {
+        setLoading(true);
+        const params = {
+            url: getContentDetails,
+            param: {
+                code: cookies.user_token.toString(),
+                content_id: record.id,
+                type: 1
+            }
+        };
+        RequestUtils(params).then((res) => {
+            setLoading(false);
+            setContentDefaultValue({...res.result[0]});
+            setOverLayType('update');
+        }).catch((e) => {
+            setLoading(false);
+            console.log(e);
+        });
+      } else if (flag === 'delete') {
+        setDisabledBtn(false);
+        setOverLayType('delete');
+      }
+      setShowEdit(true);
     };
 
     const handleOk = () => {
@@ -171,7 +172,7 @@ function Article(props) {
                 onOk={() => handleOk(overLayType)}
                 onCancel={handleCancel}
                 width={1000}
-                className="article-edit-popup"
+                className={overLayType === 'update' ? 'article-edit-popup' : 'article-delete-popup'}
                 okButtonProps={{
                     disabled: disabledBtn
                 }}

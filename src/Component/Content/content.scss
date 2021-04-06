@@ -42,9 +42,10 @@
             }
         }
         .ant-modal-footer{
-            .ant-upload-list-picture-card-container{
-                display: none;
-            }
+          padding: 4px 16px !important;
+          .ant-upload-list-picture-card-container{
+            display: none;
+          }
         }
     }
 }

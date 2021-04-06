@@ -4,9 +4,18 @@
     padding-bottom: 1rem;
   }
   .page-banner-list {
-    height: 10rem;
+    min-height: 11rem;
     border-bottom: 1px dashed #d1d1d1;
     margin: 0 1rem;
+
+    .ant-col-6 {
+      border-right: 1px dashed #d1d1d1;
+    }
+
+    a img {
+      width: 80%;
+      height: 110px;
+    }
   }
 
   .img-selector-overlay{
@@ -42,9 +51,10 @@
             }
         }
         .ant-modal-footer{
-            .ant-upload-list-picture-card-container{
-                display: none;
-            }
+          padding: 4px 16px;
+          .ant-upload-list-picture-card-container{
+              display: none;
+          }
         }
     }
   }

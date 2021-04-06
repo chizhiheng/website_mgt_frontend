@@ -56,30 +56,31 @@ function News(props) {
     };
 
     const tableCallBack = (record, flag) => {
-        setModifyItem({ ...record });
-        if (flag === 'update') {
-            setLoading(true);
-            const params = {
-                url: getContentDetails,
-                param: {
-                    code: cookies.user_token.toString(),
-                    content_id: record.id,
-                    type: 2
-                }
-            };
-            RequestUtils(params).then((res) => {
-                setLoading(false);
-                setContentDefaultValue({...res.result[0]});
-                setOverLayType('update');
-            }).catch((e) => {
-                setLoading(false);
-                console.log(e);
-            });
+      setModifyItem({ ...record });
+      if (flag === 'update') {
+        setLoading(true);
+        const params = {
+            url: getContentDetails,
+            param: {
+                code: cookies.user_token.toString(),
+                content_id: record.id,
+                type: 2
+            }
+        };
+        RequestUtils(params).then((res) => {
+            setLoading(false);
+            setContentDefaultValue({...res.result[0]});
             setOverLayType('update');
-        } else if (flag === 'delete') {
-            setOverLayType('delete');
-        }
-        setShowEdit(true);
+        }).catch((e) => {
+            setLoading(false);
+            console.log(e);
+        });
+        setOverLayType('update');
+      } else if (flag === 'delete') {
+        setDisabledBtn(false);
+        setOverLayType('delete');
+      }
+      setShowEdit(true);
     };
 
     const handleOk = () => {
@@ -159,7 +160,7 @@ function News(props) {
                 onOk={() => handleOk(overLayType)}
                 onCancel={handleCancel}
                 width={1000}
-                className="news-edit-popup"
+                className={overLayType === 'update' ? 'news-edit-popup' : 'news-delete-popup'}
                 okButtonProps={{
                     disabled: disabledBtn
                 }}

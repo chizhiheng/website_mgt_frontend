@@ -142,41 +142,41 @@ function NavMgt(props) {
     };
 
     const upGo = (fieldData,index) => {
-        if(index !== 0) {
-            fieldData[index] = fieldData.splice(index-1, 1, fieldData[index])[0];
-        }else{
-            fieldData.push(fieldData.shift());
-        }
+      if(index !== 0) {
+          fieldData[index] = fieldData.splice(index-1, 1, fieldData[index])[0];
+      }else{
+          fieldData.push(fieldData.shift());
+      }
     }
     const downGo= (fieldData,index) => {
-        if(index !== fieldData.length-1) {
-            fieldData[index] = fieldData.splice(index+1, 1, fieldData[index])[0];
-        }else{
-            fieldData.unshift( fieldData.splice(index,1)[0]);
-        }
+      if(index !== fieldData.length-1) {
+          fieldData[index] = fieldData.splice(index+1, 1, fieldData[index])[0];
+      }else{
+          fieldData.unshift( fieldData.splice(index,1)[0]);
+      }
     }
 
     const closeEditOverlay = () => {
-        setShowEditOverlay(false);
+      setShowEditOverlay(false);
     };
 
     const applyNavToSite = (e) => {
-        setLoading(true);
-        const params = {
-            url: upsertMenu,
-            param: {
-                code: cookies.user_token.toString(),
-                values: navList
-            }
-        }
-        RequestUtils(params).then((res) => {
-            setLoading(false);
-            setDisableApplyBtn(true);
-            // getMenuList();
-        }).catch((e) => {
-            setLoading(false);
-            console.log(e);
-        });
+      setLoading(true);
+      const params = {
+          url: upsertMenu,
+          param: {
+              code: cookies.user_token.toString(),
+              values: navList
+          }
+      }
+      RequestUtils(params).then((res) => {
+          setLoading(false);
+          setDisableApplyBtn(true);
+          // getMenuList();
+      }).catch((e) => {
+          setLoading(false);
+          console.log(e);
+      });
     };
 
     // generte added nav
@@ -184,55 +184,55 @@ function NavMgt(props) {
         return val.map((item, id) => (
             <div className="item" key={`nav-${flag}-item-${id}`}>
                 <Tooltip
-                    placement="top"
-                    title={
-                        <>
-                            <span>{ supportLangs.cn === '1' ? `${Dic[language].NavMgt.addNav.cnName}: ${item.title}` : ''}</span><br />
-                            <span>{ supportLangs.en === '1' ? `${Dic[language].NavMgt.addNav.enName}: ${item.en_title}` : '' }</span><br />
-                            <span>{ supportLangs.jp === '1' ? `${Dic[language].NavMgt.addNav.jpName}: ${item.jp_title}` : '' }</span><br />
-                            <span>{ supportLangs.kr === '1' ? `${Dic[language].NavMgt.addNav.krName}: ${item.kr_title}` : '' }</span><br />
-                            <span>{ item.children && item.children.length ? '' : `${Dic[language].NavMgt.addNav.pathName}: ${item.key}` }</span>
-                        </>
-                    }
+                  placement="top"
+                  title={
+                    <>
+                      <span>{ supportLangs.cn === '1' ? `${Dic[language].NavMgt.addNav.cnName}: ${item.title}` : ''}</span><br />
+                      <span>{ supportLangs.en === '1' ? `${Dic[language].NavMgt.addNav.enName}: ${item.en_title}` : '' }</span><br />
+                      <span>{ supportLangs.jp === '1' ? `${Dic[language].NavMgt.addNav.jpName}: ${item.jp_title}` : '' }</span><br />
+                      <span>{ supportLangs.kr === '1' ? `${Dic[language].NavMgt.addNav.krName}: ${item.kr_title}` : '' }</span><br />
+                      <span>{ item.children && item.children.length ? '' : `${Dic[language].NavMgt.addNav.pathName}: ${item.key}` }</span>
+                    </>
+                  }
                 >
-                    <span className="nav-label">
-                        { language === 'zh' ? item.title : item.en_title } { item.children && item.children.length ? '' : `- ${item.key}` }
-                        <span className="nav-item-modify-container float-right">
-                            <Button
-                                type="primary"
-                                icon={<FormOutlined />}
-                                name={item.key}
-                                onClick={() => {updateNavItem(item, 'edit')}}
-                            ></Button>
-                            { id === 0 ? null :
-                                <Button
-                                    type="primary"
-                                    icon={<ArrowUpOutlined />}
-                                    name={item.key}
-                                    onClick={() => {updateNavItem(item, 'moveUp')}}
-                                ></Button>
-                            }
-                            { id === val.length - 1 ? null :
-                                <Button
-                                    type="primary"
-                                    icon={<ArrowDownOutlined />}
-                                    name={item.key}
-                                    onClick={() => {updateNavItem(item, 'moveDown')}}
-                                ></Button>
-                            }
-                            <Button
-                                type="primary"
-                                icon={<DeleteOutlined />}
-                                name={item.key}
-                                onClick={() => {updateNavItem(item, 'delete')}}
-                            ></Button>
-                        </span>
+                  <span className="nav-label">
+                    { language === 'zh' ? item.title : item.en_title } { item.children && item.children.length ? '' : `- ${item.key}` }
+                    <span className="nav-item-modify-container float-right">
+                      <Button
+                        type="primary"
+                        icon={<FormOutlined />}
+                        name={item.key}
+                        onClick={() => {updateNavItem(item, 'edit')}}
+                      ></Button>
+                      { id === 0 || id === 1 ? null :
+                        <Button
+                          type="primary"
+                          icon={<ArrowUpOutlined />}
+                          name={item.key}
+                          onClick={() => {updateNavItem(item, 'moveUp')}}
+                        ></Button>
+                      }
+                      { id === val.length - 1 ? null :
+                        <Button
+                          type="primary"
+                          icon={<ArrowDownOutlined />}
+                          name={item.key}
+                          onClick={() => {updateNavItem(item, 'moveDown')}}
+                        ></Button>
+                      }
+                      <Button
+                        type="primary"
+                        icon={<DeleteOutlined />}
+                        name={item.key}
+                        onClick={() => {updateNavItem(item, 'delete')}}
+                      ></Button>
                     </span>
+                  </span>
                 </Tooltip>
                 {
-                    item.children && item.children.length > 0 ?
-                        generteNav(item.children, 'children')
-                    : ''
+                  item.children && item.children.length > 0 ?
+                    generteNav(item.children, 'children')
+                  : ''
                 }
             </div>
         ));
@@ -250,71 +250,71 @@ function NavMgt(props) {
             { loading ? <Loading text={Dic[language].common.loading}/> : null}
             {/* update nav item popup start */}
             <Modal
-                title={ Dic[language].common.update }
-                visible={showEditOverlay}
-                onCancel={closeEditOverlay}
-                cancelText={ Dic[language].common.cancel }
-                onOk={closeEditOverlay}
-                okText={ Dic[language].common.ok }
-                className="edit-nav-overlay"
+              title={ Dic[language].common.update }
+              visible={showEditOverlay}
+              onCancel={closeEditOverlay}
+              cancelText={ Dic[language].common.cancel }
+              onOk={closeEditOverlay}
+              okText={ Dic[language].common.ok }
+              className="edit-nav-overlay"
             >
-                <NavFields
-                    language={language}
-                    callBack={navFieldsCallBack}
-                    showTitle={false}
-                    defaultValue={navList}
-                    btnLabel={ Dic[language].common.update }
-                    isUpdate
-                    updateVal={updateItem}
-                    langSupport={supportLangs}
-                />
+              <NavFields
+                language={language}
+                callBack={navFieldsCallBack}
+                showTitle={false}
+                defaultValue={navList}
+                btnLabel={ Dic[language].common.update }
+                isUpdate
+                updateVal={updateItem}
+                langSupport={supportLangs}
+              />
             </Modal>
             {/* update nav item popup stop */}
 
             <Row className="height-100-per">
                 <Col span={12}>
-                    <Row className="height-100-per">
-                        <Col span={24} className="border-1px-light-gray">
-                            <Row>
-                                <Col span={24}>
-                                    <h4>{ Dic[language].NavMgt.currentNav.title }</h4>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col span={24}>
-                                    <div className="nav-display-area">
-                                        {
-                                            generteNav(navList, 'parent')
-                                        }
-                                    </div>
-                                </Col>
-                            </Row>
-                            <Row className="float-right">
-                                <Col span={24}>
-                                    <Button
-                                        type="primary"
-                                        icon={<PlusOutlined />}
-                                        onClick={applyNavToSite}
-                                        disabled={ navList.length <= 0 || disableApplyBtn ? true : false }
-                                    >
-                                        { Dic[language].NavMgt.currentNav.apply }
-                                    </Button>
-                                </Col>
-                            </Row>
+                  <Row className="height-100-per">
+                    <Col span={24} className="border-1px-light-gray">
+                      <Row>
+                        <Col span={24}>
+                            <h4>{ Dic[language].NavMgt.currentNav.title }</h4>
                         </Col>
-                    </Row>
+                      </Row>
+                      <Row>
+                        <Col span={24}>
+                          <div className="nav-display-area">
+                            {
+                              generteNav(navList, 'parent')
+                            }
+                          </div>
+                        </Col>
+                      </Row>
+                      <Row className="float-right">
+                        <Col span={24}>
+                          <Button
+                            type="primary"
+                            icon={<PlusOutlined />}
+                            onClick={applyNavToSite}
+                            disabled={ navList.length <= 0 || disableApplyBtn ? true : false }
+                          >
+                            { Dic[language].NavMgt.currentNav.apply }
+                          </Button>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
                 </Col>
                 <Col span={12}>
-                    <NavFields
-                        language={language}
-                        callBack={navFieldsCallBack}
-                        showTitle
-                        defaultValue={navList}
-                        btnLabel={ Dic[language].NavMgt.addNav.addNew }
-                        isUpdate={false}
-                        updateVal={false}
-                        langSupport={supportLangs}
-                    />
+                  <NavFields
+                    language={language}
+                    callBack={navFieldsCallBack}
+                    showTitle
+                    defaultValue={navList}
+                    btnLabel={ Dic[language].NavMgt.addNav.addNew }
+                    isUpdate={false}
+                    updateVal={false}
+                    langSupport={supportLangs}
+                  />
                 </Col>
             </Row>
         </div>

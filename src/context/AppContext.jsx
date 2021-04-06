@@ -13,7 +13,12 @@ const initState = {
       display: false,
       type: '',
       title: '',
-      desc: ''
+      desc: '',
+      withCancelBtn: false,
+      tmpVal: {
+        key: ''
+      }, // saving temp value, like id can let remove function to get this id send to backend
+      callback: ()=>{}
     }
 }
 

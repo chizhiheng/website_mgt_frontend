@@ -78,7 +78,7 @@
             "currentNav": {
                 "title": "当前应用导航",
                 "apply": "应用当前设置",
-                "deleteConfirmDesc": "该项目及其子项目将被删除！操作后无法撤销！"
+                "deleteConfirmDesc": "该项目及其子项目将被删除！当前栏目下的所属内容将会无栏目绑定！操作后无法撤销！"
             },
             "addNav": {
                 "title": "添加新导航",
@@ -171,7 +171,11 @@
             "openImg": "从图库中选择图片 / 上传新图片"
         },
         "banner": {
-          "selectPage": "选择想要添加 banner的页面"
+          "selectPage": "选择想要添加 banner的页面",
+          "navPageTitle": "所选择的页面:",
+          "applyBanner": "所选择的 banner ",
+          "applyIndexBannerSize": "(建议 banner 宽度: 1210px, 高度: 365px):",
+          "applyBannerSize": "(建议 banner 宽度: 1210px, 高度 150px):"
         },
         "template": {
             "apply": "应用此模版",
@@ -282,7 +286,7 @@
             "currentNav": {
                 "title": "Current navigation",
                 "apply": "Apply current setting for website",
-                "deleteConfirmDesc": "The item will be removed and also include the sub items! Can not be undo!"
+                "deleteConfirmDesc": "The item will be removed and also include the sub items! Contents under the current nav will lost binding! Can not be undo!"
             },
             "addNav": {
                 "title": "Add new navigation",
@@ -375,7 +379,11 @@
             "openImg": "Select image from gallery / Upload new images"
         },
         "banner": {
-          "selectPage": "Select which page you want to add banner"
+          "selectPage": "Which page you want to add",
+          "navPageTitle": "Selected on page:",
+          "applyBanner": "selected banner ",
+          "applyIndexBannerSize": "(suggest banner width: 1210px, height: 365px):",
+          "applyBannerSize": "(suggest banner width: 1210px, height 150px):"
         },
         "template": {
             "apply": "Apply this",

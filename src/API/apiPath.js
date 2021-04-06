@@ -13,3 +13,6 @@ export const insertImg = '/insertImg.php';
 export const getImgs = '/getImgs.php';
 export const deleteImg = '/deleteImg.php';
 export const getLangList = '/getLangList.php';
+export const upsertNavImg = '/upsertNavImg.php';
+export const getNavImg = '/getNavImg.php';
+export const deleteNavImg = '/deleteNavImg.php';

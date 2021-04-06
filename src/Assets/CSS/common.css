@@ -55,11 +55,17 @@ h2, h3, p, .line-height-40px{
 .text-align-right{
     text-align: right !important;
 }
+.margin-bottom-0 {
+  margin-bottom: 0 !important;
+}
 .margin-bottom-2rem{
     margin-bottom: 2rem;
 }
 .margin-right-2rem{
     margin-right: 2rem;
+}
+.padding-top-1dot5rem{
+  padding-top: 1.5rem !important;
 }
 .padding-right-2rem{
     padding-right: 2rem !important
@@ -77,4 +83,12 @@ h2, h3, p, .line-height-40px{
 }
 .red-border{
     border-color: red;
+}
+
+.icon-fill-blue svg {
+  fill: #1890ff;
+}
+
+.icon-fill-red svg {
+  fill: #ff4d4f;
 }

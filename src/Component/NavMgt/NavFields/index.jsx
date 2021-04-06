@@ -104,64 +104,66 @@ function NavFields(props) {
 
     const addNav = () => {
         if (navLevel === -1){
-            let add = true;
-            navList.forEach((item) => {
-                if (item.title === navItemDetails.title){
-                    setTitleIconColor('rgba(255,0,0,1)');
-                    add = false;
-                }
-                if (item.en_title === navItemDetails.en_title){
-                    setETitleIconColor('rgba(255,0,0,1)');
-                    add = false;
-                }
-                if (item.jp_title === navItemDetails.jp_title){
-                    setJTitleIconColor('rgba(255,0,0,1)');
-                    add = false;
-                }
-                if (item.kr_title === navItemDetails.kr_title){
-                    setKTitleIconColor('rgba(255,0,0,1)');
-                    add = false;
-                }
-                if (item.key === navItemDetails.key){
-                    setPathIconColor('rgba(255,0,0,1)');
-                    add = false;
-                }
+          let add = true;
+          navList.forEach((item) => {
+            if (item.title === navItemDetails.title){
+                setTitleIconColor('rgba(255,0,0,1)');
+                add = false;
+            }
+            if (item.en_title === navItemDetails.en_title){
+                setETitleIconColor('rgba(255,0,0,1)');
+                add = false;
+            }
+            if (item.jp_title === navItemDetails.jp_title){
+                setJTitleIconColor('rgba(255,0,0,1)');
+                add = false;
+            }
+            if (item.kr_title === navItemDetails.kr_title){
+                setKTitleIconColor('rgba(255,0,0,1)');
+                add = false;
+            }
+            if (item.key === navItemDetails.key){
+                setPathIconColor('rgba(255,0,0,1)');
+                add = false;
+            }
+          });
+          if (add) {
+            const list = [...navList];
+            list.push(navItemDetails);
+            setNavList();
+            setNavList((res) => {
+              res = [...list];
+              return res;
             });
-            if (add) {
-                setNavList((res) => {
-                    const obj = {...navItemDetails};
-                    res.push(obj);
-                    return res;
-                });
-                setNavItemDetils({
-                    title: '',
-                    en_title: '',
-                    jp_title: '',
-                    kr_title: '',
-                    key: '',
-                    type: 1,
-                    s_id: -1
-                });
-                selectNavLevel(-1);
-                callBack(navList);
-            }
+            setNavItemDetils({
+              title: '',
+              en_title: '',
+              jp_title: '',
+              kr_title: '',
+              key: '',
+              type: 1,
+              s_id: -1
+            });
+            selectNavLevel(-1);
+            callBack(list);
+          }
         } else {
-            if (addItem) {
-                const val = [...navList];
-                fetchNav(val, 'add');
-                setNavList([...val]);
-                setNavItemDetils({
-                    title: '',
-                    en_title: '',
-                    jp_title: '',
-                    kr_title: '',
-                    key: '',
-                    type: 1,
-                    s_id: -1
-                });
-                selectNavLevel(-1);
-                callBack(navList);
-            }
+          if (addItem) {
+            const val = [...navList];
+            fetchNav(val, 'add');
+            setNavList([...val]);
+            setNavItemDetils({
+              title: '',
+              en_title: '',
+              jp_title: '',
+              kr_title: '',
+              key: '',
+              type: 1,
+              s_id: -1
+            });
+            selectNavLevel(-1);
+            callBack(navList);
+          }
         }
     };
 
@@ -209,77 +211,77 @@ function NavFields(props) {
 
     // check input nav item is duplicate or not
     const updateNavDetail = (e, type) => {
-        let flag = null;
-        setTitleIconColor('rgba(0,0,0,.45)');
-        setETitleIconColor('rgba(0,0,0,.45)');
-        setJTitleIconColor('rgba(0,0,0,.45)');
-        setKTitleIconColor('rgba(0,0,0,.45)');
-        setPathIconColor('rgba(0,0,0,.45)');
+      let flag = null;
+      setTitleIconColor('rgba(0,0,0,.45)');
+      setETitleIconColor('rgba(0,0,0,.45)');
+      setJTitleIconColor('rgba(0,0,0,.45)');
+      setKTitleIconColor('rgba(0,0,0,.45)');
+      setPathIconColor('rgba(0,0,0,.45)');
 
-        const navArr = cloneDeep(navList);
-        if (type === 'navType') {
-            setNavItemDetils({...navItemDetails, type: e.target.value});
-        } else if (type === 'cnName') {
-            setNavItemDetils({...navItemDetails, title: e.target.value});
-            flag = checkDuplicateValue(navArr, e.target.value, 'title');
-            if (flag || e.target.value === '') {
-                setTitleIconColor('rgba(255,0,0,1)');
-                setDisabledAddBtn(true);
-                setAddItem(false);
-            } else {
-                setTitleIconColor('rgba(0,0,0,.45)');
-                setDisabledAddBtn(false);
-                setAddItem(true);
-            }
-        } else if (type === 'enName') {
-            setNavItemDetils({...navItemDetails, en_title: e.target.value});
-            flag = checkDuplicateValue(navArr, e.target.value, 'en_title');
-            if (flag || e.target.value === '') {
-                setETitleIconColor('rgba(255,0,0,1)');
-                setDisabledAddBtn(true);
-                setAddItem(false);
-            } else {
-                setETitleIconColor('rgba(0,0,0,.45)');
-                setDisabledAddBtn(false);
-                setAddItem(true);
-            }
-        } else if (type === 'jpName') {
-            setNavItemDetils({...navItemDetails, jp_title: e.target.value});
-            flag = checkDuplicateValue(navArr, e.target.value, 'jp_title');
-            if (flag || e.target.value === '') {
-                setJTitleIconColor('rgba(255,0,0,1)');
-                setDisabledAddBtn(true);
-                setAddItem(false);
-            } else {
-                setJTitleIconColor('rgba(0,0,0,.45)');
-                setDisabledAddBtn(false);
-                setAddItem(true);
-            }
-        } else if (type === 'krName') {
-            setNavItemDetils({...navItemDetails, kr_title: e.target.value});
-            flag = checkDuplicateValue(navArr, e.target.value, 'kr_title');
-            if (flag || e.target.value === '') {
-                setKTitleIconColor('rgba(255,0,0,1)');
-                setDisabledAddBtn(true);
-                setAddItem(false);
-            } else {
-                setKTitleIconColor('rgba(0,0,0,.45)');
-                setDisabledAddBtn(false);
-                setAddItem(true);
-            }
-        } else if (type === 'path') {
-            setNavItemDetils({...navItemDetails, key: e.target.value});
-            flag = checkDuplicateValue(navArr, e.target.value, 'key');
-            if (flag || e.target.value === '') {
-                setPathIconColor('rgba(255,0,0,1)');
-                setDisabledAddBtn(true);
-                setAddItem(false);
-            } else {
-                setPathIconColor('rgba(0,0,0,.45)');
-                setDisabledAddBtn(false);
-                setAddItem(true);
-            }
+      const navArr = cloneDeep(navList);
+      if (type === 'navType') {
+        setNavItemDetils({...navItemDetails, type: e.target.value});
+      } else if (type === 'cnName') {
+        setNavItemDetils({...navItemDetails, title: e.target.value});
+        flag = checkDuplicateValue(navArr, e.target.value, 'title');
+        if (flag || e.target.value === '') {
+          setTitleIconColor('rgba(255,0,0,1)');
+          setDisabledAddBtn(true);
+          setAddItem(false);
+        } else {
+          setTitleIconColor('rgba(0,0,0,.45)');
+          setDisabledAddBtn(false);
+          setAddItem(true);
         }
+      } else if (type === 'enName') {
+        setNavItemDetils({...navItemDetails, en_title: e.target.value});
+        flag = checkDuplicateValue(navArr, e.target.value, 'en_title');
+        if (flag || e.target.value === '') {
+          setETitleIconColor('rgba(255,0,0,1)');
+          setDisabledAddBtn(true);
+          setAddItem(false);
+        } else {
+          setETitleIconColor('rgba(0,0,0,.45)');
+          setDisabledAddBtn(false);
+          setAddItem(true);
+        }
+      } else if (type === 'jpName') {
+        setNavItemDetils({...navItemDetails, jp_title: e.target.value});
+        flag = checkDuplicateValue(navArr, e.target.value, 'jp_title');
+        if (flag || e.target.value === '') {
+          setJTitleIconColor('rgba(255,0,0,1)');
+          setDisabledAddBtn(true);
+          setAddItem(false);
+        } else {
+          setJTitleIconColor('rgba(0,0,0,.45)');
+          setDisabledAddBtn(false);
+          setAddItem(true);
+        }
+      } else if (type === 'krName') {
+        setNavItemDetils({...navItemDetails, kr_title: e.target.value});
+        flag = checkDuplicateValue(navArr, e.target.value, 'kr_title');
+        if (flag || e.target.value === '') {
+          setKTitleIconColor('rgba(255,0,0,1)');
+          setDisabledAddBtn(true);
+          setAddItem(false);
+        } else {
+          setKTitleIconColor('rgba(0,0,0,.45)');
+          setDisabledAddBtn(false);
+          setAddItem(true);
+        }
+      } else if (type === 'path') {
+        setNavItemDetils({...navItemDetails, key: e.target.value});
+        flag = checkDuplicateValue(navArr, e.target.value, 'key');
+        if (flag || e.target.value === '') {
+          setPathIconColor('rgba(255,0,0,1)');
+          setDisabledAddBtn(true);
+          setAddItem(false);
+        } else {
+          setPathIconColor('rgba(0,0,0,.45)');
+          setDisabledAddBtn(false);
+          setAddItem(true);
+        }
+      }
     };
 
     // sub function for check duplicate
@@ -344,10 +346,17 @@ function NavFields(props) {
                 }
                 <Row>
                     <Col span={24}>
-                        <Radio.Group disabled={isUpdate} defaultValue={1} onChange={(e) => {updateNavDetail(e, 'navType');}} value={Number(navItemDetails.type)}>
-                            <Radio value={1}>{ Dic[language].NavMgt.addNav.type.article }</Radio>
-                            <Radio value={2}>{ Dic[language].NavMgt.addNav.type.news }</Radio>
-                            <Radio value={3}>{ Dic[language].NavMgt.addNav.type.product }</Radio>
+                        <Radio.Group
+                          disabled={isUpdate}
+                          defaultValue={1}
+                          onChange={(e) => {
+                            updateNavDetail(e, 'navType');
+                          }}
+                          value={Number(navItemDetails.type)}
+                        >
+                          <Radio value={1}>{ Dic[language].NavMgt.addNav.type.article }</Radio>
+                          <Radio value={2}>{ Dic[language].NavMgt.addNav.type.news }</Radio>
+                          <Radio value={3}>{ Dic[language].NavMgt.addNav.type.product }</Radio>
                         </Radio.Group>
                     </Col>
                 </Row>
@@ -356,138 +365,138 @@ function NavFields(props) {
                     isUpdate
                     ? ''
                     : (
-                        <>
-                            <Row>
-                                <Col span={24} className="parent-nav-selector">
-                                    <p>{ Dic[language].NavMgt.addNav.parentItem.label }</p>
-                                    {
-                                        <Select defaultValue={-1}  onChange={selectNavLevel} value={navLevel ? navLevel : -1}>
-                                            <Option value={-1} key="default-item">{ Dic[language].NavMgt.addNav.parentItem.selector }</Option>
-                                            {
-                                                generteOption(navList, 0)
-                                            }
-                                        </Select>
-                                    }
-                                </Col>
-                            </Row>
-                            <Divider />
-                        </>
+                      <>
+                        <Row>
+                          <Col span={24} className="parent-nav-selector">
+                            <p>{ Dic[language].NavMgt.addNav.parentItem.label }</p>
+                            {
+                              <Select defaultValue={-1}  onChange={selectNavLevel} value={navLevel ? navLevel : -1}>
+                                <Option value={-1} key="default-item">{ Dic[language].NavMgt.addNav.parentItem.selector }</Option>
+                                {
+                                  generteOption(navList, 0)
+                                }
+                              </Select>
+                            }
+                          </Col>
+                        </Row>
+                        <Divider />
+                      </>
                     )
                 }
                 <Row>
-                    <Col span={24}>
-                        <Input
-                            size="large"
-                            placeholder={ Dic[language].NavMgt.addNav.cnName }
-                            prefix={<EditOutlined />}
-                            value={navItemDetails.title}
-                            className={ titleIconColor.indexOf('255') !== -1 ? 'red-border' : '' }
-                            suffix={
-                                <Tooltip title={ titleIconColor.indexOf('255') !== -1 ? Dic[language].NavMgt.addNav.cnNameTipErr : Dic[language].NavMgt.addNav.cnNameTip }>
-                                    <InfoCircleOutlined style={{ color: `${ titleIconColor }` }} />
-                                </Tooltip>
-                            }
-                            onChange={(e) => {
-                                updateNavDetail(e, 'cnName');
-                            }}
-                        />
-                    </Col>
+                  <Col span={24}>
+                    <Input
+                      size="large"
+                      placeholder={ Dic[language].NavMgt.addNav.cnName }
+                      prefix={<EditOutlined />}
+                      value={navItemDetails.title}
+                      className={ titleIconColor.indexOf('255') !== -1 ? 'red-border' : '' }
+                      suffix={
+                        <Tooltip title={ titleIconColor.indexOf('255') !== -1 ? Dic[language].NavMgt.addNav.cnNameTipErr : Dic[language].NavMgt.addNav.cnNameTip }>
+                          <InfoCircleOutlined style={{ color: `${ titleIconColor }` }} />
+                        </Tooltip>
+                      }
+                      onChange={(e) => {
+                        updateNavDetail(e, 'cnName');
+                      }}
+                    />
+                  </Col>
                 </Row>
                 {
-                    langSupport.en === '1' ?
-                    <Row>
-                        <Col span={24}>
-                            <Input
-                                size="large"
-                                placeholder={ Dic[language].NavMgt.addNav.enName }
-                                prefix={<EditOutlined />}
-                                value={navItemDetails.en_title}
-                                className={ eTitleIconColor.indexOf('255') !== -1 ? 'red-border' : '' }
-                                suffix={
-                                    <Tooltip title={ eTitleIconColor.indexOf('255') !== -1 ? Dic[language].NavMgt.addNav.enNameTipErr : Dic[language].NavMgt.addNav.enNameTip }>
-                                        <InfoCircleOutlined style={{ color: `${ eTitleIconColor }` }} />
-                                    </Tooltip>
-                                }
-                                onChange={(e) => {
-                                    updateNavDetail(e, 'enName');
-                                }}
-                            />
-                        </Col>
-                    </Row>
-                    : ''
+                  langSupport.en === '1' ?
+                  <Row>
+                    <Col span={24}>
+                      <Input
+                        size="large"
+                        placeholder={ Dic[language].NavMgt.addNav.enName }
+                        prefix={<EditOutlined />}
+                        value={navItemDetails.en_title}
+                        className={ eTitleIconColor.indexOf('255') !== -1 ? 'red-border' : '' }
+                        suffix={
+                          <Tooltip title={ eTitleIconColor.indexOf('255') !== -1 ? Dic[language].NavMgt.addNav.enNameTipErr : Dic[language].NavMgt.addNav.enNameTip }>
+                              <InfoCircleOutlined style={{ color: `${ eTitleIconColor }` }} />
+                          </Tooltip>
+                        }
+                        onChange={(e) => {
+                          updateNavDetail(e, 'enName');
+                        }}
+                      />
+                    </Col>
+                  </Row>
+                  : ''
                 }
                 {
-                    langSupport.jp === '1' ?
-                    <Row>
-                        <Col span={24}>
-                            <Input
-                                size="large"
-                                placeholder={ Dic[language].NavMgt.addNav.jpName }
-                                prefix={<EditOutlined />}
-                                value={navItemDetails.jp_title}
-                                className={ jTitleIconColor.indexOf('255') !== -1 ? 'red-border' : '' }
-                                suffix={
-                                    <Tooltip title={ jTitleIconColor.indexOf('255') !== -1 ? Dic[language].NavMgt.addNav.jpNameTipErr : Dic[language].NavMgt.addNav.jpNameTip }>
-                                        <InfoCircleOutlined style={{ color: `${ jTitleIconColor }` }} />
-                                    </Tooltip>
-                                }
-                                onChange={(e) => {
-                                    updateNavDetail(e, 'jpName');
-                                }}
-                            />
-                        </Col>
-                    </Row>
-                    : ''
+                  langSupport.jp === '1' ?
+                  <Row>
+                    <Col span={24}>
+                      <Input
+                        size="large"
+                        placeholder={ Dic[language].NavMgt.addNav.jpName }
+                        prefix={<EditOutlined />}
+                        value={navItemDetails.jp_title}
+                        className={ jTitleIconColor.indexOf('255') !== -1 ? 'red-border' : '' }
+                        suffix={
+                          <Tooltip title={ jTitleIconColor.indexOf('255') !== -1 ? Dic[language].NavMgt.addNav.jpNameTipErr : Dic[language].NavMgt.addNav.jpNameTip }>
+                              <InfoCircleOutlined style={{ color: `${ jTitleIconColor }` }} />
+                          </Tooltip>
+                        }
+                        onChange={(e) => {
+                          updateNavDetail(e, 'jpName');
+                        }}
+                      />
+                    </Col>
+                  </Row>
+                  : ''
                 }
                 {
-                    langSupport.kr === '1' ?
-                    <Row>
-                        <Col span={24}>
-                            <Input
-                                size="large"
-                                placeholder={ Dic[language].NavMgt.addNav.krName }
-                                prefix={<EditOutlined />}
-                                value={navItemDetails.kr_title}
-                                className={ kTitleIconColor.indexOf('255') !== -1 ? 'red-border' : '' }
-                                suffix={
-                                    <Tooltip title={ kTitleIconColor.indexOf('255') !== -1 ? Dic[language].NavMgt.addNav.krNameTipErr : Dic[language].NavMgt.addNav.krNameTip }>
-                                        <InfoCircleOutlined style={{ color: `${ kTitleIconColor }` }} />
-                                    </Tooltip>
-                                }
-                                onChange={(e) => {
-                                    updateNavDetail(e, 'krName');
-                                }}
-                            />
-                        </Col>
-                    </Row>
-                    : ''
+                  langSupport.kr === '1' ?
+                  <Row>
+                    <Col span={24}>
+                      <Input
+                        size="large"
+                        placeholder={ Dic[language].NavMgt.addNav.krName }
+                        prefix={<EditOutlined />}
+                        value={navItemDetails.kr_title}
+                        className={ kTitleIconColor.indexOf('255') !== -1 ? 'red-border' : '' }
+                        suffix={
+                          <Tooltip title={ kTitleIconColor.indexOf('255') !== -1 ? Dic[language].NavMgt.addNav.krNameTipErr : Dic[language].NavMgt.addNav.krNameTip }>
+                            <InfoCircleOutlined style={{ color: `${ kTitleIconColor }` }} />
+                          </Tooltip>
+                        }
+                        onChange={(e) => {
+                          updateNavDetail(e, 'krName');
+                        }}
+                      />
+                    </Col>
+                  </Row>
+                  : ''
                 }
                 <Row>
-                    <Col span={24}>
-                        {
-                            isUpdate
-                            ? <p>{Dic[language].NavMgt.addNav.currentPathName}: {navItemDetails.key}</p>
-                            : (
-                                <>
-                                    <Input
-                                        size="large"
-                                        placeholder={ Dic[language].NavMgt.addNav.pathName }
-                                        prefix={<EditOutlined />}
-                                        value={navItemDetails.key}
-                                        className={ pathIconColor.indexOf('255') !== -1 ? 'red-border' : '' }
-                                        suffix={
-                                            <Tooltip title={ pathIconColor.indexOf('255') !== -1 ? Dic[language].NavMgt.addNav.pathNameTipErr : Dic[language].NavMgt.addNav.pathNameTip }>
-                                                <InfoCircleOutlined style={{ color: `${ pathIconColor }` }} />
-                                            </Tooltip>
-                                        }
-                                        onChange={(e) => {
-                                            updateNavDetail(e, 'path');
-                                        }}
-                                    />
-                                </>
-                            )
-                        }
-                    </Col>
+                  <Col span={24}>
+                    {
+                      isUpdate
+                      ? <p>{Dic[language].NavMgt.addNav.currentPathName}: {navItemDetails.key}</p>
+                      : (
+                        <>
+                          <Input
+                            size="large"
+                            placeholder={ Dic[language].NavMgt.addNav.pathName }
+                            prefix={<EditOutlined />}
+                            value={navItemDetails.key}
+                            className={ pathIconColor.indexOf('255') !== -1 ? 'red-border' : '' }
+                            suffix={
+                              <Tooltip title={ pathIconColor.indexOf('255') !== -1 ? Dic[language].NavMgt.addNav.pathNameTipErr : Dic[language].NavMgt.addNav.pathNameTip }>
+                                <InfoCircleOutlined style={{ color: `${ pathIconColor }` }} />
+                              </Tooltip>
+                            }
+                            onChange={(e) => {
+                              updateNavDetail(e, 'path');
+                            }}
+                          />
+                        </>
+                      )
+                    }
+                  </Col>
                 </Row>
                 <Row className="float-right">
                     <Col span={24}>

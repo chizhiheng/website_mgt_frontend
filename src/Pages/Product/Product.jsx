@@ -87,27 +87,27 @@ function Product(props) {
     };
 
     const deleteImageFromLib = (imgId) => {
-        const params = {
-            url: deleteImg,
-            param: {
-                code: cookies.user_token.toString(),
-                id: imgId
-            }
-        };
-        RequestUtils(params).then((res) => {
-            getImageFromLib();
-            setLoading(false);
-        }).catch((e) => {
-            setLoading(false);
-            console.log(e);
-        });;
+      setLoading(true);
+      const params = {
+          url: deleteImg,
+          param: {
+              code: cookies.user_token.toString(),
+              id: imgId
+          }
+      };
+      RequestUtils(params).then((res) => {
+          getImageFromLib();
+          setLoading(false);
+      }).catch((e) => {
+          setLoading(false);
+          console.log(e);
+      });
     };
 
     useEffect(() => {
         let monted = true;
 
         if (monted) {
-            setLoading(true);
             getImageFromLib();
         }
 
@@ -117,30 +117,31 @@ function Product(props) {
     }, []);
 
     const tableCallBack = (record, flag) => {
-        setModifyItem({ ...record });
-        if (flag === 'update') {
-            setLoading(true);
-            const params = {
-                url: getContentDetails,
-                param: {
-                    code: cookies.user_token.toString(),
-                    content_id: record.id,
-                    type: 3
-                }
-            };
-            RequestUtils(params).then((res) => {
-                setLoading(false);
-                setContentDefaultValue({...res.result[0]});
-                setOverLayType('update');
-            }).catch((e) => {
-                setLoading(false);
-                console.log(e);
-            });
+      setModifyItem({ ...record });
+      if (flag === 'update') {
+        setLoading(true);
+        const params = {
+            url: getContentDetails,
+            param: {
+                code: cookies.user_token.toString(),
+                content_id: record.id,
+                type: 3
+            }
+        };
+        RequestUtils(params).then((res) => {
+            setLoading(false);
+            setContentDefaultValue({...res.result[0]});
             setOverLayType('update');
-        } else if (flag === 'delete') {
-            setOverLayType('delete');
-        }
-        setShowEdit(true);
+        }).catch((e) => {
+            setLoading(false);
+            console.log(e);
+        });
+        setOverLayType('update');
+      } else if (flag === 'delete') {
+        setDisabledBtn(false);
+        setOverLayType('delete');
+      }
+      setShowEdit(true);
     };
 
     const handleOk = () => {
@@ -229,7 +230,7 @@ function Product(props) {
                 onOk={() => handleOk(overLayType)}
                 onCancel={handleCancel}
                 width={1000}
-                className="product-edit-popup"
+                className={overLayType === 'update' ? 'product-edit-popup' : 'product-delete-popup'}
                 okButtonProps={{
                     disabled: disabledBtn
                 }}
