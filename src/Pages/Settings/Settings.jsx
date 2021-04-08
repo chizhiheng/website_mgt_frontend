@@ -28,7 +28,9 @@ function Dashboard(props) {
     const [loading, setLoading] = useState(false);
     const [cookies] = useCookies(['user_token']);
     const [qrCode, setQrCode] = useState(false);
+    const [logo, setLogo] = useState(false);
     const [imgContent, setImgContent] = useState('');
+    const [logoContent, setLogoContent] = useState('');
     const [formValues, setFormValues] = useState({
         siteInfo: {
             site_name: '',
@@ -44,7 +46,8 @@ function Dashboard(props) {
             site_contact_email: '',
             site_contact_phone1: '',
             site_contact_phone2: '',
-            site_contact_QR_code: ''
+            site_contact_QR_code: '',
+            site_logo: ''
         }
     });
     const [en, setEn] = useState(false);
@@ -66,13 +69,23 @@ function Dashboard(props) {
         required: Dic[language].common.isRequired
     };
 
-    const getImgBase64 = (val) => {
+    const getImgBase64 = (val, flag) => {
+      if (flag === 'qr_code') {
         val === '' ? setQrCode(false) : setQrCode(true);
         setFormValues((res) => {
             res.siteInfo.site_contact_QR_code = val;
             return res;
         });
         setImgContent(val);
+      } else if (flag === 'logo') {
+        val === '' ? setLogo(false) : setLogo(true);
+        setFormValues((res) => {
+          res.siteInfo.site_logo = val;
+          return res;
+        });
+        setLogoContent(val);
+      }
+
     }
 
     const onFinish = values => {
@@ -80,6 +93,7 @@ function Dashboard(props) {
         setFormValues((res) => {
             res.siteInfo = {...values.siteInfo};
             res.siteInfo.site_contact_QR_code = imgContent;
+            res.siteInfo.site_logo = logoContent;
             res.siteInfo.site_language = lang;
             return res;
         });
@@ -137,6 +151,7 @@ function Dashboard(props) {
                         res.siteInfo.site_contact_phone1 = val.result.site_contact_phone1;
                         res.siteInfo.site_contact_phone2 = val.result.site_contact_phone2;
                         res.siteInfo.site_contact_QR_code = val.result.site_contact_QR_code;
+                        res.siteInfo.site_logo = val.result.site_logo;
                         return res;
                     });
 
@@ -144,17 +159,21 @@ function Dashboard(props) {
                     setJp(val.result.site_language.jp);
                     setKr(val.result.site_language.kr);
 
-                    if (val.result.site_contact_QR_code !== '') {
-                        setQrCode(true);
-                        setImgContent(val.result.site_contact_QR_code);
-                    }
+                  if (val.result.site_contact_QR_code !== '') {
+                    setQrCode(true);
+                    setImgContent(val.result.site_contact_QR_code);
+                  }
+                  if (val.result.site_logo !== '') {
+                    setLogo(true);
+                    setLogoContent(val.result.site_logo);
+                }
                 }
                 setLoading(false);
             }).catch((e) => {
                 setLoading(false);
                 console.log(e);
             });
-            console.log('123123', formValues.siteInfo.site_language.en, formValues.siteInfo.site_language.jp, formValues.siteInfo.site_language.kr);
+            // console.log('123123', formValues.siteInfo.site_language.en, formValues.siteInfo.site_language.jp, formValues.siteInfo.site_language.kr);
         }
 
         return () => {
@@ -164,139 +183,155 @@ function Dashboard(props) {
 
     return (
         <div className="site-settings">
-            { loading ? <Loading text={Dic[language].common.loading}/> : null}
-            <Row className="height-100-per">
-                <Col span={24} className="border-1px-light-gray">
+          { loading ? <Loading text={Dic[language].common.loading}/> : null}
+          <Row className="height-100-per">
+              <Col span={24} className="border-1px-light-gray">
                 <Form {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages} initialValues={formValues}>
-                    <Form.Item name={['siteInfo', 'site_name']} label={ Dic[language].settings.tab.siteInfo.siteName } rules={[{ required: true }]}>
-                        <Input 
-                            size="large"
-                            prefix={<HomeOutlined />}
-                            suffix={
-                                <Tooltip title={ Dic[language].settings.tab.siteInfo.siteNameDesc }>
-                                    <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
-                                </Tooltip>
-                            }
-                        />
-                    </Form.Item>
-                    <Form.Item name={['siteInfo', 'site_keywords']} label={ Dic[language].settings.tab.siteInfo.siteKeywords } rules={[{ required: true }]}>
-                        <Input
-                            size="large"
-                            prefix={<SearchOutlined />}
-                            suffix={
-                                <Tooltip title={ Dic[language].settings.tab.siteInfo.siteKeywordsDesc }>
-                                    <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
-                                </Tooltip>
-                            }
-                        />
-                    </Form.Item>
-                    <Form.Item name={['siteInfo', 'site_description']} label={ Dic[language].settings.tab.siteInfo.siteDescription } rules={[{ required: true }]}>
-                        <Input.TextArea
-                            size="large"
-                            prefix={<SolutionOutlined />}
-                            suffix={
-                                <Tooltip title={ Dic[language].settings.tab.siteInfo.siteDescriptionDesc }>
-                                    <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
-                                </Tooltip>
-                            }
-                        />
-                    </Form.Item>
-                    <Form.Item name={['siteInfo', 'site_language']} label={ Dic[language].settings.tab.siteInfo.siteLanguage } rules={[{ required: true }]}>
-                        <Row>
-                            <Col span={4}>
-                                <Checkbox value="cn" defaultChecked disabled checked>
-                                    中文
-                                </Checkbox>
-                            </Col>
-                            <Col span={4}>
-                                <Checkbox value="en" onChange={(e) => {setLanguage(e)}} checked={en}>
-                                    English
-                                </Checkbox>
-                            </Col>
-                            <Col span={4}>
-                                <Checkbox value="jp" onChange={(e) => {setLanguage(e)}} checked={jp}>
-                                    日本語
-                                </Checkbox>
-                            </Col>
-                            <Col span={4}>
-                                <Checkbox value="kr" onChange={(e) => {setLanguage(e)}} checked={kr}>
-                                    한국어
-                                </Checkbox>
-                            </Col>
-                        </Row>
-                    </Form.Item>
-                    <Divider />
-                    <Form.Item name={['siteInfo', 'site_company_address']} label={ Dic[language].settings.tab.siteInfo.siteContact.companyAddress } rules={[{ required: true }]}>
-                        <Input
-                            size="large"
-                            prefix={<EnvironmentOutlined />}
-                            suffix={
-                                <Tooltip title={ Dic[language].settings.tab.siteInfo.siteContact.companyAddress }>
-                                    <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
-                                </Tooltip>
-                            }
-                        />
-                    </Form.Item>
-                    <Form.Item name={['siteInfo', 'site_contact_email']} label={ Dic[language].settings.tab.siteInfo.siteContact.email } rules={[{ required: true, type: 'email' }]}>
-                        <Input
-                            size="large"
-                            prefix={<MailOutlined />}
-                            suffix={
-                                <Tooltip title={ Dic[language].settings.tab.siteInfo.siteContact.emailDesc }>
-                                    <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
-                                </Tooltip>
-                            }
-                        />
-                    </Form.Item>
-                    <Form.Item name={['siteInfo', 'site_contact_phone1']} label={ Dic[language].settings.tab.siteInfo.siteContact.phone1 } rules={[{ required: true }]}>
-                        <Input
-                            size="large"
-                            prefix={<PhoneOutlined />}
-                            suffix={
-                                <Tooltip title={ Dic[language].settings.tab.siteInfo.siteContact.phoneDesc }>
-                                    <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
-                                </Tooltip>
-                            }
-                        />
-                    </Form.Item>
-                    <Form.Item name={['siteInfo', 'site_contact_phone2']} label={ Dic[language].settings.tab.siteInfo.siteContact.phone2 } >
-                        <Input
-                            size="large"
-                            prefix={<PhoneOutlined />}
-                            suffix={
-                                <Tooltip title={ Dic[language].settings.tab.siteInfo.siteContact.phoneDesc }>
-                                    <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
-                                </Tooltip>
-                            }
-                        />
-                    </Form.Item>
-                    <Form.Item name={['siteInfo', 'site_contact_QR_code']} label={ Dic[language].settings.tab.siteInfo.siteContact.QRcode } >
-                        <Uploader language={language} title={Dic[language].settings.tab.siteInfo.siteContact.QRcodeDesc} getImgBase64={getImgBase64} />
-                    </Form.Item>
-                    {
-                        qrCode
-                        ? 
-                            <Form.Item className="text-align-center">
-                                <img src={imgContent} width="100" height="100" alt={Dic[language].settings.tab.siteInfo.siteContact.QRcode} />
-                            </Form.Item>
-                        : null
-                    }
-                    <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }} className="clear-both">
-                        <Button type="primary" htmlType="submit">
-                            { Dic[language].common.update }
-                        </Button>
-                    </Form.Item>
+                  <Form.Item name={['siteInfo', 'site_logo']} label={ Dic[language].settings.tab.siteInfo.siteContact.logo } >
+                    <Uploader language={language} title={Dic[language].settings.tab.siteInfo.siteContact.logoDesc} getImgBase64={(val) => {getImgBase64(val, 'logo')}} />
+                  </Form.Item>
+                  {
+                    logo
+                    ?
+                    <>
+                      <Form.Item className="text-align-center">
+                        <img src={logoContent} width="100" height="100" alt={Dic[language].settings.tab.siteInfo.siteContact.logo} />
+                      </Form.Item>
+                      {/* <Form.Item className="text-align-center margin-bottom-0">
+                        <div className="remove-img">hello</div>
+                      </Form.Item> */}
+                    </>
+                    : null
+                  }
+                  <Form.Item name={['siteInfo', 'site_name']} label={ Dic[language].settings.tab.siteInfo.siteName } rules={[{ required: true }]}>
+                    <Input
+                      size="large"
+                      prefix={<HomeOutlined />}
+                      suffix={
+                        <Tooltip title={ Dic[language].settings.tab.siteInfo.siteNameDesc }>
+                          <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
+                        </Tooltip>
+                      }
+                    />
+                  </Form.Item>
+                  <Form.Item name={['siteInfo', 'site_keywords']} label={ Dic[language].settings.tab.siteInfo.siteKeywords } rules={[{ required: true }]}>
+                    <Input
+                      size="large"
+                      prefix={<SearchOutlined />}
+                      suffix={
+                        <Tooltip title={ Dic[language].settings.tab.siteInfo.siteKeywordsDesc }>
+                          <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
+                        </Tooltip>
+                      }
+                    />
+                  </Form.Item>
+                  <Form.Item name={['siteInfo', 'site_description']} label={ Dic[language].settings.tab.siteInfo.siteDescription } rules={[{ required: true }]}>
+                    <Input.TextArea
+                      size="large"
+                      prefix={<SolutionOutlined />}
+                      suffix={
+                        <Tooltip title={ Dic[language].settings.tab.siteInfo.siteDescriptionDesc }>
+                          <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
+                        </Tooltip>
+                      }
+                    />
+                  </Form.Item>
+                  <Form.Item name={['siteInfo', 'site_language']} label={ Dic[language].settings.tab.siteInfo.siteLanguage } rules={[{ required: true }]}>
+                    <Row>
+                      <Col span={4}>
+                        <Checkbox value="cn" defaultChecked disabled checked>
+                          中文
+                        </Checkbox>
+                      </Col>
+                      <Col span={4}>
+                        <Checkbox value="en" onChange={(e) => {setLanguage(e)}} checked={en}>
+                          English
+                        </Checkbox>
+                      </Col>
+                      <Col span={4}>
+                        <Checkbox value="jp" onChange={(e) => {setLanguage(e)}} checked={jp}>
+                          日本語
+                        </Checkbox>
+                      </Col>
+                      <Col span={4}>
+                        <Checkbox value="kr" onChange={(e) => {setLanguage(e)}} checked={kr}>
+                          한국어
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                  </Form.Item>
+                  <Divider />
+                  <Form.Item name={['siteInfo', 'site_company_address']} label={ Dic[language].settings.tab.siteInfo.siteContact.companyAddress } rules={[{ required: true }]}>
+                    <Input
+                      size="large"
+                      prefix={<EnvironmentOutlined />}
+                      suffix={
+                        <Tooltip title={ Dic[language].settings.tab.siteInfo.siteContact.companyAddress }>
+                          <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
+                        </Tooltip>
+                      }
+                    />
+                  </Form.Item>
+                  <Form.Item name={['siteInfo', 'site_contact_email']} label={ Dic[language].settings.tab.siteInfo.siteContact.email } rules={[{ required: true, type: 'email' }]}>
+                    <Input
+                      size="large"
+                      prefix={<MailOutlined />}
+                      suffix={
+                        <Tooltip title={ Dic[language].settings.tab.siteInfo.siteContact.emailDesc }>
+                          <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
+                        </Tooltip>
+                      }
+                    />
+                  </Form.Item>
+                  <Form.Item name={['siteInfo', 'site_contact_phone1']} label={ Dic[language].settings.tab.siteInfo.siteContact.phone1 } rules={[{ required: true }]}>
+                    <Input
+                      size="large"
+                      prefix={<PhoneOutlined />}
+                      suffix={
+                        <Tooltip title={ Dic[language].settings.tab.siteInfo.siteContact.phoneDesc }>
+                          <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
+                        </Tooltip>
+                      }
+                    />
+                  </Form.Item>
+                  <Form.Item name={['siteInfo', 'site_contact_phone2']} label={ Dic[language].settings.tab.siteInfo.siteContact.phone2 } >
+                    <Input
+                      size="large"
+                      prefix={<PhoneOutlined />}
+                      suffix={
+                        <Tooltip title={ Dic[language].settings.tab.siteInfo.siteContact.phoneDesc }>
+                          <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
+                        </Tooltip>
+                      }
+                    />
+                  </Form.Item>
+                  <Form.Item name={['siteInfo', 'site_contact_QR_code']} label={ Dic[language].settings.tab.siteInfo.siteContact.QRcode } >
+                    <Uploader language={language} title={Dic[language].settings.tab.siteInfo.siteContact.QRcodeDesc} getImgBase64={(val) => {getImgBase64(val, 'qr_code')}} />
+                  </Form.Item>
+                  {
+                    qrCode
+                    ?
+                      <Form.Item className="text-align-center">
+                        <img src={imgContent} width="100" height="100" alt={Dic[language].settings.tab.siteInfo.siteContact.QRcode} />
+                      </Form.Item>
+                    : null
+                  }
+                  <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }} className="clear-both">
+                    <Button type="primary" htmlType="submit">
+                      { Dic[language].common.update }
+                    </Button>
+                  </Form.Item>
                 </Form>
-                    {/* <Tabs defaultActiveKey="1" type="card" size="small">
-                        <TabPane tab={ Dic[language].settings.tab.siteInfo.name } key="1">
-                            
-                        </TabPane>
-                        <TabPane tab={ Dic[language].settings.tab.banner.name } key="2">
-                            
-                        </TabPane>
-                    </Tabs> */}
-                </Col>
-            </Row>
+                {/* <Tabs defaultActiveKey="1" type="card" size="small">
+                    <TabPane tab={ Dic[language].settings.tab.siteInfo.name } key="1">
+
+                    </TabPane>
+                    <TabPane tab={ Dic[language].settings.tab.banner.name } key="2">
+
+                    </TabPane>
+                </Tabs> */}
+              </Col>
+          </Row>
         </div>
     );
 };

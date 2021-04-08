@@ -13,7 +13,7 @@
             "upload": "上传",
             "delete": "删除",
             "view": "预览",
-            "imgTypeErrorJPG": "不是jpg格式文件",
+            "imgTypeErrorJPG": "不是 jpg 或 png 格式文件",
             "imgSizeError": "图片大小应小于 2M",
             "deleteConfirmTitel": "你真的想删除吗？",
             "expireDate": "截止时间",
@@ -67,7 +67,9 @@
                         "phone2": "联系电话2",
                         "phoneDesc": "联系电话号码，在联系我们页面显示",
                         "QRcode": "二维码上传(jpg/JPG)",
-                        "QRcodeDesc": "二维码图片，在联系我们页面显示，只支持jpg格式"
+                        "QRcodeDesc": "二维码图片，在联系我们页面显示，只支持jpg格式",
+                        "logo": "公司标志",
+                        "logoDesc": "公司标志将显示在导航条左侧, 建议最大高度 40px"
                     }
                 },
                 "banner": {
@@ -199,7 +201,7 @@
                 "newsNum": "新闻类页面总数: ",
                 "productNum": "产品类页面总数: "
             },
-            "description": "篇文章还未生成为 HTML/WeiXin 自上次更新之后。上次更新时间为:",
+            "description": "篇文章还未生成为 HTML 自上次更新之后。上次更新时间为:",
             "generateHTML": "生成 HTML 页面",
             "generateWX": "生成 WX 页面"
         },
@@ -222,7 +224,7 @@
             "upload": "Upload",
             "delete": "Delete",
             "view": "预览",
-            "imgTypeErrorJPG": "is not a jpg file",
+            "imgTypeErrorJPG": "is not a jpg or png file",
             "imgSizeError": "Image size should less than 2M",
             "deleteConfirmTitel": "Do you REALLY WANT to DELETE?",
             "expireDate": "Expire date",
@@ -276,7 +278,9 @@
                         "phone2": "Phone2",
                         "phoneDesc": "Your phone number, will display in contact page",
                         "QRcode": "Upload QR code (jpg file only)",
-                        "QRcodeDesc": "Your QA code, will display in contact page and jpg file only"
+                        "QRcodeDesc": "Your QA code, will display in contact page and jpg file only",
+                        "logo": "Company logo",
+                        "logoDesc": "Your company logo will show in the left of the header. Suggest max height 40px."
                     }
                 },
                 "banner": {
@@ -408,7 +412,7 @@
                 "newsNum": "Total number of news pages: ",
                 "productNum": "Total number of product pages: "
             },
-            "description": "articles, news or products pages has not been generated as HTML/WeiXin since the last update. The last update time was: ",
+            "description": "articles, news or products pages has not been generated as HTML since the last update. The last update time was: ",
             "generateHTML": "Generate HTML",
             "generateWX": "Generate WX"
         },

@@ -17,3 +17,5 @@ export const upsertNavImg = '/upsertNavImg.php';
 export const getNavImg = '/getNavImg.php';
 export const deleteNavImg = '/deleteNavImg.php';
 export const getTemplates = '/getTemplates.php';
+export const getGenerateInfo = '/getGenerateInfo.php';
+export const generatePage = '/generatePage.php';
