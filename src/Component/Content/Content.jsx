@@ -160,7 +160,17 @@ function Content(props) {
             setImgInLibraryList([...imgInLibrary]);
           }
         }
+      }
 
+      return () => {
+        monted = false;
+      };
+    }, [imgInLibrary, langList]);
+
+    useEffect(() => {
+      let monted = true;
+
+      if (monted) {
         if (defaultVal) {
           selectLang(defaultVal.lang_key);
           setReturnValues((res) => {
@@ -178,6 +188,7 @@ function Content(props) {
               res.langKey = defaultVal.lang_key;
               return res;
           });
+
           if (defaultVal.title !== '') {
               setTitle(defaultVal.title);
           }
@@ -195,14 +206,8 @@ function Content(props) {
               makeTop(0);
           }
 
-          let val = '';
-          if (navValue === null) {
-            val = defaultVal.key;
-          } else {
-            val = navValue;
-          }
+          setNavValue(defaultVal.key);
 
-          setNavValue(val);
           if (defaultVal.content !== '') {
               updateDescription(defaultVal.content);
               setEditorContent(defaultVal.content)
@@ -243,11 +248,25 @@ function Content(props) {
         }
         removeErr();
       }
-
       return () => {
         monted = false;
       };
-    }, [imgInLibrary, defaultVal, navValue, langList]);
+    }, [defaultVal, navValue]);
+
+    useEffect(() => {
+      if (defaultVal) { // !!!!!!!!!!!!!!!
+
+        // let val = '';
+        // if (navValue === null) {
+        //   val = defaultVal.key;
+        // } else {
+        //   val = navValue;
+        // }
+
+        // setNavValue(val);
+        // setNavValue(defaultVal.key);
+      }
+    }, []);
 
     const makeTop = (val) => {
         let flag = false;
@@ -281,10 +300,10 @@ function Content(props) {
           res.nav = val.key;
           return res;
       });
-      setNavValue(val.key);
       if (defaultVal) {
           sendReturnVal();
       }
+      setNavValue(val.key);
     };
     const removeLoading = (val) => {
         setLoading(val);
@@ -370,11 +389,9 @@ function Content(props) {
         setContentErr(false);
     };
     const sendReturnVal = () => {
-        setTimeout(()=>{
-            let vals = {...returnValues};
-            vals.flag = 'update';
-            submit(vals);
-        }, 100);
+      let vals = {...returnValues};
+      vals.flag = 'update';
+      submit(vals);
     };
     const updateValue = (e, val) => {
         const value = e.target.value;

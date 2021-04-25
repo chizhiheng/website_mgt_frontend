@@ -57,6 +57,7 @@ function Article(props) {
           console.log(e);
         });
       } else if (val.flag === 'update') {
+        console.log(val);
         if (window.document.querySelectorAll('.article-edit-popup .red-border').length > 0){
           setDisabledBtn(true);
         } else {
@@ -64,6 +65,7 @@ function Article(props) {
         }
         val.id = modifyItem.id;
         setModifyItem({...val});
+        // setContentDefaultValue({...val}); !!!!!!!!!!
       }
     };
 
@@ -95,34 +97,34 @@ function Article(props) {
     };
 
     const handleOk = () => {
-        setLoading(true);
-        let params = {
-            url: '',
-            param: {
-                code: cookies.user_token.toString(),
-                contentId: modifyItem.id,
-                type: 1
-            }
-        }
-        if (overLayType === 'delete') {
-            params.url = deleteContent;
-        }
-        if (overLayType === 'update') {
-            params.param.details = {...modifyItem};
-            params.url = updateContent;
-        }
-        RequestUtils(params).then((res) => {
-            setLoading(false);
-            setShowEdit(false);
-            setReloadTable(!reloadTable);
-        }).catch((e) => {
-            setLoading(false);
-            console.log(e);
-        });
+      setLoading(true);
+      let params = {
+          url: '',
+          param: {
+              code: cookies.user_token.toString(),
+              contentId: modifyItem.id,
+              type: 1
+          }
+      }
+      if (overLayType === 'delete') {
+          params.url = deleteContent;
+      }
+      if (overLayType === 'update') {
+          params.param.details = {...modifyItem};
+          params.url = updateContent;
+      }
+      RequestUtils(params).then((res) => {
+          setLoading(false);
+          setShowEdit(false);
+          setReloadTable(!reloadTable);
+      }).catch((e) => {
+          setLoading(false);
+          console.log(e);
+      });
     };
 
     const handleCancel = () => {
-        setShowEdit(false);
+      setShowEdit(false);
     };
 
     const clickTab = (e) => {
