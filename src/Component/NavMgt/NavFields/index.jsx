@@ -1,5 +1,5 @@
 import React, {Fragment, useState, useEffect} from 'react';
-import { cloneDeep, forEach } from 'lodash';
+import { cloneDeep } from 'lodash';
 import {
     Row, Col, Button, Input, Tooltip, Radio, Divider, Select
 } from 'antd';
@@ -30,6 +30,7 @@ function NavFields(props) {
         kr_title: '',
         key: '',
         type: 1,
+        show_in_index: 0,
         s_id: -1
     });
     const [navLevel, setNavLevel] = useState(-1);
@@ -42,16 +43,16 @@ function NavFields(props) {
     const [addItem, setAddItem] = useState(true);
 
     useEffect(() => {
-        defaultValue.length ? setNavList([...defaultValue]) : setNavList([]);
-        if (isUpdate) {
-            setNavItemDetils({...updateVal});
-        }
-        setTitleIconColor('rgba(0,0,0,.45)');
-        setETitleIconColor('rgba(0,0,0,.45)');
-        setJTitleIconColor('rgba(0,0,0,.45)');
-        setKTitleIconColor('rgba(0,0,0,.45)');
-        setPathIconColor('rgba(0,0,0,.45)');
-        setDisabledAddBtn(false);
+      defaultValue.length ? setNavList([...defaultValue]) : setNavList([]);
+      if (isUpdate) {
+        setNavItemDetils({...updateVal});
+      }
+      setTitleIconColor('rgba(0,0,0,.45)');
+      setETitleIconColor('rgba(0,0,0,.45)');
+      setJTitleIconColor('rgba(0,0,0,.45)');
+      setKTitleIconColor('rgba(0,0,0,.45)');
+      setPathIconColor('rgba(0,0,0,.45)');
+      setDisabledAddBtn(false);
     }, [defaultValue, isUpdate, updateVal, langSupport]);
 
     // add nav to array
@@ -87,9 +88,11 @@ function NavFields(props) {
         setPathIconColor('rgba(0,0,0,.45)');
 
         if (isUpdate) {
-            updateNav();
+          console.log('update');
+          updateNav();
         } else {
-            addNav();
+          console.log('add');
+          addNav();
         }
         setNavItemDetils({
             title: '',
@@ -98,6 +101,7 @@ function NavFields(props) {
             kr_title: '',
             key: '',
             type: 1,
+            show_in_index: 0,
             s_id: -1
         })
     };
@@ -142,6 +146,7 @@ function NavFields(props) {
               kr_title: '',
               key: '',
               type: 1,
+              show_in_index: 0,
               s_id: -1
             });
             selectNavLevel(-1);
@@ -159,6 +164,7 @@ function NavFields(props) {
               kr_title: '',
               key: '',
               type: 1,
+              show_in_index: 0,
               s_id: -1
             });
             selectNavLevel(-1);
@@ -168,10 +174,10 @@ function NavFields(props) {
     };
 
     const updateNav = () => {
-        const val = [...navList];
-        fetchNav(val, 'update');
-        setNavList([...val]);
-        callBack(val);
+      const val = [...navList];
+      fetchNav(val, 'update');
+      setNavList([...val]);
+      callBack(val);
     };
 
     // loop nav itself
@@ -196,6 +202,7 @@ function NavFields(props) {
                         element.jp_title = navItemDetails.jp_title;
                         element.kr_title = navItemDetails.kr_title;
                         element.type = navItemDetails.type;
+                        element.show_in_index = navItemDetails.show_in_index;
                         return true; // 或者 break;
                     }
                 }
@@ -221,6 +228,11 @@ function NavFields(props) {
       const navArr = cloneDeep(navList);
       if (type === 'navType') {
         setNavItemDetils({...navItemDetails, type: e.target.value});
+      } else if (type === 'navShowInIndex') {
+        let val = {...navItemDetails};
+        val.show_in_index = e.target.value;
+        // setNavItemDetils({...navItemDetails, show_in_index: e.target.value.toString()});
+        setNavItemDetils({...val});
       } else if (type === 'cnName') {
         setNavItemDetils({...navItemDetails, title: e.target.value});
         flag = checkDuplicateValue(navArr, e.target.value, 'title');
@@ -359,6 +371,22 @@ function NavFields(props) {
                           <Radio value={3}>{ Dic[language].NavMgt.addNav.type.product }</Radio>
                         </Radio.Group>
                     </Col>
+                </Row>
+                <Divider />
+                <Row>
+                  <Col span={24}>
+                    <h4>{ Dic[language].NavMgt.addNav.showInIndex }</h4>
+                      <Radio.Group
+                        defaultValue={0}
+                        onChange={(e) => {
+                          updateNavDetail(e, 'navShowInIndex');
+                        }}
+                        value={Number(navItemDetails.show_in_index)}
+                      >
+                        <Radio value={1}>{ Dic[language].common.yes }</Radio>
+                        <Radio value={0}>{ Dic[language].common.no }</Radio>
+                      </Radio.Group>
+                  </Col>
                 </Row>
                 <Divider />
                 {

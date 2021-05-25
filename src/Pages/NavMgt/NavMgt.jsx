@@ -239,7 +239,7 @@ function NavMgt(props) {
     };
 
     const navFieldsCallBack = (val) => {
-        // console.log('navFieldsCallBack', val);
+        console.log('navFieldsCallBack', val);
         setDisableApplyBtn(false);
         setNavList([...val]);
         closeEditOverlay();

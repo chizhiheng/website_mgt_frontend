@@ -13,8 +13,12 @@
     }
 
     a img {
-      width: 80%;
-      height: 110px;
+      width: calc(1210px * 0.6);
+      height: calc(365px * 0.6);
+    }
+    a img.no-index {
+      width: calc(886px * 0.6);
+      height: calc(260px * 0.6);
     }
   }
 

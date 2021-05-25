@@ -27,7 +27,7 @@ const RowItem = (props) => {
         </Col>
         <Col span={14}>
           <p className="margin-bottom-0">{ Dic[language].banner.applyBanner }{ item.nav.order === '-1' ? Dic[language].banner.applyIndexBannerSize : Dic[language].banner.applyBannerSize }</p>
-          <a href={`${item.img.url}`}><img src={`${item.img.url}`} alt={ language === 'zh' ? item.nav.title : item.nav.en_title} /></a>
+          <a href={`${item.img.url}`}><img className={item.nav.order === '-1' ? null : 'no-index'} src={`${item.img.url}`} alt={ language === 'zh' ? item.nav.title : item.nav.en_title} /></a>
         </Col>
         <Col span={4}>
           <p>&nbsp;</p>

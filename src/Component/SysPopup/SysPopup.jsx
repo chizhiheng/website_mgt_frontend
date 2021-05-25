@@ -7,13 +7,10 @@ function SysPopup (props) {
   const { language } = props;
   const { appState, setAppState } = useContext(AppContext);
   const okBtn = () => {
-    console.log(appState.systemPopup.tmpVal.key);
     if (appState.systemPopup.tmpVal && appState.systemPopup.tmpVal.key && appState.systemPopup.tmpVal.key !== '') {
-      console.log(1111);
       appState.systemPopup.callBack(appState.systemPopup.tmpVal.key);
-    } else {
-      console.log(22222);
     }
+
     setAppState({systemPopup: {
       display: false,
       withCancelBtn: false,

@@ -85,6 +85,7 @@
             },
             "addNav": {
                 "title": "添加新导航",
+                "showInIndex": "加入首页",
                 "addNew": "添加",
                 "cnName": "导航名称",
                 "cnNameTip": "在中文版本中显示的名字",
@@ -178,7 +179,7 @@
           "navPageTitle": "所选择的页面:",
           "applyBanner": "所选择的 banner ",
           "applyIndexBannerSize": "(建议 banner 宽度: 1210px, 高度: 365px):",
-          "applyBannerSize": "(建议 banner 宽度: 1210px, 高度 150px):"
+          "applyBannerSize": "(建议 banner 宽度: 886px, 高度 260px):"
         },
         "template": {
             "apply": "应用此模版",
@@ -296,6 +297,7 @@
             },
             "addNav": {
                 "title": "Add new navigation",
+                "showInIndex": "Add to index",
                 "addNew": "Add",
                 "cnName": "Nav item name",
                 "cnNameTip": "The nav item name for Chinese version",
@@ -389,7 +391,7 @@
           "navPageTitle": "Selected on page:",
           "applyBanner": "selected banner ",
           "applyIndexBannerSize": "(suggest banner width: 1210px, height: 365px):",
-          "applyBannerSize": "(suggest banner width: 1210px, height 150px):"
+          "applyBannerSize": "(suggest banner width: 886px, height: 260px):"
         },
         "template": {
             "apply": "Apply this",
