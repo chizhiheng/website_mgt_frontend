@@ -2,7 +2,6 @@
   "name": "web_mgt_frontend",
   "version": "0.1.0",
   "private": true,
-  "homepage": ".",
   "dependencies": {
     "antd": "^4.6.3",
     "axios": "^0.19.2",
@@ -41,5 +40,6 @@
   },
   "devDependencies": {
     "babel-core": "^6.26.3"
-  }
+  },
+  "homepage": "/website"
 }

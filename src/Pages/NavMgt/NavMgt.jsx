@@ -23,7 +23,7 @@ function NavMgt(props) {
     const { language } = {...props};
     const { confirm } = Modal;
     const [updateItem, setUpdateItem] = useState({});
-    const [cookies] = useCookies(['user_token']);
+    const [cookies] = useCookies(['mgt_user_token']);
     const [loading, setLoading] = useState(false);
     const [navList, setNavList] = useState([]);
     const [showEditOverlay, setShowEditOverlay] = useState(false);
@@ -31,16 +31,19 @@ function NavMgt(props) {
     const [supportLangs, setSupportLangs] = useState({});
 
     useEffect(() => {
-        let monted = true;
+      let monted = true;
 
-        if (monted) {
-            setLoading(true);
-            getMenuList();
+      if (monted) {
+        if (!cookies.mgt_user_token) {
+          window.location.href = '/';
         }
+        setLoading(true);
+        getMenuList();
+      }
 
-        return () => {
-            monted = false;
-        };
+      return () => {
+          monted = false;
+      };
     }, []);
 
     // nav items edit, up, down & delete function
@@ -108,7 +111,7 @@ function NavMgt(props) {
     const getMenuList = () => {
         const params = {
             url: getMenu,
-            param: { code: cookies.user_token.toString(), type: 'all' }
+            param: { code: cookies.mgt_user_token.toString(), type: 'all' }
         }
         RequestUtils(params).then((res) => {
             setSupportLangs(res.lang);
@@ -165,7 +168,7 @@ function NavMgt(props) {
       const params = {
           url: upsertMenu,
           param: {
-              code: cookies.user_token.toString(),
+              code: cookies.mgt_user_token.toString(),
               values: navList
           }
       }
@@ -239,7 +242,6 @@ function NavMgt(props) {
     };
 
     const navFieldsCallBack = (val) => {
-        console.log('navFieldsCallBack', val);
         setDisableApplyBtn(false);
         setNavList([...val]);
         closeEditOverlay();

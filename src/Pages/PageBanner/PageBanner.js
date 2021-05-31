@@ -50,7 +50,7 @@ const RowItem = (props) => {
 
 function PageBanner(props) {
   const { language } = {...props};
-  const [cookies] = useCookies(['user_token']);
+  const [cookies] = useCookies(['mgt_user_token']);
   const [loading, setLoading] = useState(false);
   const [bannerList, setBannerList] = useState([]);
   const [selectedNav, setSelectedNev] = useState('');
@@ -86,7 +86,6 @@ function PageBanner(props) {
       let flag = 0;
       selectedBannerList.forEach((item) => {
         if (item.nav.id === val.id) {
-          console.log(item.nav.id, val.id);
           setNavErr(true);
           setDisabledAddBannerBtn(true);
           flag = 1;
@@ -129,7 +128,7 @@ function PageBanner(props) {
     const params = {
       url: getImgs,
       param: {
-          code: cookies.user_token.toString(),
+          code: cookies.mgt_user_token.toString(),
           type: 'banner'
       }
     };
@@ -155,7 +154,7 @@ function PageBanner(props) {
     const params = {
       url: getNavImg,
       param: {
-          code: cookies.user_token.toString()
+          code: cookies.mgt_user_token.toString()
       }
     };
     RequestUtils(params).then((res) => {
@@ -188,6 +187,9 @@ function PageBanner(props) {
     let monted = true;
 
     if (monted) {
+      if (!cookies.mgt_user_token) {
+        window.location.href = '/';
+      }
       initData();
     }
     return() => {
@@ -216,7 +218,6 @@ function PageBanner(props) {
   };
 
   const addBanner = () => {
-    console.log(selectedItem);
     setSelectedBannerList((res) => {
       res.push(selectedItem);
       return res;
@@ -224,7 +225,7 @@ function PageBanner(props) {
     const params = {
       url: upsertNavImg,
       param: {
-          code: cookies.user_token.toString(),
+          code: cookies.mgt_user_token.toString(),
           nav_key: selectedItem.nav.key,
           img_id: selectedItem.img.id
       }
@@ -253,7 +254,6 @@ function PageBanner(props) {
   };
 
   const rowItemRemoveConfirm = (id) => {
-    console.log(id);
     const newSystemPopup = {
       display: true,
       type: 'error',
@@ -275,7 +275,7 @@ function PageBanner(props) {
     const params = {
       url: deleteNavImg,
       param: {
-          code: cookies.user_token.toString(),
+          code: cookies.mgt_user_token.toString(),
           id: id
       }
     };
@@ -293,7 +293,7 @@ function PageBanner(props) {
       const params = {
           url: deleteImg,
           param: {
-              code: cookies.user_token.toString(),
+              code: cookies.mgt_user_token.toString(),
               id: imgId
           }
       };
@@ -360,7 +360,7 @@ function PageBanner(props) {
                   }}
                   type="banner"
                   url={url}
-                  userToken={cookies.user_token.toString()}
+                  userToken={cookies.mgt_user_token.toString()}
                   maxImgNumber={500}
                   errCB = {(err) => {
                     setAppState({systemPopup: {

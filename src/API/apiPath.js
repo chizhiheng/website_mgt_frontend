@@ -1,4 +1,5 @@
-export const host = 'http://localhost/website_mgt_backend/api';
+export const host = '/website/website_mgt_backend/api'; // server
+// export const host = 'http://localhost/website_mgt_backend/api'; // local
 export const loginApiPath = '/userlogin.php';
 export const getSiteInfo = '/getSiteInfo.php';
 export const upsertSiteInfo = '/upsertSiteInfo.php';

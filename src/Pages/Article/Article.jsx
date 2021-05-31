@@ -20,7 +20,7 @@ function Article(props) {
     const { language } = {...props};
     const { appState, setAppState } = useContext(AppContext);
     const [loading, setLoading] = useState(false);
-    const [cookies] = useCookies(['user_token']);
+    const [cookies] = useCookies(['mgt_user_token']);
     const { TabPane } = Tabs;
     const [overLayType, setOverLayType] = useState('');
     const [modifyItem, setModifyItem] = useState({});
@@ -36,7 +36,7 @@ function Article(props) {
         const params = {
           url: insertContent,
           param: {
-              code: cookies.user_token.toString(),
+              code: cookies.mgt_user_token.toString(),
               type: 1,
               content: val
           }
@@ -57,7 +57,6 @@ function Article(props) {
           console.log(e);
         });
       } else if (val.flag === 'update') {
-        console.log(val);
         if (window.document.querySelectorAll('.article-edit-popup .red-border').length > 0){
           setDisabledBtn(true);
         } else {
@@ -76,7 +75,7 @@ function Article(props) {
         const params = {
             url: getContentDetails,
             param: {
-                code: cookies.user_token.toString(),
+                code: cookies.mgt_user_token.toString(),
                 content_id: record.id,
                 type: 1
             }
@@ -101,7 +100,7 @@ function Article(props) {
       let params = {
           url: '',
           param: {
-              code: cookies.user_token.toString(),
+              code: cookies.mgt_user_token.toString(),
               contentId: modifyItem.id,
               type: 1
           }
@@ -155,7 +154,7 @@ function Article(props) {
                                 postParams={{
                                     url: getContentList,
                                     param: {
-                                        code: cookies.user_token.toString(),
+                                        code: cookies.mgt_user_token.toString(),
                                         type: 1
                                     }
                                 }}

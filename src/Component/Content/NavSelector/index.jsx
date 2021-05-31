@@ -15,7 +15,7 @@ function NavSelector(props) {
     const [selectValue, setSelectValue] = useState('');
     const [returnRes, setReturnRes] = useState([]);
 
-    const [cookies] = useCookies(['user_token']);
+    const [cookies] = useCookies(['mgt_user_token']);
     const [navList, setNavList] = useState([]);
 
     useEffect(() => {
@@ -34,7 +34,7 @@ function NavSelector(props) {
             }
             const params = {
                 url: getMenu,
-                param: { code: cookies.user_token.toString(), type: typeVal }
+                param: { code: cookies.mgt_user_token.toString(), type: typeVal }
             }
             RequestUtils(params).then((res) => {
                 formatNav(res.result);

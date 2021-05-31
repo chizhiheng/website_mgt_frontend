@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './App.scss';
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Switch,
   Route
 } from "react-router-dom";
@@ -27,17 +27,17 @@ import SysPopup from './Component/SysPopup/SysPopup';
 function App(props) {
   const { Header, Content } = Layout;
   const [currentLang, setCurrentLang] = useState((navigator.language||navigator.userLanguage).substr(0, 2));
-  const [cookies, setCookie, removeCookie] = useCookies(['user_token']);
+  const [cookies, setCookie, removeCookie] = useCookies(['mgt_user_token']);
   const setLanguage = (flag) => {
     setCurrentLang(flag);
   };
 
   const logout = (val) => {
-    removeCookie('user_token');
+    removeCookie('mgt_user_token');
   };
 
   const loginSuccess = (token) => {
-    setCookie('user_token', token, { path: '/' });
+    setCookie('mgt_user_token', token, { path: '/' });
   };
 
   const DefaultContainer = () => {
@@ -46,6 +46,9 @@ function App(props) {
         <SideBar language={currentLang} callback={logout} />
         <Layout className="site-content-container">
           <Content className="white-bg content-main">
+            <Route path="/index*">
+              <Settings language={currentLang} />
+            </Route>
             <Route path="/settings/">
               <Settings language={currentLang} />
             </Route>
@@ -76,9 +79,9 @@ function App(props) {
             <Route path="/advertising/">
               <Advertising language={currentLang} />
             </Route>
-            {/* <Route path="*">
+            <Route path="*">
               <Error language={currentLang} />
-            </Route> */}
+            </Route>
         </Content>
         </Layout>
       </>

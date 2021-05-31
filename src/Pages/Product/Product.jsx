@@ -18,7 +18,7 @@ import {
 function Product(props) {
     const { language } = {...props};
     const [loading, setLoading] = useState(false);
-    const [cookies] = useCookies(['user_token']);
+    const [cookies] = useCookies(['mgt_user_token']);
     const [selectedImgs, setSelectedImgs] = useState([]);
     const [imgInLibrary, setImgInLibrary] = useState([]);
     const { TabPane } = Tabs;
@@ -39,7 +39,7 @@ function Product(props) {
             const params = {
                 url: insertContent,
                 param: {
-                    code: cookies.user_token.toString(),
+                    code: cookies.mgt_user_token.toString(),
                     type: 3,
                     content: val
                 }
@@ -65,7 +65,7 @@ function Product(props) {
         const params = {
             url: getImgs,
             param: {
-                code: cookies.user_token.toString(),
+                code: cookies.mgt_user_token.toString(),
                 type: 'product'
             }
         };
@@ -88,10 +88,13 @@ function Product(props) {
 
     const deleteImageFromLib = (imgId) => {
       setLoading(true);
+      if (!cookies.mgt_user_token) {
+        window.location.href = '/';
+      }
       const params = {
           url: deleteImg,
           param: {
-              code: cookies.user_token.toString(),
+              code: cookies.mgt_user_token.toString(),
               id: imgId
           }
       };
@@ -123,7 +126,7 @@ function Product(props) {
         const params = {
             url: getContentDetails,
             param: {
-                code: cookies.user_token.toString(),
+                code: cookies.mgt_user_token.toString(),
                 content_id: record.id,
                 type: 3
             }
@@ -149,7 +152,7 @@ function Product(props) {
         let params = {
             url: '',
             param: {
-                code: cookies.user_token.toString(),
+                code: cookies.mgt_user_token.toString(),
                 contentId: modifyItem.id,
                 type: 3
             }
@@ -198,7 +201,7 @@ function Product(props) {
                                     callBack(val);
                                 }}
                                 url={host + insertImg}
-                                userToken={cookies.user_token.toString()}
+                                userToken={cookies.mgt_user_token.toString()}
                                 imgs={selectedImgs}
                                 imgInLibrary={imgInLibrary}
                                 getImageFromLib={getImageFromLib}
@@ -211,7 +214,7 @@ function Product(props) {
                                 postParams={{
                                     url: getContentList,
                                     param: {
-                                        code: cookies.user_token.toString(),
+                                        code: cookies.mgt_user_token.toString(),
                                         type: 3
                                     }
                                 }}
@@ -246,7 +249,7 @@ function Product(props) {
                                 callBack(val);
                             }}
                             url={host + insertImg}
-                            userToken={cookies.user_token.toString()}
+                            userToken={cookies.mgt_user_token.toString()}
                             imgs={selectedImgs}
                             imgInLibrary={imgInLibrary}
                             getImageFromLib={getImageFromLib}

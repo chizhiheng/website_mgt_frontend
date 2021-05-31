@@ -13,7 +13,7 @@ function Template(props) {
     const { language } = {...props};
     const { TabPane } = Tabs;
     const [loading, setLoading] = useState(false);
-    const [cookies] = useCookies(['user_token']);
+    const [cookies] = useCookies(['mgt_user_token']);
     const [templateList, setTemplateList] = useState([]);
 
     const location = () => {
@@ -30,7 +30,7 @@ function Template(props) {
         const params = {
           url: getTemplates,
           param: {
-              code: cookies.user_token.toString()
+              code: cookies.mgt_user_token.toString()
           }
         };
         RequestUtils(params).then((res) => {

@@ -18,7 +18,7 @@ import './News.scss';
 function News(props) {
     const { language } = {...props};
     const [loading, setLoading] = useState(false);
-    const [cookies] = useCookies(['user_token']);
+    const [cookies] = useCookies(['mgt_user_token']);
     const { TabPane } = Tabs;
     const [overLayType, setOverLayType] = useState('');
     const [modifyItem, setModifyItem] = useState({});
@@ -33,7 +33,7 @@ function News(props) {
             const params = {
                 url: insertContent,
                 param: {
-                    code: cookies.user_token.toString(),
+                    code: cookies.mgt_user_token.toString(),
                     type: 2,
                     content: val
                 }
@@ -62,7 +62,7 @@ function News(props) {
         const params = {
             url: getContentDetails,
             param: {
-                code: cookies.user_token.toString(),
+                code: cookies.mgt_user_token.toString(),
                 content_id: record.id,
                 type: 2
             }
@@ -88,7 +88,7 @@ function News(props) {
         let params = {
             url: '',
             param: {
-                code: cookies.user_token.toString(),
+                code: cookies.mgt_user_token.toString(),
                 contentId: modifyItem.id,
                 type: 2
             }
@@ -141,7 +141,7 @@ function News(props) {
                                 postParams={{
                                     url: getContentList,
                                     param: {
-                                        code: cookies.user_token.toString(),
+                                        code: cookies.mgt_user_token.toString(),
                                         type: 2
                                     }
                                 }}

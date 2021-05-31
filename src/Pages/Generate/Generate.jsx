@@ -14,7 +14,7 @@ import Loading from '../../Component/Loading/Loading';
 
 function Generate(props) {
     const { language } = {...props};
-    const [cookies] = useCookies(['user_token']);
+    const [cookies] = useCookies(['mgt_user_token']);
     const [loading, setLoading] = useState(false);
     const [generateInfo, setGeneratedInfo] = useState({
       totalContent: 0,
@@ -32,7 +32,7 @@ function Generate(props) {
       const params = {
         url: getGenerateInfo,
         param: {
-            code: cookies.user_token.toString(),
+            code: cookies.mgt_user_token.toString(),
         }
       };
       RequestUtils(params).then((res) => {
@@ -55,11 +55,11 @@ function Generate(props) {
         const params = {
           url: generatePage,
           param: {
-              code: cookies.user_token.toString(),
+              code: cookies.mgt_user_token.toString(),
           }
         };
         RequestUtils(params).then((res) => {
-          console.log(res);
+          // console.log(res);
         }).catch((e) => {
           console.log(e);
         });

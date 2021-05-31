@@ -26,7 +26,7 @@ function Dashboard(props) {
     const { language } = {...props};
     const { TabPane } = Tabs;
     const [loading, setLoading] = useState(false);
-    const [cookies] = useCookies(['user_token']);
+    const [cookies] = useCookies(['mgt_user_token']);
     const [qrCode, setQrCode] = useState(false);
     const [logo, setLogo] = useState(false);
     const [imgContent, setImgContent] = useState('');
@@ -101,7 +101,7 @@ function Dashboard(props) {
         const params = {
             url: upsertSiteInfo,
             param: {
-                code: cookies.user_token.toString(),
+                code: cookies.mgt_user_token.toString(),
                 values: formValues.siteInfo
             }
         }
@@ -135,45 +135,48 @@ function Dashboard(props) {
         let monted = true;
         setLoading(true);
         if (monted) {
-            const params = {
-                url: getSiteInfo,
-                param: { code: cookies.user_token.toString() }
-            }
-            RequestUtils(params).then((val) => {
-                if (val !== null) {
-                    setFormValues((res) => {
-                        res.siteInfo.site_name = val.result.site_name;
-                        res.siteInfo.site_keywords = val.result.site_keywords;
-                        res.siteInfo.site_description = val.result.site_description;
-                        res.siteInfo.site_language = val.result.site_language;
-                        res.siteInfo.site_company_address = val.result.site_company_address;
-                        res.siteInfo.site_contact_email = val.result.site_contact_email;
-                        res.siteInfo.site_contact_phone1 = val.result.site_contact_phone1;
-                        res.siteInfo.site_contact_phone2 = val.result.site_contact_phone2;
-                        res.siteInfo.site_contact_QR_code = val.result.site_contact_QR_code;
-                        res.siteInfo.site_logo = val.result.site_logo;
-                        return res;
-                    });
+          if (!cookies.mgt_user_token) {
+            window.location.href = '/';
+          }
+          const params = {
+              url: getSiteInfo,
+              param: { code: cookies.mgt_user_token.toString() }
+          }
+          RequestUtils(params).then((val) => {
+              if (val !== null) {
+                  setFormValues((res) => {
+                      res.siteInfo.site_name = val.result.site_name;
+                      res.siteInfo.site_keywords = val.result.site_keywords;
+                      res.siteInfo.site_description = val.result.site_description;
+                      res.siteInfo.site_language = val.result.site_language;
+                      res.siteInfo.site_company_address = val.result.site_company_address;
+                      res.siteInfo.site_contact_email = val.result.site_contact_email;
+                      res.siteInfo.site_contact_phone1 = val.result.site_contact_phone1;
+                      res.siteInfo.site_contact_phone2 = val.result.site_contact_phone2;
+                      res.siteInfo.site_contact_QR_code = val.result.site_contact_QR_code;
+                      res.siteInfo.site_logo = val.result.site_logo;
+                      return res;
+                  });
 
-                    setEn(val.result.site_language.en);
-                    setJp(val.result.site_language.jp);
-                    setKr(val.result.site_language.kr);
+                  setEn(val.result.site_language.en);
+                  setJp(val.result.site_language.jp);
+                  setKr(val.result.site_language.kr);
 
-                  if (val.result.site_contact_QR_code !== '') {
-                    setQrCode(true);
-                    setImgContent(val.result.site_contact_QR_code);
-                  }
-                  if (val.result.site_logo !== '') {
-                    setLogo(true);
-                    setLogoContent(val.result.site_logo);
+                if (val.result.site_contact_QR_code !== '') {
+                  setQrCode(true);
+                  setImgContent(val.result.site_contact_QR_code);
                 }
-                }
-                setLoading(false);
-            }).catch((e) => {
-                setLoading(false);
-                console.log(e);
-            });
-            // console.log('123123', formValues.siteInfo.site_language.en, formValues.siteInfo.site_language.jp, formValues.siteInfo.site_language.kr);
+                if (val.result.site_logo !== '') {
+                  setLogo(true);
+                  setLogoContent(val.result.site_logo);
+              }
+              }
+              setLoading(false);
+          }).catch((e) => {
+              setLoading(false);
+              console.log(e);
+          });
+          // console.log('123123', formValues.siteInfo.site_language.en, formValues.siteInfo.site_language.jp, formValues.siteInfo.site_language.kr);
         }
 
         return () => {

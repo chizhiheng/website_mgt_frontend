@@ -13,7 +13,7 @@ function SideBar(props) {
     const { SubMenu } = Menu;
     const { Sider } = Layout;
     const history = useHistory();
-    
+
     const [openNav, setOpenNav] = useState([]);
     const [selectedNav, setSelectedNav] = useState([]);
 
@@ -101,7 +101,6 @@ function SideBar(props) {
 
     const GetMenuList = (props) => {
         const {items, first} = {...props};
-        console.log(items, first);
         return (
             <Fragment>
             {

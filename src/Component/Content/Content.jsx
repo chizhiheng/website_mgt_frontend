@@ -25,7 +25,7 @@ import RequestUtils from '../../Utils/RequestUtils';
 import { AppContext } from '../../context/AppContext';
 
 function Content(props) {
-    const [cookies] = useCookies(['user_token']);
+    const [cookies] = useCookies(['mgt_user_token']);
     const { appState, setAppState } = useContext(AppContext);
     const {
         language,
@@ -118,7 +118,7 @@ function Content(props) {
       const params = {
         url: getLangList,
         param: {
-            code: cookies.user_token.toString()
+            code: cookies.mgt_user_token.toString()
         }
         // signal: signal
       };
